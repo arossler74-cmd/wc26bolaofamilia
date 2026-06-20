@@ -5,24 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚽ Copa do Mundo 2026 | Bolão da Família</title>
 <style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
-.br-scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:6px 2px 18px}
-.br-cols{display:flex;gap:16px;min-width:max-content;align-items:stretch}
-.br-col{display:flex;flex-direction:column;justify-content:space-around;gap:12px;min-width:210px}
-.br-col-h{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:2px}
-.br-node{background:var(--card);border:1px solid var(--border,#2A3470);border-radius:12px;padding:8px 10px}
-.br-node.br-tbd{opacity:.55}
-.br-meta{font-size:10px;color:var(--muted);text-align:center;letter-spacing:.02em}
-.br-team{display:flex;align-items:center;gap:7px;padding:3px 0}
-.br-flag{width:22px;text-align:center;flex:none;font-size:13px}
-.br-flag img{height:14px;border-radius:2px;vertical-align:middle}
+<style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
+/* ── My points / rank card on top of bracket ── */
+.br-mecard{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--fifa-blue,#15205C),#1d2a72);border:1px solid var(--border,#2A3470);border-radius:16px;padding:14px 18px;margin-bottom:16px}
+.br-mecard .me-pts{font-family:'Anton',sans-serif;font-size:34px;line-height:1;color:var(--orange)}
+.br-mecard .me-lab{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.br-mecard .me-rank{margin-left:auto;text-align:right}
+.br-mecard .me-rank .pos{font-family:'Anton',sans-serif;font-size:26px;color:#fff}
+/* ── Bracket tree ── */
+.br-wrap{padding:4px 0 16px}
+.br-champ{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;background:radial-gradient(circle at 50% 0%,#2a3a8f,var(--card,#15205C));border:2px solid var(--gold,#F5B301);border-radius:18px;padding:18px 16px;margin:18px auto;max-width:340px;box-shadow:0 0 24px rgba(245,179,1,.18)}
+.br-champ .cup{font-size:46px;line-height:1}
+.br-champ .clab{font-size:11px;color:var(--gold,#F5B301);text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.br-champ .who{font-family:'Anton',sans-serif;font-size:22px;color:#fff}
+.br-quad{border-radius:16px;padding:12px 12px 6px;margin:14px 0;border:1px solid var(--qc,#2A3470);background:var(--card,#1A2257)}
+.br-quad-h{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--qc,#fff);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.br-quad-h .dot{width:12px;height:12px;border-radius:50%;background:var(--qc)}
+.br-rgrid{display:flex;flex-direction:column;gap:10px}
+.br-rlabel{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:6px 0 -2px;font-weight:700}
+.br-node{background:var(--card,#15205C);border:1px solid var(--border,#2A3470);border-left:4px solid var(--qc,#2A3470);border-radius:12px;padding:9px 11px}
+.br-node.br-tbd{opacity:.5}
+.br-node.br-final{border-left-color:var(--gold,#F5B301)}
+.br-meta{font-size:10px;color:var(--muted);letter-spacing:.02em;margin-bottom:4px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.br-team{display:flex;align-items:center;gap:8px;padding:3px 0}
+.br-flag{width:24px;text-align:center;flex:none;font-size:13px}
+.br-flag img{height:15px;border-radius:2px;vertical-align:middle}
 .br-name{flex:1;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.br-in{width:34px;height:30px;text-align:center;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;font-weight:800;font-size:14px;flex:none}
-.br-in:disabled{opacity:.35;cursor:not-allowed}
-.br-champ{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:160px;text-align:center;gap:6px}
-.br-champ .cup{font-size:40px;line-height:1}
-.br-champ .who{font-family:'Anton',sans-serif;font-size:17px;color:var(--orange)}
-.br-savebar{position:sticky;bottom:0;background:linear-gradient(0deg,var(--fifa-blue,#15205C) 55%,transparent);padding:12px 0;display:flex;justify-content:center;z-index:5}
-.br-hint{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 10px}</style>
+.br-in{width:36px;height:32px;text-align:center;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;font-weight:800;font-size:15px;flex:none}
+.br-in:disabled{opacity:.4;cursor:not-allowed}
+.br-foot{font-size:11px;color:var(--muted);margin-top:6px;border-top:1px dashed var(--border,#2A3470);padding-top:5px}
+.br-foot b{color:#fff}
+.br-savebar{position:sticky;bottom:0;background:linear-gradient(0deg,var(--fifa-blue,#15205C) 60%,transparent);padding:12px 0;display:flex;justify-content:center;z-index:5}
+.br-hint{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 12px;line-height:1.5}
+@media(min-width:900px){
+  .br-sides{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+  .br-center-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center}
+}
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -350,6 +368,8 @@ h1, h2, h3, .logo, .section-title, .login-card h1 { font-family: 'Anton', sans-s
 .sched-score { font-family:'Anton',sans-serif; font-size:22px; color:#fff; white-space:nowrap; }
 .sched-score .x { color:var(--muted); font-size:14px; }
 .sched-venue { grid-column:1 / -1; font-size:12px; color:var(--muted); border-top:1px solid var(--border); padding-top:8px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.sched-bet { grid-column:1 / -1; font-size:12px; color:var(--muted); padding-top:4px; }
+.sched-bet b { color:#fff; }
 .sched-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:20px; }
 .sched-badge.done { background:rgba(46,204,113,.18); color:#37d67a; }
 .sched-badge.live { background:rgba(232,115,12,.18); color:var(--orange); }
@@ -760,8 +780,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
 <div class="nav-wrap" id="mainNav" style="display:none">
 <nav class="nav">
   <div class="nav-tab" data-page="instructions" onclick="showPage('instructions')">📖 How to Play</div>
-  <div class="nav-tab active" data-page="bets" onclick="showPage('bets')">🏆 Chaveamento</div>
-  <div class="nav-tab" data-page="results" onclick="showPage('results')">📊 Results</div>
+  <div class="nav-tab active" data-page="bets" onclick="showPage('bets')">🎯 Apostas</div>
     <div class="nav-tab" data-page="schedule" onclick="showPage('schedule')">📅 Calendar</div>
   <div class="nav-tab" data-page="scoreboard" onclick="showPage('scoreboard')">🏆 Leaderboard</div>
   <div class="nav-tab" data-page="liverace" onclick="showPage('liverace')">🏁 Live Race</div>
@@ -865,82 +884,51 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
 
     <div class="howto-hero">
       <div class="howto-hero-emoji">🏆</div>
-      <h1 class="howto-title">Welcome to the FIFA World Cup '26 Pool</h1>
-      <p class="howto-lead">Predict the scores, climb the leaderboard, and win the pot. Here's everything you need to know before you start.</p>
+      <h1 class="howto-title">Bem-vindo ao Bolão da Copa '26 — Mata-Mata</h1>
+      <p class="howto-lead">Aqui é só a <strong>fase final</strong>: dos 32-avos até a grande final. Você palpita o placar de cada jogo, soma pontos e sobe no ranking. Veja como funciona.</p>
     </div>
 
-    <!-- TWO PHASES -->
+    <!-- 1. SÓ FASE FINAL -->
     <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">1</span> Two phases, two competitions</div>
-      <p class="howto-p">The pool runs in <strong>two separate phases</strong>. Each phase is its own contest — its own pot, its own winners. You can play one or both.</p>
-      <div class="phase-grid">
-        <div class="phase-box">
-          <div class="phase-tag p1">Phase 1 · Group Stage</div>
-          <div class="phase-name">Classification</div>
-          <div class="phase-dates">📅 Jun 11 → Jun 27, 2026</div>
-          <div class="phase-desc">Predict the exact score of all <strong>72 group-stage matches</strong>.</div>
-        </div>
-        <div class="phase-box">
-          <div class="phase-tag p2">Phase 2 · Knockout</div>
-          <div class="phase-name">Brackets</div>
-          <div class="phase-dates">📅 Jun 28 → Jul 19, 2026</div>
-          <div class="phase-desc">Predict the <strong>knockout bracket</strong> — who advances all the way to the final.</div>
-        </div>
-      </div>
-      <p class="howto-note">We close the competition at the end of each phase and crown that phase's winners before the next one begins.</p>
+      <div class="howto-h"><span class="howto-num">1</span> Só a fase de eliminação</div>
+      <p class="howto-p">Este bolão começa onde acaba a fase de grupos. São <strong>32 partidas</strong> ao todo: Round of 32 (32-avos), Oitavas, Quartas, Semifinais, disputa de 3º lugar e a Final.</p>
+      <p class="howto-note">No estilo da FIFA, cada jogo tem um número e os confrontos vão se definindo conforme os grupos terminam. Ex.: <strong>M74</strong> (Partida #74) → <strong>1E</strong> (1º do Grupo E) × <strong>melhor 3º (A/B/C/D/F)</strong>.</p>
     </div>
 
-    <!-- HOW TO PREDICT -->
+    <!-- 2. AS APOSTAS ABREM POR RODADA -->
     <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">2</span> How to make your predictions</div>
-      <p class="howto-p">Go to the <strong>⚽ My Bets</strong> tab and pick a group. You have two ways to fill it in:</p>
-      <div class="step"><div class="step-ico">✍️</div><div><strong>Match by match</strong> — type your predicted score into the two boxes for each game (e.g. 2 × 1).</div></div>
-      <div class="step"><div class="step-ico">🤖</div><div><strong>Auto-Predict by FIFA Ranking</strong> — one tap fills every empty match with a sensible score based on the FIFA world ranking. Each player gets their <em>own</em> set, so no two brackets are identical. Review, tweak whatever you want, then save. It never overwrites scores you've already typed.</div></div>
-      <div class="step"><div class="step-ico">💾</div><div><strong>Save each group</strong> with the <em>“Save all predictions in this group”</em> button at the bottom of the list. Your progress bar at the top tracks how many of the 72 you've saved.</div></div>
-      <p class="howto-note">Tip: the FIFA world-ranking position is shown under each team's flag to help you judge the matchup.</p>
+      <div class="howto-h"><span class="howto-num">2</span> As apostas abrem por rodada</div>
+      <p class="howto-p">Vá na aba <strong>🎯 Apostas</strong>. Os campos de placar de cada jogo só <strong>liberam quando os dois times do confronto estão definidos</strong> — ou seja, quando os grupos (ou a rodada anterior) terminam.</p>
+      <div class="step"><div class="step-ico">❔</div><div><strong>Ainda indefinido</strong> — o jogo aparece como “A definir” e fica bloqueado até saírem os classificados.</div></div>
+      <div class="step"><div class="step-ico">✍️</div><div><strong>Já definido</strong> — digite seu placar nas duas caixas e clique em <strong>💾 Salvar palpites</strong>.</div></div>
+      <div class="step"><div class="step-ico">🔒</div><div>Quando o resultado oficial de um jogo é lançado, aquele palpite trava automaticamente — então palpite antes de a bola rolar.</div></div>
+      <p class="howto-note">Você pode voltar à aba sempre que uma nova rodada abrir para palpitar os jogos recém-definidos.</p>
     </div>
 
-    <!-- DEADLINES -->
+    <!-- 3. PONTUAÇÃO -->
     <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">3</span> Deadlines &amp; locking</div>
-      <p class="howto-p">You can submit and edit your predictions until <strong>24 hours before each phase begins</strong>. After that, the phase locks and no further changes are accepted.</p>
-      <div class="lock-grid">
-        <div class="lock-box"><div class="lock-phase">Phase 1 locks</div><div class="lock-when">≈ Jun 10 <span>(24h before kickoff)</span></div></div>
-        <div class="lock-box"><div class="lock-phase">Phase 2 locks</div><div class="lock-when">≈ Jun 27 <span>(24h before knockouts)</span></div></div>
-      </div>
-      <p class="howto-note">Once a match's official result is entered, that individual prediction is locked automatically.</p>
-    </div>
-
-    <!-- BUY-IN & PRIZES -->
-    <div class="howto-card" id="buyinCard">
-      <div class="howto-h"><span class="howto-num">4</span> Buy-in &amp; prizes</div>
-      <p class="howto-p">Entry is <strong>$20 USD per person, per phase</strong>. Everyone's $20 goes into that phase's pot, and the top three on that phase's leaderboard split it:</p>
-      <div class="prize-grid">
-        <div class="prize-box gold"><div class="prize-medal">🥇</div><div class="prize-pct">60%</div><div class="prize-lbl">1st place</div></div>
-        <div class="prize-box silver"><div class="prize-medal">🥈</div><div class="prize-pct">30%</div><div class="prize-lbl">2nd place</div></div>
-        <div class="prize-box bronze"><div class="prize-medal">🥉</div><div class="prize-pct">10%</div><div class="prize-lbl">3rd place</div></div>
-      </div>
-      <div class="pay-box">💵 <strong>How to pay:</strong> Send your <strong>$20</strong> to <strong>Ariel Vargas</strong> via <strong>Zelle</strong> at <strong>(949) 337-7527</strong>. The organizer marks you as paid once it's received.</div>
-      <p class="howto-note">Example: 10 players in a phase → $200 pot → <strong>$120 / $60 / $20</strong> to 1st / 2nd / 3rd. Each phase is paid out separately.</p>
-    </div>
-
-    <!-- SCORING -->
-    <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">5</span> How points are scored</div>
-      <p class="howto-p">Every match prediction earns points based on how close you were:</p>
+      <div class="howto-h"><span class="howto-num">3</span> Como os pontos funcionam</div>
+      <p class="howto-p">Cada palpite vale pontos conforme o quão perto você chegou do placar:</p>
       <div class="score-table">
-        <div class="score-row"><span class="score-pts">15</span><span class="score-ico">🎯</span><span class="score-desc"><strong>Exact score</strong> — right winner and both teams' goals</span></div>
-        <div class="score-row"><span class="score-pts">7</span><span class="score-ico">✅</span><span class="score-desc"><strong>Right winner + one team's goals</strong> correct</span></div>
-        <div class="score-row"><span class="score-pts">4</span><span class="score-ico">👍</span><span class="score-desc"><strong>Right winner</strong> only (wrong scores)</span></div>
-        <div class="score-row"><span class="score-pts">3</span><span class="score-ico">➕</span><span class="score-desc">One team's goals correct, but <strong>wrong winner</strong></span></div>
-        <div class="score-row miss"><span class="score-pts">0</span><span class="score-ico">❌</span><span class="score-desc">Missed it</span></div>
+        <div class="score-row"><span class="score-pts">15</span><span class="score-ico">🎯</span><span class="score-desc"><strong>Placar exato</strong> — vencedor certo e os gols dos dois times</span></div>
+        <div class="score-row"><span class="score-pts">7</span><span class="score-ico">✅</span><span class="score-desc"><strong>Vencedor certo + gols de um dos times</strong></span></div>
+        <div class="score-row"><span class="score-pts">4</span><span class="score-ico">👍</span><span class="score-desc"><strong>Só o vencedor certo</strong> (placar errado)</span></div>
+        <div class="score-row"><span class="score-pts">3</span><span class="score-ico">➕</span><span class="score-desc">Acertou os gols de um time, mas <strong>errou quem venceu</strong></span></div>
+        <div class="score-row miss"><span class="score-pts">0</span><span class="score-ico">❌</span><span class="score-desc">Não acertou nada</span></div>
       </div>
-      <p class="howto-note">Point values are set by the organizer and may be adjusted before a phase starts. Highest total on the leaderboard wins the phase.</p>
+      <p class="howto-note">Em jogos do mata-mata, vale o resultado do <strong>tempo normal</strong> para a contagem de pontos. Quem somar mais pontos no total lidera o ranking.</p>
+    </div>
+
+    <!-- 4. BÔNUS DO CAMPEÃO -->
+    <div class="howto-card">
+      <div class="howto-h"><span class="howto-num">4</span> Bônus do campeão</div>
+      <p class="howto-p">Quem cravar o <strong>vencedor da Final</strong> (o campeão da Copa) ganha <strong style="color:var(--orange)">+20 pontos</strong> de bônus no fim do torneio. Pode ser o desempate que te leva ao topo.</p>
+      <p class="howto-note">O bônus considera apenas quem você apontou como vencedor da Final — não precisa acertar o placar exato.</p>
     </div>
 
     <div class="howto-cta">
-      <button class="btn btn-accent howto-go" onclick="showPage('bets')">Got it — start predicting →</button>
-      <button class="btn btn-ghost" onclick="showPage('schedule')">📅 See the match calendar</button>
+      <button class="btn btn-accent howto-go" onclick="showPage('bets')">Entendi — quero apostar →</button>
+      <button class="btn btn-ghost" onclick="showPage('schedule')">📅 Ver o calendário de jogos</button>
     </div>
 
   </div>
@@ -955,7 +943,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="section-sub">Palpite o placar de cada jogo do mata-mata. Os campos abrem round a round, conforme os times vão sendo definidos.</div>
       </div>
     </div>
-    <div class="br-hint">Pontos: 15 placar exato · 7 vencedor + 1 placar · 4 só vencedor · 3 só 1 placar · <b style="color:var(--orange)">+20</b> quem cravar o campeão.</div>
+    <div class="br-hint">Pontos: <b>15</b> placar exato · <b>7</b> vencedor + 1 placar · <b>4</b> só vencedor · <b>3</b> só 1 placar · <b style="color:var(--orange)">+2</b> diferença de gols certa.</div>
     <div id="bracketWrap"><div class="loader"><div class="spinner"></div>Carregando…</div></div>
   </div>
 </div>
@@ -965,8 +953,8 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     <div class="main">
       <div class="section-header">
         <div>
-          <div class="section-title">📅 Match Calendar</div>
-          <div class="section-sub">Group stage fixtures · times shown in your local zone (<span id="schedTZ"></span>)</div>
+          <div class="section-title">📅 Calendário — Mata-Mata</div>
+          <div class="section-sub">Jogos da fase final · times definidos conforme os grupos terminam · horários no seu fuso (<span id="schedTZ"></span>)</div>
         </div>
         <div style="display:flex;gap:10px"><button class="btn btn-accent" onclick="scrollToToday()">📍 Go to today</button><button class="btn btn-ghost" onclick="renderSchedule(true)">↻ Refresh scores</button></div>
       </div>
@@ -1149,27 +1137,22 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="main">
     <div class="section-header">
       <div>
-        <div class="section-title">👥 Members &amp; Contributions</div>
-        <div class="section-sub">Add or remove members, set roles, track pool contributions and per-phase prediction completion</div>
+        <div class="section-title">👥 Membros</div>
+        <div class="section-sub">Adicione ou remova membros, defina papéis e acompanhe os palpites do mata-mata</div>
       </div>
-      <button class="btn btn-accent" onclick="showPage('admin-invites')">🔗 Invite People</button>
+      <button class="btn btn-accent" onclick="showPage('admin-invites')">🔗 Convidar pessoas</button>
     </div>
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-label">Players</div><div class="stat-value" id="mbTotal">-</div></div>
-      <div class="stat-card pay-card"><div class="stat-label">Collected</div><div class="stat-value" id="mbCollected" style="color:#4ADE94">-</div><div class="stat-sub" id="mbCollectedSub"></div></div>
-      <div class="stat-card pay-card"><div class="stat-label">Outstanding</div><div class="stat-value" id="mbOutstanding" style="color:#FF7A88">-</div><div class="stat-sub" id="mbOutstandingSub"></div></div>
-      <div class="stat-card pay-card"><div class="stat-label">Prize Pool</div><div class="stat-value" id="mbPool" style="color:var(--orange)">-</div><div class="stat-sub" id="mbPrizeSub"></div></div>
-      <div class="stat-card"><div class="stat-label">Completion</div><div class="stat-value" id="mbCompletion" style="color:#7AA2FF">-</div><div class="stat-sub" id="mbCompletionSub"></div></div>
+      <div class="stat-card"><div class="stat-label">Jogadores</div><div class="stat-value" id="mbTotal">-</div></div>
+      <div class="stat-card"><div class="stat-label">Palpites preenchidos</div><div class="stat-value" id="mbCompletion" style="color:#7AA2FF">-</div><div class="stat-sub" id="mbCompletionSub"></div></div>
     </div>
     <div class="card">
       <div class="member-filters">
-        <button class="mf-btn active" data-filter="all" onclick="filterMembers('all',this)">All</button>
-        <button class="mf-btn" data-filter="players" onclick="filterMembers('players',this)">Players</button>
+        <button class="mf-btn active" data-filter="all" onclick="filterMembers('all',this)">Todos</button>
+        <button class="mf-btn" data-filter="players" onclick="filterMembers('players',this)">Jogadores</button>
         <button class="mf-btn" data-filter="admins" onclick="filterMembers('admins',this)">Admins</button>
-        <button class="mf-btn" data-pay="1" data-filter="paid" onclick="filterMembers('paid',this)">✓ Contributed</button>
-        <button class="mf-btn" data-pay="1" data-filter="unpaid" onclick="filterMembers('unpaid',this)">✕ Not contributed</button>
       </div>
-      <div id="userList"><div class="loader"><div class="spinner"></div>Loading...</div></div>
+      <div id="userList"><div class="loader"><div class="spinner"></div>Carregando...</div></div>
     </div>
   </div>
 </div>
@@ -1252,8 +1235,8 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
           <input class="points-input" type="number" value="0" disabled style="opacity:.4" />
         </div>
         <div class="points-row" style="border-top:2px solid var(--border,#2A3470);margin-top:6px;padding-top:12px">
-          <div><div class="points-label">🏆 Campeão da Copa</div><div class="points-sub">Bônus por cravar o vencedor da Final</div></div>
-          <input class="points-input" id="pts_championBonus" type="number" value="20" min="0" max="99" />
+          <div><div class="points-label">📐 Diferença de Gols</div><div class="points-sub">Bônus por acertar o saldo do jogo (vale desde os 32)</div></div>
+          <input class="points-input" id="pts_diffBonus" type="number" value="2" min="0" max="99" />
         </div>
         <button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="savePointsConfig()">Save Configuration</button>
       </div>
@@ -1633,43 +1616,43 @@ GROUP_MATCHES.forEach(m => {
 const KNOCKOUT_MATCHES = [
   // ── OFICIAL FIFA 2026 — Round of 32 (jogos 73–88), 28/jun a 03/jul ──
   // slot codes: "1X"/"2X" = 1º/2º do grupo X · "3:A/B/.." = melhor 3º dentre esses grupos · "Wnn" = vencedor do jogo nn · "Lnn" = perdedor
-  {id:"R32_73",mNo:73,round:"Round of 32",homeSlot:"2A",awaySlot:"2B",homeTeam:"2º Grupo A",awayTeam:"2º Grupo B",venue:"Los Angeles",date:"28/Jun"},
-  {id:"R32_74",mNo:74,round:"Round of 32",homeSlot:"1E",awaySlot:"3:A/B/C/D/F",homeTeam:"1º Grupo E",awayTeam:"Melhor 3º (A/B/C/D/F)",venue:"Boston",date:"29/Jun"},
-  {id:"R32_75",mNo:75,round:"Round of 32",homeSlot:"1F",awaySlot:"2C",homeTeam:"1º Grupo F",awayTeam:"2º Grupo C",venue:"Monterrey",date:"29/Jun"},
-  {id:"R32_76",mNo:76,round:"Round of 32",homeSlot:"1C",awaySlot:"2F",homeTeam:"1º Grupo C",awayTeam:"2º Grupo F",venue:"Houston",date:"28/Jun"},
-  {id:"R32_77",mNo:77,round:"Round of 32",homeSlot:"1I",awaySlot:"3:C/D/F/G/H",homeTeam:"1º Grupo I",awayTeam:"Melhor 3º (C/D/F/G/H)",venue:"Nova York/Nova Jersey",date:"29/Jun"},
-  {id:"R32_78",mNo:78,round:"Round of 32",homeSlot:"2E",awaySlot:"2I",homeTeam:"2º Grupo E",awayTeam:"2º Grupo I",venue:"Arlington (Dallas)",date:"30/Jun"},
-  {id:"R32_79",mNo:79,round:"Round of 32",homeSlot:"1A",awaySlot:"3:C/E/F/H/I",homeTeam:"1º Grupo A",awayTeam:"Melhor 3º (C/E/F/H/I)",venue:"Cidade do México",date:"30/Jun"},
-  {id:"R32_80",mNo:80,round:"Round of 32",homeSlot:"1L",awaySlot:"3:E/H/I/J/K",homeTeam:"1º Grupo L",awayTeam:"Melhor 3º (E/H/I/J/K)",venue:"Atlanta",date:"01/Jul"},
-  {id:"R32_81",mNo:81,round:"Round of 32",homeSlot:"1D",awaySlot:"3:B/E/F/I/J",homeTeam:"1º Grupo D",awayTeam:"Melhor 3º (B/E/F/I/J)",venue:"San Francisco Bay",date:"01/Jul"},
-  {id:"R32_82",mNo:82,round:"Round of 32",homeSlot:"1G",awaySlot:"3:A/E/H/I/J",homeTeam:"1º Grupo G",awayTeam:"Melhor 3º (A/E/H/I/J)",venue:"Seattle",date:"01/Jul"},
-  {id:"R32_83",mNo:83,round:"Round of 32",homeSlot:"2K",awaySlot:"2L",homeTeam:"2º Grupo K",awayTeam:"2º Grupo L",venue:"Toronto",date:"02/Jul"},
-  {id:"R32_84",mNo:84,round:"Round of 32",homeSlot:"1H",awaySlot:"2J",homeTeam:"1º Grupo H",awayTeam:"2º Grupo J",venue:"Los Angeles",date:"02/Jul"},
-  {id:"R32_85",mNo:85,round:"Round of 32",homeSlot:"1B",awaySlot:"3:E/F/G/I/J",homeTeam:"1º Grupo B",awayTeam:"Melhor 3º (E/F/G/I/J)",venue:"Vancouver",date:"02/Jul"},
-  {id:"R32_86",mNo:86,round:"Round of 32",homeSlot:"1J",awaySlot:"2H",homeTeam:"1º Grupo J",awayTeam:"2º Grupo H",venue:"Miami",date:"03/Jul"},
-  {id:"R32_87",mNo:87,round:"Round of 32",homeSlot:"1K",awaySlot:"3:D/E/I/J/L",homeTeam:"1º Grupo K",awayTeam:"Melhor 3º (D/E/I/J/L)",venue:"Kansas City",date:"03/Jul"},
-  {id:"R32_88",mNo:88,round:"Round of 32",homeSlot:"2D",awaySlot:"2G",homeTeam:"2º Grupo D",awayTeam:"2º Grupo G",venue:"Arlington (Dallas)",date:"03/Jul"},
+  {id:"R32_73",mNo:73,round:"Round of 32",homeSlot:"2A",awaySlot:"2B",homeTeam:"2º Grupo A",awayTeam:"2º Grupo B",venue:"Los Angeles",date:"28/Jun",kickoff:"2026-06-28T19:00:00Z"},
+  {id:"R32_74",mNo:74,round:"Round of 32",homeSlot:"1E",awaySlot:"3:A/B/C/D/F",homeTeam:"1º Grupo E",awayTeam:"Melhor 3º (A/B/C/D/F)",venue:"Boston",date:"29/Jun",kickoff:"2026-06-29T20:30:00Z"},
+  {id:"R32_75",mNo:75,round:"Round of 32",homeSlot:"1F",awaySlot:"2C",homeTeam:"1º Grupo F",awayTeam:"2º Grupo C",venue:"Monterrey",date:"29/Jun",kickoff:"2026-06-30T02:00:00Z"},
+  {id:"R32_76",mNo:76,round:"Round of 32",homeSlot:"1C",awaySlot:"2F",homeTeam:"1º Grupo C",awayTeam:"2º Grupo F",venue:"Houston",date:"28/Jun",kickoff:"2026-06-28T18:00:00Z"},
+  {id:"R32_77",mNo:77,round:"Round of 32",homeSlot:"1I",awaySlot:"3:C/D/F/G/H",homeTeam:"1º Grupo I",awayTeam:"Melhor 3º (C/D/F/G/H)",venue:"Nova York/Nova Jersey",date:"29/Jun",kickoff:"2026-06-29T21:00:00Z"},
+  {id:"R32_78",mNo:78,round:"Round of 32",homeSlot:"2E",awaySlot:"2I",homeTeam:"2º Grupo E",awayTeam:"2º Grupo I",venue:"Arlington (Dallas)",date:"30/Jun",kickoff:"2026-06-30T18:00:00Z"},
+  {id:"R32_79",mNo:79,round:"Round of 32",homeSlot:"1A",awaySlot:"3:C/E/F/H/I",homeTeam:"1º Grupo A",awayTeam:"Melhor 3º (C/E/F/H/I)",venue:"Cidade do México",date:"30/Jun",kickoff:"2026-07-01T02:00:00Z"},
+  {id:"R32_80",mNo:80,round:"Round of 32",homeSlot:"1L",awaySlot:"3:E/H/I/J/K",homeTeam:"1º Grupo L",awayTeam:"Melhor 3º (E/H/I/J/K)",venue:"Atlanta",date:"01/Jul",kickoff:"2026-07-01T16:00:00Z"},
+  {id:"R32_81",mNo:81,round:"Round of 32",homeSlot:"1D",awaySlot:"3:B/E/F/I/J",homeTeam:"1º Grupo D",awayTeam:"Melhor 3º (B/E/F/I/J)",venue:"San Francisco Bay",date:"01/Jul",kickoff:"2026-07-02T03:00:00Z"},
+  {id:"R32_82",mNo:82,round:"Round of 32",homeSlot:"1G",awaySlot:"3:A/E/H/I/J",homeTeam:"1º Grupo G",awayTeam:"Melhor 3º (A/E/H/I/J)",venue:"Seattle",date:"01/Jul",kickoff:"2026-07-01T23:00:00Z"},
+  {id:"R32_83",mNo:83,round:"Round of 32",homeSlot:"2K",awaySlot:"2L",homeTeam:"2º Grupo K",awayTeam:"2º Grupo L",venue:"Toronto",date:"02/Jul",kickoff:"2026-07-02T23:00:00Z"},
+  {id:"R32_84",mNo:84,round:"Round of 32",homeSlot:"1H",awaySlot:"2J",homeTeam:"1º Grupo H",awayTeam:"2º Grupo J",venue:"Los Angeles",date:"02/Jul",kickoff:"2026-07-02T22:00:00Z"},
+  {id:"R32_85",mNo:85,round:"Round of 32",homeSlot:"1B",awaySlot:"3:E/F/G/I/J",homeTeam:"1º Grupo B",awayTeam:"Melhor 3º (E/F/G/I/J)",venue:"Vancouver",date:"02/Jul",kickoff:"2026-07-03T06:00:00Z"},
+  {id:"R32_86",mNo:86,round:"Round of 32",homeSlot:"1J",awaySlot:"2H",homeTeam:"1º Grupo J",awayTeam:"2º Grupo H",venue:"Miami",date:"03/Jul",kickoff:"2026-07-03T22:00:00Z"},
+  {id:"R32_87",mNo:87,round:"Round of 32",homeSlot:"1K",awaySlot:"3:D/E/I/J/L",homeTeam:"1º Grupo K",awayTeam:"Melhor 3º (D/E/I/J/L)",venue:"Kansas City",date:"03/Jul",kickoff:"2026-07-04T02:30:00Z"},
+  {id:"R32_88",mNo:88,round:"Round of 32",homeSlot:"2D",awaySlot:"2G",homeTeam:"2º Grupo D",awayTeam:"2º Grupo G",venue:"Arlington (Dallas)",date:"03/Jul",kickoff:"2026-07-03T19:00:00Z"},
   // ── Round of 16 (jogos 89–96), 04–07/jul ──
-  {id:"R16_89",mNo:89,round:"Round of 16",homeSlot:"W74",awaySlot:"W77",homeTeam:"Vencedor Jogo 74",awayTeam:"Vencedor Jogo 77",venue:"Filadélfia",date:"04/Jul"},
-  {id:"R16_90",mNo:90,round:"Round of 16",homeSlot:"W73",awaySlot:"W75",homeTeam:"Vencedor Jogo 73",awayTeam:"Vencedor Jogo 75",venue:"Houston",date:"04/Jul"},
-  {id:"R16_91",mNo:91,round:"Round of 16",homeSlot:"W76",awaySlot:"W78",homeTeam:"Vencedor Jogo 76",awayTeam:"Vencedor Jogo 78",venue:"Nova York/Nova Jersey",date:"05/Jul"},
-  {id:"R16_92",mNo:92,round:"Round of 16",homeSlot:"W79",awaySlot:"W80",homeTeam:"Vencedor Jogo 79",awayTeam:"Vencedor Jogo 80",venue:"Cidade do México",date:"05/Jul"},
-  {id:"R16_93",mNo:93,round:"Round of 16",homeSlot:"W83",awaySlot:"W84",homeTeam:"Vencedor Jogo 83",awayTeam:"Vencedor Jogo 84",venue:"Dallas",date:"06/Jul"},
-  {id:"R16_94",mNo:94,round:"Round of 16",homeSlot:"W81",awaySlot:"W82",homeTeam:"Vencedor Jogo 81",awayTeam:"Vencedor Jogo 82",venue:"Seattle",date:"06/Jul"},
-  {id:"R16_95",mNo:95,round:"Round of 16",homeSlot:"W86",awaySlot:"W88",homeTeam:"Vencedor Jogo 86",awayTeam:"Vencedor Jogo 88",venue:"Atlanta",date:"07/Jul"},
-  {id:"R16_96",mNo:96,round:"Round of 16",homeSlot:"W85",awaySlot:"W87",homeTeam:"Vencedor Jogo 85",awayTeam:"Vencedor Jogo 87",venue:"Vancouver",date:"07/Jul"},
+  {id:"R16_89",mNo:89,round:"Round of 16",homeSlot:"W74",awaySlot:"W77",homeTeam:"Vencedor Jogo 74",awayTeam:"Vencedor Jogo 77",venue:"Filadélfia",date:"04/Jul",kickoff:"2026-07-04T17:00:00Z"},
+  {id:"R16_90",mNo:90,round:"Round of 16",homeSlot:"W73",awaySlot:"W75",homeTeam:"Vencedor Jogo 73",awayTeam:"Vencedor Jogo 75",venue:"Houston",date:"04/Jul",kickoff:"2026-07-04T22:00:00Z"},
+  {id:"R16_91",mNo:91,round:"Round of 16",homeSlot:"W76",awaySlot:"W78",homeTeam:"Vencedor Jogo 76",awayTeam:"Vencedor Jogo 78",venue:"Nova York/Nova Jersey",date:"05/Jul",kickoff:"2026-07-05T20:00:00Z"},
+  {id:"R16_92",mNo:92,round:"Round of 16",homeSlot:"W79",awaySlot:"W80",homeTeam:"Vencedor Jogo 79",awayTeam:"Vencedor Jogo 80",venue:"Cidade do México",date:"05/Jul",kickoff:"2026-07-06T02:00:00Z"},
+  {id:"R16_93",mNo:93,round:"Round of 16",homeSlot:"W83",awaySlot:"W84",homeTeam:"Vencedor Jogo 83",awayTeam:"Vencedor Jogo 84",venue:"Dallas",date:"06/Jul",kickoff:"2026-07-06T20:00:00Z"},
+  {id:"R16_94",mNo:94,round:"Round of 16",homeSlot:"W81",awaySlot:"W82",homeTeam:"Vencedor Jogo 81",awayTeam:"Vencedor Jogo 82",venue:"Seattle",date:"06/Jul",kickoff:"2026-07-06T23:00:00Z"},
+  {id:"R16_95",mNo:95,round:"Round of 16",homeSlot:"W86",awaySlot:"W88",homeTeam:"Vencedor Jogo 86",awayTeam:"Vencedor Jogo 88",venue:"Atlanta",date:"07/Jul",kickoff:"2026-07-07T20:00:00Z"},
+  {id:"R16_96",mNo:96,round:"Round of 16",homeSlot:"W85",awaySlot:"W87",homeTeam:"Vencedor Jogo 85",awayTeam:"Vencedor Jogo 87",venue:"Vancouver",date:"07/Jul",kickoff:"2026-07-07T23:00:00Z"},
   // ── Quartas de final (jogos 97–100), 09–11/jul ──
-  {id:"QF_97",mNo:97,round:"Quartas",homeSlot:"W89",awaySlot:"W90",homeTeam:"Vencedor Jogo 89",awayTeam:"Vencedor Jogo 90",venue:"Boston",date:"09/Jul"},
-  {id:"QF_98",mNo:98,round:"Quartas",homeSlot:"W93",awaySlot:"W94",homeTeam:"Vencedor Jogo 93",awayTeam:"Vencedor Jogo 94",venue:"Los Angeles",date:"10/Jul"},
-  {id:"QF_99",mNo:99,round:"Quartas",homeSlot:"W91",awaySlot:"W92",homeTeam:"Vencedor Jogo 91",awayTeam:"Vencedor Jogo 92",venue:"Miami",date:"11/Jul"},
-  {id:"QF_100",mNo:100,round:"Quartas",homeSlot:"W95",awaySlot:"W96",homeTeam:"Vencedor Jogo 95",awayTeam:"Vencedor Jogo 96",venue:"Kansas City",date:"11/Jul"},
+  {id:"QF_97",mNo:97,round:"Quartas",homeSlot:"W89",awaySlot:"W90",homeTeam:"Vencedor Jogo 89",awayTeam:"Vencedor Jogo 90",venue:"Boston",date:"09/Jul",kickoff:"2026-07-09T20:00:00Z"},
+  {id:"QF_98",mNo:98,round:"Quartas",homeSlot:"W93",awaySlot:"W94",homeTeam:"Vencedor Jogo 93",awayTeam:"Vencedor Jogo 94",venue:"Los Angeles",date:"10/Jul",kickoff:"2026-07-10T23:00:00Z"},
+  {id:"QF_99",mNo:99,round:"Quartas",homeSlot:"W91",awaySlot:"W92",homeTeam:"Vencedor Jogo 91",awayTeam:"Vencedor Jogo 92",venue:"Miami",date:"11/Jul",kickoff:"2026-07-11T20:00:00Z"},
+  {id:"QF_100",mNo:100,round:"Quartas",homeSlot:"W95",awaySlot:"W96",homeTeam:"Vencedor Jogo 95",awayTeam:"Vencedor Jogo 96",venue:"Kansas City",date:"11/Jul",kickoff:"2026-07-11T23:00:00Z"},
   // ── Semifinais (jogos 101–102), 14–15/jul ──
-  {id:"SF_101",mNo:101,round:"Semifinal",homeSlot:"W97",awaySlot:"W98",homeTeam:"Vencedor Jogo 97",awayTeam:"Vencedor Jogo 98",venue:"Dallas",date:"14/Jul"},
-  {id:"SF_102",mNo:102,round:"Semifinal",homeSlot:"W99",awaySlot:"W100",homeTeam:"Vencedor Jogo 99",awayTeam:"Vencedor Jogo 100",venue:"Atlanta",date:"15/Jul"},
+  {id:"SF_101",mNo:101,round:"Semifinal",homeSlot:"W97",awaySlot:"W98",homeTeam:"Vencedor Jogo 97",awayTeam:"Vencedor Jogo 98",venue:"Dallas",date:"14/Jul",kickoff:"2026-07-14T23:00:00Z"},
+  {id:"SF_102",mNo:102,round:"Semifinal",homeSlot:"W99",awaySlot:"W100",homeTeam:"Vencedor Jogo 99",awayTeam:"Vencedor Jogo 100",venue:"Atlanta",date:"15/Jul",kickoff:"2026-07-15T23:00:00Z"},
   // ── Disputa de 3º (jogo 103), 18/jul ──
-  {id:"M103",mNo:103,round:"3º Lugar",homeSlot:"L101",awaySlot:"L102",homeTeam:"Perdedor Semi 1",awayTeam:"Perdedor Semi 2",venue:"Miami",date:"18/Jul"},
+  {id:"M103",mNo:103,round:"3º Lugar",homeSlot:"L101",awaySlot:"L102",homeTeam:"Perdedor Semi 1",awayTeam:"Perdedor Semi 2",venue:"Miami",date:"18/Jul",kickoff:"2026-07-18T20:00:00Z"},
   // ── FINAL (jogo 104), 19/jul ──
-  {id:"FINAL",mNo:104,round:"Final",homeSlot:"W101",awaySlot:"W102",homeTeam:"Vencedor Semi 1",awayTeam:"Vencedor Semi 2",venue:"Nova York/Nova Jersey (MetLife)",date:"19/Jul"},
+  {id:"FINAL",mNo:104,round:"Final",homeSlot:"W101",awaySlot:"W102",homeTeam:"Vencedor Semi 1",awayTeam:"Vencedor Semi 2",venue:"Nova York/Nova Jersey (MetLife)",date:"19/Jul",kickoff:"2026-07-19T19:00:00Z"},
 ];
 
 const ALL_MATCHES = [...GROUP_MATCHES, ...KNOCKOUT_MATCHES];
@@ -1680,7 +1663,7 @@ const ALL_MATCHES = [...GROUP_MATCHES, ...KNOCKOUT_MATCHES];
 let db, auth;
 let currentUser = null;
 let isAdmin = false;
-let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, championBonus: 20 };
+let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, diffBonus: 2 };
 let activePhase = "groups";
 let bettingOpenP1 = true;   // Phase 1 — Classification (groups)
 let bettingOpenP2 = false;  // Phase 2 — Brackets (knockouts)
@@ -1688,7 +1671,7 @@ let inviteCode = null;      // active invite token (admin-managed)
 let pendingInvite = null;   // invite token from URL on this visit
 let pendingAdminInvite = null;  // single-use ADMIN invite token from URL (?ainvite=)
 let currentGroup = "A";
-let currentResultGroup = "A";
+let currentResultGroup = "Round of 32";
 let currentPubGroup = "A";
 let modalCallback = null;
 
@@ -2090,6 +2073,7 @@ function toggleRegister(show) {
 //  NAVIGATION
 // ═══════════════════════════════════════════════════════════
 let _schedResults = null;
+let _schedBets = {};
 async function renderSchedule(forceReload) {
   const tzEl = document.getElementById("schedTZ");
   if(tzEl) tzEl.textContent = localTZLabel();
@@ -2097,7 +2081,7 @@ async function renderSchedule(forceReload) {
   if(!list) return;
 
   if(_schedResults === null || forceReload) {
-    list.innerHTML = `<div class="loader"><div class="spinner"></div>Loading...</div>`;
+    list.innerHTML = `<div class="loader"><div class="spinner"></div>Carregando…</div>`;
     try {
       const snap = await col("results").get();
       _schedResults = {};
@@ -2105,46 +2089,80 @@ async function renderSchedule(forceReload) {
     } catch(e) {
       _schedResults = (typeof _pubResultsCache !== "undefined" && _pubResultsCache) ? _pubResultsCache : {};
     }
+    // palpites do jogador atual, pra mostrar "sua aposta" + pontos
+    _schedBets = {};
+    if(currentUser){
+      try {
+        const bs = await col("bets").where("userId","==",currentUser.uid).get();
+        bs.forEach(d => { const b = d.data(); _schedBets[b.matchId] = b; });
+      } catch(e) {}
+    }
   }
   const res = _schedResults || {};
+  const bets = _schedBets || {};
 
-  const byDay = {};
-  GROUP_MATCHES.filter(m => m.kickoff).forEach(m => {
-    const k = localDayKey(m.kickoff);
-    (byDay[k] = byDay[k] || []).push(m);
+  // Agrupa os jogos do mata-mata pelo DIA LOCAL do kickoff (fuso do jogador), ordenados por horário.
+  const order = KNOCKOUT_MATCHES.slice().sort((a,b) => {
+    const ka = a.kickoff ? Date.parse(a.kickoff) : 0, kb = b.kickoff ? Date.parse(b.kickoff) : 0;
+    return (ka - kb) || (a.mNo - b.mNo);
   });
-  const days = Object.keys(byDay).sort();
-  if(!days.length) { list.innerHTML = `<div style="padding:20px;color:var(--muted)">No fixtures.</div>`; return; }
+  const byDay = {}, dayMeta = {};
+  order.forEach(m => {
+    const key = m.kickoff ? localDayKey(m.kickoff) : ("nokick-" + m.date);
+    if(!byDay[key]){ byDay[key] = []; dayMeta[key] = m.kickoff ? fmtDayHeader(m.kickoff) : (m.date + " · 2026"); }
+    byDay[key].push(m);
+  });
+  const days = Object.keys(byDay); // ordenados pelo horário do kickoff
+  if(!days.length) { list.innerHTML = `<div style="padding:20px;color:var(--muted)">Sem jogos.</div>`; return; }
 
-  const now = Date.now();
-  const todayKey = localDayKey(Date.now());
-  const targetDay = days.find(d => d >= todayKey) || days[days.length-1];
-  window._schedTodayId = "schedday-" + targetDay;
+  const roundLabel = {"Round of 32":"32-avos","Round of 16":"Oitavas","Quartas":"Quartas","Semifinal":"Semifinal","3º Lugar":"3º Lugar","Final":"Final"};
+
+  // primeiro dia com jogo ainda sem resultado = "próximo"
+  let nextDay = null;
+  for(const d of days){
+    if(byDay[d].some(m => { const r=res[m.id]; return !r || r.homeGoals===undefined || r.homeGoals===null || r.live; })){ nextDay = d; break; }
+  }
+  window._schedTodayId = "schedday-" + (nextDay || days[0]);
+
   let html = "";
   for(const day of days) {
-    const ms = byDay[day].sort((a,b) => new Date(a.kickoff) - new Date(b.kickoff));
-    const _tag = day===todayKey ? ' <span style="font-size:11px;color:var(--accent,#4256E8);font-weight:800">\u2022 today</span>'
-               : (day===targetDay ? ' <span style="font-size:11px;color:var(--accent,#4256E8);font-weight:800">\u2022 next up</span>' : '');
-    html += `<div class="sched-day" id="schedday-${day}"${day===targetDay?' data-today="1"':''}><div class="sched-day-head">${fmtDayHeader(ms[0].kickoff)}${_tag}</div>`;
+    const ms = byDay[day];
+    const _tag = day===nextDay ? ' <span style="font-size:11px;color:var(--accent,#4256E8);font-weight:800">\u2022 próximo</span>' : '';
+    html += `<div class="sched-day" id="schedday-${day}"${day===nextDay?' data-today="1"':''}><div class="sched-day-head">${dayMeta[day]}${_tag}</div>`;
     for(const m of ms) {
       const r = res[m.id];
-      const has = r && r.homeGoals !== undefined;
-      const started = new Date(m.kickoff).getTime() <= now;
+      const has = r && r.homeGoals !== undefined && r.homeGoals !== null;
+      // resolve os times reais quando definidos; senão usa o rótulo FIFA
+      const homeReal = _koResolve(m.homeSlot, res), awayReal = _koResolve(m.awaySlot, res);
+      const hName = homeReal || m.homeTeam, aName = awayReal || m.awayTeam;
+      const resolved = !!homeReal && !!awayReal;
+      const flag = (real, name) => real ? flagImg(name) : "\u2754";
+
       const mid = has
         ? `<span class="sched-score">${r.homeGoals} <span class="x">×</span> ${r.awayGoals}</span>`
-        : `<span class="sched-time">${fmtKick(m.kickoff)}</span>`;
+        : `<span class="sched-time">${m.kickoff ? fmtKick(m.kickoff) : "a definir"}</span>`;
       const status = (has && r.live) ? liveBadge(r)
-                    : (has ? `<span class="sched-badge done">Full time</span>`
-                    : (started ? `<span class="sched-badge live">Kicked off</span>` : ""));
+                    : (has ? `<span class="sched-badge done">Encerrado</span>`
+                    : (resolved ? `<span class="sched-badge live">Definido</span>` : `<span class="sched-badge">A definir</span>`));
+
+      // palpite do jogador + pontos
+      const bet = bets[m.id];
+      let betLine = "";
+      if(bet && bet.homeGoals !== undefined){
+        const ptsTxt = has ? ` · <b style="color:var(--orange)">+${calcPoints(bet, r)} pts</b>` : "";
+        betLine = `<div class="sched-bet">Seu palpite: <b>${bet.homeGoals} × ${bet.awayGoals}</b>${ptsTxt}</div>`;
+      }
+
       html += `
       <div class="sched-row${has ? " has-score" : ""}" onclick="openMatchDetail('${m.id}')" style="cursor:pointer">
-        <div class="sched-kick">${fmtKick(m.kickoff)}<span class="sched-grp">Group ${m.group}</span></div>
+        <div class="sched-kick">Jogo ${m.mNo}<span class="sched-grp">${roundLabel[m.round]||m.round}</span>${m.kickoff?`<span class="sched-grp" style="color:var(--muted)">${fmtKick(m.kickoff)}</span>`:""}</div>
         <div class="sched-match">
-          <div class="team-name">${flagImg(m.homeTeam)} <span>${m.homeTeam}</span></div>
+          <div class="team-name">${flag(homeReal,hName)} <span>${hName}</span></div>
           <div class="sched-mid">${mid}</div>
-          <div class="team-name right"><span>${m.awayTeam}</span> ${flagImg(m.awayTeam)}</div>
+          <div class="team-name right"><span>${aName}</span> ${flag(awayReal,aName)}</div>
         </div>
-        <div class="sched-venue">📍 ${m.venue ? m.venue + " · " : ""}${m.city || ""} ${status} <button class="md-stats-btn sched-stats" onclick="event.stopPropagation();openMatchDetail('${m.id}')">📊 Stats</button></div>
+        <div class="sched-venue">📍 ${m.venue || ""} ${status} <button class="md-stats-btn sched-stats" onclick="event.stopPropagation();openMatchDetail('${m.id}')">📊 Detalhes</button></div>
+        ${betLine}
       </div>`;
     }
     html += `</div>`;
@@ -2214,17 +2232,76 @@ function _brNode(m){
   const hv=(bet.homeGoals!==undefined?bet.homeGoals:""), av=(bet.awayGoals!==undefined?bet.awayGoals:"");
   const dis = (open && !_brRO)?"":"disabled";
   const flag = n => resolved ? flagImg(n) : "\u2754";
+  const isFinal = (m.id==="FINAL");
+  // meta: jogo nº · venue · data + horário local
+  const when = m.kickoff ? (fmtDateShort(m.kickoff)+" · "+fmtKick(m.kickoff)) : (m.date||"");
+  let meta = `<span>Jogo ${m.mNo}</span>`;
+  if(when) meta += `<span>🗓️ ${when}</span>`;
+  if(m.venue) meta += `<span>📍 ${_brEsc(m.venue)}</span>`;
+  // rodapé: resultado oficial + seu palpite + pontos
   let foot="";
   if(has){
-    foot=`<div class="br-meta" style="margin-top:6px">Resultado: <b style="color:#fff">${r.homeGoals} \u00d7 ${r.awayGoals}</b>${live?(" "+liveBadge(r)):""}`;
-    if(bet.homeGoals!==undefined){ foot += ` \u00b7 <b style="color:var(--orange)">+${calcPoints(bet,r)}</b>`; }
+    foot=`<div class="br-foot">Resultado: <b>${r.homeGoals} \u00d7 ${r.awayGoals}</b>${live?(" "+liveBadge(r)):""}`;
+    if(bet.homeGoals!==undefined){
+      foot += ` · seu palpite <b>${bet.homeGoals} \u00d7 ${bet.awayGoals}</b> · <b style="color:var(--orange)">+${calcPoints(bet,r)} pts</b>`;
+    } else {
+      foot += ` · <span style="opacity:.7">sem palpite</span>`;
+    }
     foot+=`</div>`;
+  } else if(bet.homeGoals!==undefined && _brRO){
+    foot=`<div class="br-foot">Palpite: <b>${bet.homeGoals} \u00d7 ${bet.awayGoals}</b></div>`;
   }
-  return `<div class="br-node ${resolved?'':'br-tbd'}" id="brc-${m.id}">
-    <div class="br-meta">Jogo ${m.mNo} \u00b7 ${m.date}${m.venue?(" \u00b7 "+m.venue):""}</div>
-    <div class="br-team"><span class="br-flag">${flag(hName)}</span><span class="br-name">${_brEsc(hName)}</span><input class="br-in" id="bh_${m.id}" type="number" min="0" max="20" value="${hv}" ${dis}></div>
-    <div class="br-team"><span class="br-flag">${flag(aName)}</span><span class="br-name">${_brEsc(aName)}</span><input class="br-in" id="ba_${m.id}" type="number" min="0" max="20" value="${av}" ${dis}></div>
+  return `<div class="br-node ${resolved?'':'br-tbd'} ${isFinal?'br-final':''}" id="brc-${m.id}">
+    <div class="br-meta">${meta}</div>
+    <div class="br-team"><span class="br-flag">${flag(hName)}</span><span class="br-name">${_brEsc(hName)}</span><input class="br-in" id="bh_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${hv}" ${dis}></div>
+    <div class="br-team"><span class="br-flag">${flag(aName)}</span><span class="br-name">${_brEsc(aName)}</span><input class="br-in" id="ba_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${av}" ${dis}></div>
     ${foot}
+  </div>`;
+}
+// computa pontos + ranking do jogador atual para o card do topo
+async function _brMyStanding(results){
+  if(!currentUser) return null;
+  try{
+    const bsnap = await col("bets").get();
+    const byUser = {}; // uid -> {pts,exact,name}
+    bsnap.forEach(d=>{
+      const b=d.data(); const r=results[b.matchId];
+      if(!r || r.homeGoals===undefined || r.homeGoals===null) return;
+      const ko = KNOCKOUT_MATCHES.some(m=>m.id===b.matchId);
+      if(!ko) return;
+      const u=byUser[b.userId]||(byUser[b.userId]={pts:0,exact:0,name:b.userName||"—"});
+      u.pts += calcPoints(b,r);
+      if(isExactScore(b,r)) u.exact++;
+    });
+    // garante que o jogador atual apareça mesmo zerado
+    if(!byUser[currentUser.uid]) byUser[currentUser.uid]={pts:0,exact:0,name:currentUser.displayName||currentUser.email};
+    const arr=Object.entries(byUser).map(([uid,v])=>({uid,...v}))
+      .sort((a,b)=>b.pts-a.pts || b.exact-a.exact || a.name.localeCompare(b.name));
+    let rank=0,prevK=null,seen=0;
+    arr.forEach(p=>{ seen++; const k=p.pts+"|"+p.exact; if(k!==prevK){ rank=seen; prevK=k; } p.rank=rank; });
+    const me=arr.find(p=>p.uid===currentUser.uid);
+    return me?{pts:me.pts,rank:me.rank,total:arr.length,exact:me.exact}:null;
+  }catch(e){ return null; }
+}
+// Estrutura FIFA: 4 quadrantes convergindo ao centro (campeão).
+// Esquerda → Semi 1 (M101) · Direita → Semi 2 (M102) · Centro = Final (M104) + 3º lugar (M103)
+const BR_QUADS = [
+  { side:"L", key:"blue",  label:"Chave Azul",    color:"#3B82F6", r32:[73,74,75,77], r16:[89,90], qf:97 },
+  { side:"L", key:"teal",  label:"Chave Ciano",   color:"#14B8A6", r32:[81,82,83,84], r16:[93,94], qf:98 },
+  { side:"R", key:"green", label:"Chave Verde",   color:"#22C55E", r32:[76,78,79,80], r16:[91,92], qf:99 },
+  { side:"R", key:"red",   label:"Chave Vermelha",color:"#EF4444", r32:[85,86,87,88], r16:[95,96], qf:100 },
+];
+function _brByNo(no){ return KNOCKOUT_MATCHES.find(m=>m.mNo===no); }
+function _brQuadHTML(q){
+  const grp = (label, nos) => {
+    const nodes = nos.map(_brByNo).filter(Boolean).map(_brNode).join("");
+    return `<div class="br-rlabel">${label}</div><div class="br-rgrid">${nodes}</div>`;
+  };
+  return `<div class="br-quad" style="--qc:${q.color}">
+    <div class="br-quad-h"><span class="dot"></span>${q.label}</div>
+    ${grp("32-avos", q.r32)}
+    ${grp("Oitavas", q.r16)}
+    ${grp("Quartas", [q.qf])}
   </div>`;
 }
 function loadBracket(){
@@ -2233,21 +2310,56 @@ function loadBracket(){
   if(!currentUser){ return; }
   wrap.innerHTML=`<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   Promise.all([ col("results").get().catch(()=>null), col("bets").where("userId","==",currentUser.uid).get().catch(()=>null) ])
-   .then(([rs,bs])=>{
+   .then(async ([rs,bs])=>{
     const results={}, bets={};
     if(rs) rs.forEach(d=>results[d.id]=d.data());
     if(bs) bs.forEach(d=>{ const x=d.data(); bets[x.matchId]=x; });
     _brResults=results; _brBets=bets;
-    const order=["Round of 32","Round of 16","Quartas","Semifinal","Final"];
-    const labels={"Round of 32":"32-avos","Round of 16":"Oitavas","Quartas":"Quartas","Semifinal":"Semis","Final":"Final"};
-    let cols=order.map(rd=>{
-      const ms=KNOCKOUT_MATCHES.filter(m=>m.round===rd);
-      return `<div class="br-col"><div class="br-col-h">${labels[rd]}</div>${ms.map(_brNode).join("")}</div>`;
-    }).join("");
+
+    // card do topo: meus pontos + ranking
+    const me = await _brMyStanding(results);
+    let meCard="";
+    if(me){
+      const pos = me.rank ? (me.rank+"º") : "—";
+      meCard = `<div class="br-mecard">
+        <div><div class="me-pts">${me.pts}</div><div class="me-lab">seus pontos</div></div>
+        <div class="me-rank"><div class="pos">${pos}</div><div class="me-lab">de ${me.total} · ${me.exact} placares exatos</div></div>
+      </div>`;
+    }
+
+    const leftQuads = BR_QUADS.filter(q=>q.side==="L").map(_brQuadHTML).join("");
+    const rightQuads = BR_QUADS.filter(q=>q.side==="R").map(_brQuadHTML).join("");
+
+    // centro: semis, final, 3º lugar, campeão
     const champ=_koResolve("W104",results);
-    cols += `<div class="br-col"><div class="br-col-h">Campeão</div><div class="br-champ"><div class="cup">\ud83c\udfc6</div><div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div></div></div>`;
-    wrap.innerHTML=`<div class="br-scroller"><div class="br-cols">${cols}</div></div>
-      ${_brRO?'<div class="br-hint" style="margin-top:10px">👁️ Visão do admin (somente leitura). Os jogadores apostam por aqui.</div>':'<div class="br-savebar"><button class="btn btn-gold" id="brSaveBtn" onclick="saveBracket()">\ud83d\udcbe Salvar palpites</button></div>'}`;
+    const semi1=_brNode(_brByNo(101)), semi2=_brNode(_brByNo(102));
+    const finalNode=_brNode(_brByNo(104)), bronze=_brNode(_brByNo(103));
+    const champBox = `<div class="br-champ">
+        <div class="cup">\ud83c\udfc6</div>
+        <div class="clab">Campeão</div>
+        <div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div>
+      </div>`;
+
+    const center = `
+      <div class="br-rlabel" style="text-align:center">Semifinais</div>
+      <div class="br-rgrid">${semi1}${semi2}</div>
+      ${champBox}
+      <div class="br-rlabel" style="text-align:center">Final</div>
+      <div class="br-rgrid">${finalNode}</div>
+      <div class="br-rlabel" style="text-align:center">Disputa de 3º Lugar</div>
+      <div class="br-rgrid">${bronze}</div>`;
+
+    const tree = `
+      <div class="br-sides">
+        <div>${leftQuads}</div>
+        <div>${rightQuads}</div>
+      </div>
+      ${center}`;
+
+    wrap.innerHTML = meCard + `<div class="br-wrap">${tree}</div>` +
+      (_brRO
+        ? '<div class="br-hint">👁️ Visão do admin (somente leitura). Os jogadores apostam por aqui.</div>'
+        : '<div class="br-savebar"><button class="btn btn-gold" id="brSaveBtn" onclick="saveBracket()">\ud83d\udcbe Salvar palpites</button></div>');
   });
 }
 async function saveBracket(){
@@ -2294,10 +2406,8 @@ function showPage(page) {
   if(tab) tab.classList.add("active");
 
   if(page === "bets") loadBracket();
-  if(page === "results") loadPublicResults();
   if(page === "schedule") renderSchedule();
   if(page === "scoreboard") loadScoreboard();
-  if(page === "phase2forecast") loadPhase2Forecast();
   if(page === "liverace") loadLiveRace();
   if(page === "admin-users") loadUsers();
   if(page === "admin-results") { buildResultGroupTabs(); loadAdminResults(); loadPointsConfig(); }
@@ -2555,11 +2665,29 @@ function calcPoints(bet, result) {
   const correctHome = bH === rH;
   const correctAway = bA === rA;
 
-  if(correctHome && correctAway) return pointsConfig.perfect; // exact = winner is implied
-  if(correctWinner && (correctHome || correctAway)) return pointsConfig.winnerOne;
-  if(correctWinner) return pointsConfig.winnerOnly;
-  if(correctHome || correctAway) return pointsConfig.oneScore;
-  return 0;
+  // Base de pontos pelo resultado:
+  let base = 0;
+  if(correctHome && correctAway) base = pointsConfig.perfect; // placar exato = vencedor implícito
+  else if(correctWinner && (correctHome || correctAway)) base = pointsConfig.winnerOne;
+  else if(correctWinner) base = pointsConfig.winnerOnly;
+  else if(correctHome || correctAway) base = pointsConfig.oneScore;
+
+  // +2 pela diferença de gols certa (vale desde a fase de 32, tanto faz quem vence).
+  // Não soma em cima do placar exato (já está implícito).
+  const diffBonus = pointsConfig.diffBonus || 0;
+  if(diffBonus && !(correctHome && correctAway) && (bH - bA) === (rH - rA)) {
+    base += diffBonus;
+  }
+  return base;
+}
+
+// Conta os acertos de placar completo (exato) — usado como critério de desempate.
+function isExactScore(bet, result) {
+  if(!bet) return false;
+  const bH = parseInt(bet.homeGoals), bA = parseInt(bet.awayGoals);
+  const rH = parseInt(result.homeGoals), rA = parseInt(result.awayGoals);
+  if(isNaN(bH)||isNaN(bA)||isNaN(rH)||isNaN(rA)) return false;
+  return bH === rH && bA === rA;
 }
 
 function getResultBadge(pts) {
@@ -3013,66 +3141,39 @@ async function loadScoreboard() {
       if(!result || result.homeGoals === undefined) return;
       
       const pts = calcPoints(bet, result);
-      if(!scores[bet.userId]) { scores[bet.userId] = 0; details[bet.userId] = {perfect:0, partial:0}; }
+      if(!scores[bet.userId]) { scores[bet.userId] = 0; details[bet.userId] = {perfect:0, partial:0, exact:0}; }
       scores[bet.userId] += pts;
+      if(isExactScore(bet, result)) details[bet.userId].exact++;
       if(pts >= pointsConfig.perfect) details[bet.userId].perfect++;
       else if(pts > 0) details[bet.userId].partial++;
     });
 
-    // 🏆 Bônus de campeão: +championBonus pra quem cravou o vencedor da Final.
-    const _finalRes = results["FINAL"];
-    if(_finalRes && _finalRes.homeGoals!==undefined && _finalRes.homeGoals!==null && !_finalRes.live && (+_finalRes.homeGoals)!==(+_finalRes.awayGoals)){
-      const _champ = (+_finalRes.homeGoals) > (+_finalRes.awayGoals) ? _finalRes.homeTeam : _finalRes.awayTeam;
-      const _bonus = pointsConfig.championBonus || 0;
-      for(const uid in _sbBetsByUser){
-        const fb = _sbBetsByUser[uid]["FINAL"];
-        if(!fb || fb.homeGoals===undefined || fb.homeGoals===fb.awayGoals) continue;
-        const pick = (+fb.homeGoals) > (+fb.awayGoals) ? fb.homeTeam : fb.awayTeam;
-        if(pick===_champ && scores[uid]!==undefined) scores[uid] += _bonus;
-      }
-    }
-
-    // 🤖 AI Prediction — virtual competitor. Predicts EVERY group match from FIFA
-    // ratings only (predictScore baseline), never looking at the real result, so it stays
-    // unbiased even on matches already played. Not part of the pool; ranked for comparison.
-    const AI_ID = "__ai_prediction__";
-    {
-      let aiPts = 0, aiPerfect = 0, aiPartial = 0; const aiBets = {};
-      GROUP_MATCHES.forEach(m => {
-        const pick = predictScore(m.homeTeam, m.awayTeam);
-        aiBets[m.id] = { userId:AI_ID, matchId:m.id, homeTeam:m.homeTeam, awayTeam:m.awayTeam, homeGoals:pick.home, awayGoals:pick.away };
-        const result = results[m.id];
-        if(!result || result.homeGoals === undefined) return;
-        const pts = calcPoints(aiBets[m.id], result);
-        aiPts += pts;
-        if(pts >= pointsConfig.perfect) aiPerfect++; else if(pts > 0) aiPartial++;
-      });
-      userMap[AI_ID] = "🤖 AI Prediction";
-      scores[AI_ID] = aiPts; details[AI_ID] = { perfect: aiPerfect, partial: aiPartial };
-      _sbBetsByUser[AI_ID] = aiBets; _sbNames = userMap;
-    }
+    _sbNames = userMap;
 
     const _firstName = s => String(s||"").trim().split(/\s+/)[0].toLowerCase();
     const ranked = Object.keys(scores).map(uid => ({
       uid, pts: scores[uid], name: userMap[uid] || uid,
       perfect: (details[uid]&&details[uid].perfect)||0,
       partial: (details[uid]&&details[uid].partial)||0,
+      exact: (details[uid]&&details[uid].exact)||0,
       paid: PAYMENT_ENABLED ? contributedSet.has(uid) : true,
       bot: uid === "__ai_prediction__"
     }));
+    // Ordena por pontos; desempate por quem acertou MAIS placares completos (exato); depois por nome.
     ranked.sort((a,b)=> (b.pts - a.pts)
+      || (b.exact - a.exact)
       || _firstName(a.name).localeCompare(_firstName(b.name))
       || a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-    // dense ranking: each distinct points total is one place; ties share it (1, 2, 2, 3)
-    let _rank = 0, _prev = null;
-    ranked.forEach((r)=>{ if(r.bot){ r.rank = null; return; } if(r.pts !== _prev){ _rank += 1; _prev = r.pts; } r.rank = _rank; });
+    // dense ranking: cada combinação distinta (pontos, exatos) é um lugar; empates reais dividem.
+    let _rank = 0, _prevP = null, _prevE = null;
+    ranked.forEach((r)=>{ if(r.bot){ r.rank = null; return; } if(r.pts !== _prevP || r.exact !== _prevE){ _rank += 1; _prevP = r.pts; _prevE = r.exact; } r.rank = _rank; });
 
     document.getElementById("sbParticipants").textContent = playerCount;
-    const _grpIds = new Set(GROUP_MATCHES.map(m=>m.id));
-    const _grpPlayed = Object.keys(results).filter(id => _grpIds.has(id) && results[id].homeGoals!==undefined).length;
-    const _grpTotal = GROUP_MATCHES.length;
-    document.getElementById("sbGamesPlayed").textContent = _grpPlayed + "/" + _grpTotal;
-    { const _b = document.getElementById("sbGamesBar"); if(_b) _b.style.width = (_grpTotal ? Math.round(_grpPlayed/_grpTotal*100) : 0) + "%"; }
+    const _koIds = new Set(KNOCKOUT_MATCHES.map(m=>m.id));
+    const _koPlayed = Object.keys(results).filter(id => _koIds.has(id) && results[id].homeGoals!==undefined && results[id].homeGoals!==null).length;
+    const _koTotal = KNOCKOUT_MATCHES.length;
+    document.getElementById("sbGamesPlayed").textContent = _koPlayed + "/" + _koTotal;
+    { const _b = document.getElementById("sbGamesBar"); if(_b) _b.style.width = (_koTotal ? Math.round(_koPlayed/_koTotal*100) : 0) + "%"; }
     const _topHuman = ranked.find(r => !r.bot);
     document.getElementById("sbLeader").textContent = _topHuman ? _topHuman.name : "-";
 
@@ -3141,9 +3242,6 @@ async function _buildRaceData(useCache){
     usersSnap.forEach(d => { const u=d.data(); if(u.role==="admin"){ adminSet.add(d.id); return; } if(u.role==="bot"||u.bot) return; names[d.id]=u.name||u.email; });
     bets = {};
     betsSnap.forEach(doc => { const b=doc.data(); if(!b.userId || adminSet.has(b.userId) || !names[b.userId]) return; (bets[b.userId] || (bets[b.userId]={}))[b.matchId] = b; });
-    names[_RACE_AI] = "AI Prediction";
-    const ai = {}; GROUP_MATCHES.forEach(m => { const p = predictScore(m.homeTeam, m.awayTeam); ai[m.id] = { homeGoals:p.home, awayGoals:p.away }; });
-    bets[_RACE_AI] = ai;
     _raceCache = { names: Object.assign({}, names), bets };
   }
   _raceNames = names; _raceBets = bets;
@@ -3151,6 +3249,8 @@ async function _buildRaceData(useCache){
   const resSnap = await col("results").get();
   const results = {}, updAt = {};
   resSnap.forEach(d => { const r=d.data(); if(r.homeGoals===undefined) return; results[d.id]=r; updAt[d.id] = (r.updatedAt && r.updatedAt.toMillis) ? r.updatedAt.toMillis() : 0; });
+
+  // (sem AI prediction na fase eliminatória)
 
   let hist = [];
   try {
@@ -3477,19 +3577,21 @@ function renderPublicResults() {
 // ═══════════════════════════════════════════════════════════
 //  ADMIN: RESULTS
 // ═══════════════════════════════════════════════════════════
+const KO_ROUNDS = ["Round of 32","Round of 16","Quartas","Semifinal","3º Lugar","Final"];
+const KO_ROUND_LABELS = { "Round of 32":"32-avos","Round of 16":"Oitavas","Quartas":"Quartas","Semifinal":"Semifinal","3º Lugar":"3º Lugar","Final":"Final" };
 function buildResultGroupTabs() {
   const container = document.getElementById("resultGroupTabs");
   if(!container) return;
-  const groups = [...Object.keys(GROUPS), "Knockouts"];
+  if(!KO_ROUNDS.includes(currentResultGroup)) currentResultGroup = "Round of 32";
   container.innerHTML = "";
-  groups.forEach((g, i) => {
+  KO_ROUNDS.forEach((r) => {
     const tab = document.createElement("div");
-    tab.className = `group-tab${i===0?" active":""}`;
-    tab.textContent = g === "Knockouts" ? "Knockout Stage" : `Group ${g}`;
+    tab.className = `group-tab${r===currentResultGroup?" active":""}`;
+    tab.textContent = KO_ROUND_LABELS[r] || r;
     tab.onclick = () => {
       document.querySelectorAll("#resultGroupTabs .group-tab").forEach(t=>t.classList.remove("active"));
       tab.classList.add("active");
-      currentResultGroup = g;
+      currentResultGroup = r;
       loadAdminResults();
     };
     container.appendChild(tab);
@@ -3501,15 +3603,13 @@ async function loadAdminResults() {
   const container = document.getElementById("resultMatchList");
   if(!container) return;
 
-  let matches = currentResultGroup === "Knockouts"
-    ? KNOCKOUT_MATCHES
-    : GROUP_MATCHES.filter(m => m.group === currentResultGroup);
-
   let existingResults = {};
   try {
     const snap = await col("results").get();
     snap.forEach(doc => { existingResults[doc.id] = doc.data(); });
   } catch(e) {}
+
+  let matches = KNOCKOUT_MATCHES.filter(m => m.round === currentResultGroup);
 
   // Phase config (admin)
   try {
@@ -3526,26 +3626,31 @@ async function loadAdminResults() {
 
   container.innerHTML = matches.map(m => {
     const res = existingResults[m.id] || {};
-    const homeFlag = flagImg(m.homeTeam);
-    const awayFlag = flagImg(m.awayTeam);
+    const homeReal = _koResolve(m.homeSlot, existingResults);
+    const awayReal = _koResolve(m.awaySlot, existingResults);
+    const homeName = homeReal || m.homeTeam;
+    const awayName = awayReal || m.awayTeam;
+    const homeFlag = homeReal ? flagImg(homeReal) : "❔";
+    const awayFlag = awayReal ? flagImg(awayReal) : "❔";
+    const resolved = homeReal && awayReal;
     const hasResult = res.homeGoals !== undefined;
     return `
     <div class="result-entry-card">
       <div class="result-teams" style="display:flex;align-items:center;gap:6px">
-        <span style="display:flex;align-items:center;gap:6px">${homeFlag} ${m.homeTeam}</span>
+        <span style="display:flex;align-items:center;gap:6px">${homeFlag} ${homeName}</span>
         <span style="margin:0 8px;color:var(--muted)">×</span>
-        <span style="display:flex;align-items:center;gap:6px">${awayFlag} ${m.awayTeam}</span>
-        <span style="margin-left:auto;font-size:11px;color:var(--muted)">📅 ${m.date||""}</span>
+        <span style="display:flex;align-items:center;gap:6px">${awayFlag} ${awayName}</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--muted)">📍 ${m.venue||""} · 📅 ${m.date||""}</span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
-        <input class="result-input" type="number" min="0" max="20" id="rh_${m.id}" value="${hasResult?res.homeGoals:""}" placeholder="0" />
+        <input class="result-input" type="number" min="0" max="20" id="rh_${m.id}" value="${hasResult?res.homeGoals:""}" placeholder="0" ${resolved?"":"disabled"} />
         <span style="color:var(--muted);font-weight:700">×</span>
-        <input class="result-input" type="number" min="0" max="20" id="ra_${m.id}" value="${hasResult?res.awayGoals:""}" placeholder="0" />
-        <button class="btn btn-gold" style="padding:8px 16px;font-size:12px" onclick="saveResult('${m.id}','${m.homeTeam}','${m.awayTeam}')">
-          ${hasResult ? "✏️ Update" : "💾 Save"}
+        <input class="result-input" type="number" min="0" max="20" id="ra_${m.id}" value="${hasResult?res.awayGoals:""}" placeholder="0" ${resolved?"":"disabled"} />
+        <button class="btn btn-gold" style="padding:8px 16px;font-size:12px" onclick="saveResult('${m.id}','${(homeName).replace(/'/g,"\\'")}','${(awayName).replace(/'/g,"\\'")}')" ${resolved?"":"disabled"}>
+          ${hasResult ? "✏️ Atualizar" : "💾 Salvar"}
         </button>
-        ${hasResult ? `<button class="btn btn-danger" style="padding:8px 14px;font-size:12px" onclick="deleteResult('${m.id}','${m.homeTeam.replace(/'/g,"\\'")} × ${m.awayTeam.replace(/'/g,"\\'")}')">🗑 Remove</button>` : ""}
-        ${hasResult ? `<span style="font-size:12px;color:var(--green)">✅ ${res.homeGoals}×${res.awayGoals} recorded</span>` : ""}
+        ${hasResult ? `<button class="btn btn-danger" style="padding:8px 14px;font-size:12px" onclick="deleteResult('${m.id}','${homeName.replace(/'/g,"\\'")} × ${awayName.replace(/'/g,"\\'")}')">🗑 Remover</button>` : ""}
+        ${hasResult ? `<span style="font-size:12px;color:var(--green)">✅ ${res.homeGoals}×${res.awayGoals} registrado</span>` : (resolved ? "" : `<span style="font-size:12px;color:var(--muted)">⏳ Confronto a definir</span>`)}
       </div>
     </div>`;
   }).join("");
@@ -3761,83 +3866,54 @@ async function loadUsers() {
     const users = [];
     snap.forEach(doc => users.push({id: doc.id, ...doc.data()}));
 
-    // Per-user bet completion, split by phase (groups vs knockouts)
-    const groupIds = new Set(GROUP_MATCHES.map(m => m.id));
+    // Palpites do mata-mata por usuário (família = só fase eliminatória, 32 jogos)
     const koIds = new Set(KNOCKOUT_MATCHES.map(m => m.id));
-    const p1Total = groupIds.size, p2Total = koIds.size;
+    const koTotal = koIds.size;
     const tally = {};
     betsSnap.forEach(doc => {
       const b = doc.data();
       if(!b.userId || !b.matchId) return;
-      const t = (tally[b.userId] = tally[b.userId] || {p1:0, p2:0});
-      if(groupIds.has(b.matchId)) t.p1++;
-      else if(koIds.has(b.matchId)) t.p2++;
+      if(koIds.has(b.matchId)) (tally[b.userId] = (tally[b.userId]||0)) , tally[b.userId]++;
     });
 
-    // Contribution summary — only players who actually placed bets count toward the pool
     const players = users.filter(u => u.role !== "admin");
-    const activePlayers = players.filter(u => tally[u.id] && tally[u.id].p1 > 0);
+    const activePlayers = players.filter(u => (tally[u.id]||0) > 0);
     const total = activePlayers.length;
-    const paidCount = activePlayers.filter(u => u.contributed).length;
-    const collected = paidCount * BUY_IN_USD;
-    const pool = total * BUY_IN_USD;
-    const outstanding = pool - collected;
     document.getElementById("mbTotal").textContent = total;
-    document.getElementById("mbCollected").textContent = money(collected);
-    document.getElementById("mbCollectedSub").textContent = paidCount + " of " + total + " paid";
-    document.getElementById("mbOutstanding").textContent = money(outstanding);
-    document.getElementById("mbOutstandingSub").textContent = (total - paidCount) + " pending";
-    document.getElementById("mbPool").textContent = money(pool);
-    document.getElementById("mbPrizeSub").innerHTML =
-      "🥇 " + money(pool * PRIZE_PCT.first) + " · 🥈 " + money(pool * PRIZE_PCT.second) + " · 🥉 " + money(pool * PRIZE_PCT.third);
 
-    // Completion rate across players (for the open phase(s); falls back to both)
-    const phaseOpen = [];
-    if(typeof bettingOpenP1 === "undefined" || bettingOpenP1) phaseOpen.push("p1");
-    if(typeof bettingOpenP2 !== "undefined" && bettingOpenP2) phaseOpen.push("p2");
-    if(!phaseOpen.length) { phaseOpen.push("p1", "p2"); }
-    const perPlayerTarget = (phaseOpen.includes("p1") ? p1Total : 0) + (phaseOpen.includes("p2") ? p2Total : 0);
+    // Conclusão dos palpites entre os jogadores
     let made = 0, doneCount = 0, notStarted = 0;
     players.forEach(u => {
-      const t = tally[u.id] || { p1: 0, p2: 0 };
-      const m = (phaseOpen.includes("p1") ? t.p1 : 0) + (phaseOpen.includes("p2") ? t.p2 : 0);
+      const m = tally[u.id] || 0;
       made += m;
-      if(perPlayerTarget && m >= perPlayerTarget) doneCount++;
+      if(koTotal && m >= koTotal) doneCount++;
       if(m === 0) notStarted++;
     });
-    const possible = total * perPlayerTarget;
+    const possible = total * koTotal;
     const compPct = possible ? Math.round(made / possible * 100) : 0;
     document.getElementById("mbCompletion").textContent = compPct + "%";
     document.getElementById("mbCompletionSub").textContent =
-      doneCount + " at 100% · " + notStarted + " not started";
+      doneCount + " com 100% · " + notStarted + " não começaram";
 
     container.innerHTML = users.map(u => {
-      const contributed = !!u.contributed;
       const escName = (u.name||"").replace(/'/g,"\\'");
-      const tl = tally[u.id] || {p1:0, p2:0};
-      const pct1 = p1Total ? Math.round(tl.p1 / p1Total * 100) : 0;
-      const pct2 = p2Total ? Math.round(tl.p2 / p2Total * 100) : 0;
+      const tl = tally[u.id] || 0;
+      const pct = koTotal ? Math.round(tl / koTotal * 100) : 0;
       return `
-      <div class="user-row" data-role="${u.role||'user'}" data-paid="${contributed?'1':'0'}">
+      <div class="user-row" data-role="${u.role||'user'}">
         <div class="user-info">
           <div class="avatar">${(u.name||u.email||"?")[0].toUpperCase()}</div>
           <div>
-            <div style="font-weight:600;font-size:14px">${u.name||"No name"}</div>
+            <div style="font-weight:600;font-size:14px">${u.name||"Sem nome"}</div>
             <div style="font-size:12px;color:var(--muted)">${u.email}</div>
           </div>
         </div>
         ${u.role === "admin"
-          ? `<div class="comp-cell admin-cell">🛠 Admin — manages the pool</div>`
+          ? `<div class="comp-cell admin-cell">🛠 Admin — gerencia o bolão</div>`
           : `<div class="comp-cell">
-          <div class="comp-row"><span class="comp-ph p1">P1</span><div class="comp-bar"><i style="width:${pct1}%"></i></div><span class="comp-num">${tl.p1}/${p1Total}<small>${pct1}%</small></span></div>
-          <div class="comp-row"><span class="comp-ph p2">P2</span><div class="comp-bar"><i style="width:${pct2}%"></i></div><span class="comp-num">${tl.p2}/${p2Total}<small>${pct2}%</small></span></div>
+          <div class="comp-row"><span class="comp-ph p2">🎯</span><div class="comp-bar"><i style="width:${pct}%"></i></div><span class="comp-num">${tl}/${koTotal}<small>${pct}%</small></span></div>
         </div>`}
         <div class="user-actions">
-          ${u.role !== "admin" ? `<span class="contrib-badge contrib-toggle ${contributed?"contrib-yes":"contrib-no"}"
-            title="Pool contribution — click to toggle"
-            onclick="toggleContribution('${u.id}',${contributed})">
-            ${contributed ? "✓ Paid" : "✕ Not paid"} · $${BUY_IN_USD}
-          </span>` : ""}
           <span class="role-badge ${u.role==="admin"?"role-admin":"role-user"}">${u.role||"user"}</span>
           ${u.id !== currentUser.uid ? `
             <button class="btn btn-ghost" style="font-size:11px;padding:6px 10px"
@@ -3845,12 +3921,12 @@ async function loadUsers() {
               ${u.role==="admin" ? "→ User" : "→ Admin"}
             </button>
             ${u.role !== "admin" ? `<button class="btn btn-ghost" style="font-size:11px;padding:6px 10px"
-              onclick="adminResetPassword('${u.id}','${escName}')">🔑 Reset PW</button>` : ""}
+              onclick="adminResetPassword('${u.id}','${escName}')">🔑 Resetar senha</button>` : ""}
             <button class="btn btn-danger" style="font-size:11px;padding:6px 10px"
               onclick="confirmDeleteUser('${u.id}','${escName}')">
-              Remove
+              Remover
             </button>
-          ` : '<span style="font-size:11px;color:var(--muted)">You</span>'}
+          ` : '<span style="font-size:11px;color:var(--muted)">Você</span>'}
         </div>
       </div>`;
     }).join("");
@@ -3943,7 +4019,7 @@ async function loadPointsConfig() {
       document.getElementById("pts_winnerOne").value = p.winnerOne ?? 7;
       document.getElementById("pts_winnerOnly").value = p.winnerOnly ?? 4;
       document.getElementById("pts_oneScore").value = p.oneScore ?? 3;
-      const _cb=document.getElementById("pts_championBonus"); if(_cb) _cb.value = p.championBonus ?? 20;
+      const _db=document.getElementById("pts_diffBonus"); if(_db) _db.value = p.diffBonus ?? 2;
     }
   } catch(e) {}
 }
@@ -3954,7 +4030,7 @@ async function savePointsConfig() {
     winnerOne: parseInt(document.getElementById("pts_winnerOne").value),
     winnerOnly: parseInt(document.getElementById("pts_winnerOnly").value),
     oneScore: parseInt(document.getElementById("pts_oneScore").value),
-    championBonus: parseInt((document.getElementById("pts_championBonus")||{value:20}).value || 20),
+    diffBonus: parseInt((document.getElementById("pts_diffBonus")||{value:2}).value || 2),
   };
   try {
     await col("config").doc("main").set({ points: pts }, { merge: true });
@@ -3991,8 +4067,8 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v1.2";
-  var APP_BUILD = "Jun 18, 2026";
+  var APP_VERSION = "v1.4";
+  var APP_BUILD = "Jun 20, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
 </body>
