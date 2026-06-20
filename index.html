@@ -6,13 +6,14 @@
 <title>⚽ Copa do Mundo 2026 | Bolão da Família</title>
 <style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
 /* ── My points / rank card on top of bracket ── */
-.br-mecard{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--fifa-blue,#15205C),#1d2a72);border:1px solid var(--border,#2A3470);border-radius:16px;padding:14px 18px;margin-bottom:16px}
+.br-mecard{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--fifa-blue,#15205C),#1d2a72);border:1px solid var(--border,#2A3470);border-radius:16px;padding:14px 18px;margin-bottom:16px;flex-wrap:wrap}
 .br-mecard .me-pts{font-family:'Anton',sans-serif;font-size:34px;line-height:1;color:var(--orange)}
 .br-mecard .me-lab{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
 .br-mecard .me-rank{margin-left:auto;text-align:right}
-.br-mecard .me-rank .pos{font-family:'Anton',sans-serif;font-size:26px;color:#fff}
+.br-mecard .me-rank .pos{font-family:'Anton',sans-serif;font-size:30px;color:var(--gold,#F5B301);line-height:1}
+.br-mecard .me-rank .pos small{font-size:13px;color:var(--muted);font-family:'Archivo',sans-serif;font-weight:700}
 /* ══════════════ Bracket — árvore horizontal convergente ══════════════ */
-.br-wrap{padding:4px 0 16px}
+.br-wrap{padding:4px 0 16px;width:100%;min-width:0;max-width:100%}
 /* nó (card de jogo) — compartilhado entre os dois layouts */
 .br-node{background:var(--card,#15205C);border:1px solid var(--border,#2A3470);border-left:4px solid var(--qc,#2A3470);border-radius:12px;padding:8px 10px}
 .br-node.br-tbd{opacity:.5}
@@ -47,26 +48,37 @@
 
 /* ─── DESKTOP: árvore horizontal de verdade ─── */
 @media(min-width:980px){
+  .bets-main{max-width:none;padding-left:24px;padding-right:24px}
+  .bets-main .section-header,.bets-main .br-hint,.bets-main .br-mecard{max-width:1100px;margin-left:auto;margin-right:auto}
   .br-stack{display:none}
-  .br-tree{display:flex;align-items:stretch;justify-content:center;gap:0;overflow-x:auto;padding:8px 4px 18px}
-  .br-col{display:flex;flex-direction:column;justify-content:space-around;gap:14px;min-width:165px;flex:none}
-  .br-col.br-col-center{justify-content:center;min-width:200px}
-  .br-col .br-node{width:165px}
-  /* rótulo de coluna */
-  .br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:16px;margin-bottom:2px}
-  /* conectores entre colunas (cotovelos) */
-  .br-link{flex:none;width:26px;display:flex;flex-direction:column;justify-content:space-around;position:relative}
-  .br-link .elbow{flex:1;position:relative}
+  .br-tree{display:block;overflow-x:auto;overflow-y:hidden;padding:8px 0 18px;-webkit-overflow-scrolling:touch}
+  .br-tree-inner{display:flex;align-items:stretch;gap:0;width:max-content;min-width:100%;justify-content:center;padding:0 4px}
+  .br-col{display:flex;flex-direction:column;width:144px;flex:none}
+  /* cada card vive num "slot" que cresce igual: assim o CENTRO de cada card
+     cai sempre na mesma fração da altura da coluna, em qualquer coluna.
+     min-height garante que 8 slots não comprimam os cards (sem sobreposição) */
+  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:150px}
+  .br-col .br-node{width:144px}
+  /* rótulo de coluna — altura fixa, presente em TODA coluna (inclusive links) */
+  .br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:18px;line-height:18px;margin-bottom:0;flex:none}
+  /* conectores entre colunas (cotovelos) — mesma estrutura de slots dos cards */
+  .br-link{flex:none;width:32px;display:flex;flex-direction:column;position:relative}
+  .br-link .elbow{flex:1 1 0;position:relative;min-height:0}
   .br-link .elbow::before{content:"";position:absolute;left:0;top:25%;bottom:25%;width:50%;border:2px solid var(--border,#2A3470);border-left:none;border-radius:0 8px 8px 0}
   .br-link.flip .elbow::before{left:auto;right:0;border:2px solid var(--border,#2A3470);border-right:none;border-radius:8px 0 0 8px}
-  .br-link .elbow::after{content:"";position:absolute;top:50%;width:50%;height:2px;background:var(--border,#2A3470)}
-  .br-link .elbow::after{right:0}
+  .br-link .elbow::after{content:"";position:absolute;top:50%;width:50%;height:2px;background:var(--border,#2A3470);right:0}
   .br-link.flip .elbow::after{left:0;right:auto}
   /* coluna do centro: semis em cima, campeão no meio, final/3º embaixo */
-  .br-center-stack{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:230px;justify-content:center}
-  .br-center-stack .br-node{width:215px}
-  .br-center-stack .br-champ{width:215px;margin:4px 0}
+  .br-center-stack{display:flex;flex-direction:column;align-items:center;gap:10px;width:180px;flex:none;justify-content:center}
+  .br-center-stack .br-coltop{width:100%}
+  .br-center-stack .br-node{width:174px}
+  .br-center-stack .br-champ{width:174px;margin:2px 0;padding:12px 10px}
+  .br-center-stack .br-champ .cup{font-size:34px}
+  .br-center-stack .br-champ .who{font-size:18px}
+  /* dica de rolagem */
+  .br-scrollhint{display:block;font-size:11px;color:var(--muted);text-align:center;margin:-6px 0 8px}
 }
+.br-scrollhint{display:none}
 </style>
 
 <!-- Firebase -->
@@ -249,7 +261,7 @@ h1, h2, h3, .logo, .section-title, .login-card h1 { font-family: 'Anton', sans-s
 .progress-note { font-size: 11px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
 
 /* ── MAIN CONTENT ── */
-.main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.main { padding: 24px; max-width: 1600px; margin: 0 auto; }
 
 /* ── PAGES ── */
 .page { display: none; }
@@ -441,6 +453,7 @@ h1, h2, h3, .logo, .section-title, .login-card h1 { font-family: 'Anton', sans-s
 .score-row.miss { opacity:.7; }
 .score-pts { flex-shrink:0; width:42px; height:42px; border-radius:10px; background:var(--orange); color:#fff; font-family:'Anton',sans-serif; font-size:20px; display:flex; align-items:center; justify-content:center; }
 .score-row.miss .score-pts { background:#3a3f63; }
+.score-row.bonus .score-pts { background:var(--card2); border:1.5px solid var(--orange); color:var(--orange); font-size:17px; }
 .score-ico { font-size:20px; }
 .score-desc { color:#dfe3f7; font-size:14px; line-height:1.4; }
 .howto-cta { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:6px 0 10px; }
@@ -810,7 +823,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="nav-tab active" data-page="bets" onclick="showPage('bets')">🎯 Apostas</div>
     <div class="nav-tab" data-page="schedule" onclick="showPage('schedule')">📅 Calendário</div>
   <div class="nav-tab" data-page="scoreboard" onclick="showPage('scoreboard')">🏆 Classificação</div>
-  <div class="nav-tab" data-page="liverace" onclick="showPage('liverace')">🏁 Corrida ao Vivo</div>
+  <div class="nav-tab" data-page="liverace" onclick="showPage('liverace')">🏁 Placar ao Vivo</div>
   <div class="nav-tab admin-only" data-page="admin-results" onclick="showPage('admin-results')" style="display:none">📋 Resultados</div>
   <div class="nav-tab admin-only" data-page="admin-users" onclick="showPage('admin-users')" style="display:none">👥 Membros</div>
   <div class="nav-tab admin-only" data-page="admin-invites" onclick="showPage('admin-invites')" style="display:none">🔗 Convites</div>
@@ -941,17 +954,10 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="score-row"><span class="score-pts">7</span><span class="score-ico">✅</span><span class="score-desc"><strong>Vencedor certo + gols de um dos times</strong></span></div>
         <div class="score-row"><span class="score-pts">4</span><span class="score-ico">👍</span><span class="score-desc"><strong>Só o vencedor certo</strong> (placar errado)</span></div>
         <div class="score-row"><span class="score-pts">3</span><span class="score-ico">➕</span><span class="score-desc">Acertou os gols de um time, mas <strong>errou quem venceu</strong></span></div>
-        <div class="score-row"><span class="score-pts" style="color:var(--orange)">+2</span><span class="score-ico">📐</span><span class="score-desc"><strong>Bônus de diferença de gols</strong> — acertou por quanto o jogo terminou (ex.: previu 2×0 e foi 3×1, ambos diferença de 2). Soma em cima dos pontos acima.</span></div>
+        <div class="score-row bonus"><span class="score-pts">+2</span><span class="score-ico">📐</span><span class="score-desc"><strong>Bônus de diferença de gols</strong> — acertou por quanto o jogo terminou (ex.: previu 2×0 e foi 3×1, ambos diferença de 2). Soma em cima dos pontos acima.</span></div>
         <div class="score-row miss"><span class="score-pts">0</span><span class="score-ico">❌</span><span class="score-desc">Não acertou nada</span></div>
       </div>
       <p class="howto-note">Em jogos do mata-mata, vale o resultado do <strong>tempo normal</strong> para a contagem de pontos. Quem somar mais pontos no total lidera o ranking.</p>
-    </div>
-
-    <!-- 4. BÔNUS DO CAMPEÃO -->
-    <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">4</span> Bônus do campeão</div>
-      <p class="howto-p">Quem cravar o <strong>vencedor da Final</strong> (o campeão da Copa) ganha <strong style="color:var(--orange)">+20 pontos</strong> de bônus no fim do torneio. Pode ser o desempate que te leva ao topo.</p>
-      <p class="howto-note">O bônus considera apenas quem você apontou como vencedor da Final — não precisa acertar o placar exato.</p>
     </div>
 
     <div class="howto-cta">
@@ -964,7 +970,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
 
 <!-- ═══════════════════════════════════ BETS PAGE ═══ -->
 <div id="page-bets" class="page">
-  <div class="main">
+  <div class="main bets-main">
     <div class="section-header">
       <div>
         <div class="section-title">🏆 Chaveamento — Copa do Mundo 2026</div>
@@ -984,9 +990,9 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
           <div class="section-title">📅 Calendário — Mata-Mata</div>
           <div class="section-sub">Jogos da fase final · times definidos conforme os grupos terminam · horários no seu fuso (<span id="schedTZ"></span>)</div>
         </div>
-        <div style="display:flex;gap:10px"><button class="btn btn-accent" onclick="scrollToToday()">📍 Go to today</button><button class="btn btn-ghost" onclick="renderSchedule(true)">↻ Refresh scores</button></div>
+        <div style="display:flex;gap:10px"><button class="btn btn-accent" onclick="scrollToToday()">📍 Ir para hoje</button><button class="btn btn-ghost" onclick="renderSchedule(true)">↻ Atualizar placares</button></div>
       </div>
-      <div id="scheduleList"><div class="loader"><div class="spinner"></div>Loading...</div></div>
+      <div id="scheduleList"><div class="loader"><div class="spinner"></div>Carregando…</div></div>
     </div>
   </div>
 
@@ -1000,7 +1006,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
       <button class="btn btn-ghost" onclick="loadPublicResults()">↻ Refresh</button>
     </div>
     <div class="group-tabs" id="pubResultTabs"></div>
-    <div id="pubResultList"><div class="loader"><div class="spinner"></div>Loading...</div></div>
+    <div id="pubResultList"><div class="loader"><div class="spinner"></div>Carregando…</div></div>
   </div>
 </div>
 
@@ -1009,15 +1015,15 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="main">
     <div class="section-header">
       <div>
-        <div class="section-title">🏆 Leaderboard</div>
+        <div class="section-title">🏆 Classificação</div>
         <div class="section-sub">Overall pool standings</div>
       </div>
-      <div style="display:flex;gap:10px"><button class="btn btn-gold" onclick="openEmailLeaderboard()">📧 Email Version</button><button class="btn btn-ghost" onclick="loadScoreboard()">↻ Refresh</button></div>
+      <div style="display:flex;gap:10px"><button class="btn btn-gold" onclick="openEmailLeaderboard()">📧 Versão E-mail</button><button class="btn btn-ghost" onclick="loadScoreboard()">↻ Refresh</button></div>
     </div>
 
     <div class="stats-grid" id="sbStats">
       <div class="stat-card"><div class="stat-label">Participants</div><div class="stat-value" id="sbParticipants">-</div></div>
-      <div class="stat-card"><div class="stat-label">Matches Played</div><div class="stat-value" id="sbGamesPlayed">-</div><div style="height:6px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:8px"><i id="sbGamesBar" style="display:block;height:100%;width:0;background:var(--orange);transition:width .45s ease"></i></div></div>
+      <div class="stat-card"><div class="stat-label">Jogos Realizados</div><div class="stat-value" id="sbGamesPlayed">-</div><div style="height:6px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:8px"><i id="sbGamesBar" style="display:block;height:100%;width:0;background:var(--orange);transition:width .45s ease"></i></div></div>
       <div class="stat-card"><div class="stat-label">Leader</div><div class="stat-value" id="sbLeader" style="font-size:22px;padding-top:6px">-</div></div>
     </div>
 
@@ -1039,13 +1045,13 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <thead>
           <tr>
             <th>#</th>
-            <th>Player</th>
-            <th>Perfect Scores</th>
-            <th>Partial Hits</th>
-            <th style="text-align:right">Points</th>
+            <th>Jogador</th>
+            <th>Cravadas</th>
+            <th>Parciais</th>
+            <th style="text-align:right">Pontos</th>
           </tr>
         </thead>
-        <tbody id="sbBody"><tr><td colspan="5" class="loader">Loading...</td></tr></tbody>
+        <tbody id="sbBody"><tr><td colspan="5" class="loader">Carregando…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -1056,7 +1062,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="main">
     <div class="section-header">
       <div>
-        <div class="section-title">🔮 Phase 2 Forecast</div>
+        <div class="section-title">🔮 Previsão da Fase Final</div>
         <div class="section-sub">Who advances to the knockouts — based on everyone's picks</div>
       </div>
       <button class="btn btn-ghost" onclick="loadPhase2Forecast()">↻ Refresh</button>
@@ -1106,8 +1112,8 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="main">
     <div class="section-header">
       <div>
-        <div class="section-title">🏁 Live Race</div>
-        <div class="section-sub">Watch the top 10 shuffle as the live scores land</div>
+        <div class="section-title">🏁 Placar ao Vivo</div>
+        <div class="section-sub">Veja o top 10 se mexer conforme os placares ao vivo chegam</div>
       </div>
     </div>
     <div id="raceContent"><div class="loader"><div class="spinner"></div></div></div>
@@ -1118,24 +1124,24 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
   <div class="main">
     <div class="section-header">
       <div>
-        <div class="section-title">📋 Enter Results</div>
-        <div class="section-sub">Enter the official score for completed matches</div>
+        <div class="section-title">📋 Lançar Resultados</div>
+        <div class="section-sub">Lance o placar oficial dos jogos já realizados</div>
       </div>
       <div style="display:flex;gap:10px">
-        <button class="btn btn-accent" onclick="fetchLiveResults()">🔄 Fetch Online</button>
-        <button class="btn btn-green" onclick="recalculateAllScores()">⚡ Recalculate Points</button>
+        <button class="btn btn-accent" onclick="fetchLiveResults()">🔄 Buscar Online</button>
+        <button class="btn btn-green" onclick="recalculateAllScores()">⚡ Recalcular Pontos</button>
       </div>
     </div>
     
         <div id="adminPhaseControl" class="card" style="margin-bottom:20px">
-      <div class="card-header"><strong>Betting Phase Control</strong></div>
+      <div class="card-header"><strong>Controle de Fase de Apostas</strong></div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:14px">The <strong>active phase</strong> is what players see on "My Bets". Open or close each phase's betting independently.</div>
       <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
         <div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Active Phase (shown to players)</div>
           <select class="input-select" id="phaseSelect" onchange="savePhaseConfig()" style="width:260px">
             <option value="groups">Phase 1 — Classification (Groups)</option>
-            <option value="knockouts">Phase 2 — Brackets (Knockouts)</option>
+            <option value="knockouts">Fase Final — Mata-Mata</option>
           </select>
         </div>
         <div>
@@ -1146,7 +1152,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
           </select>
         </div>
         <div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Phase 2 — Brackets betting</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Apostas do Mata-Mata</div>
           <select class="input-select" id="bettingOpenP2" onchange="savePhaseConfig()" style="width:180px">
             <option value="open">Open ✅</option>
             <option value="closed">Closed 🔒</option>
@@ -1156,7 +1162,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     </div>
 
     <div class="group-tabs" id="resultGroupTabs"></div>
-    <div id="resultMatchList"><div class="loader"><div class="spinner"></div>Loading...</div></div>
+    <div id="resultMatchList"><div class="loader"><div class="spinner"></div>Carregando…</div></div>
   </div>
 </div>
 
@@ -1247,11 +1253,11 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
           <input class="points-input" id="pts_perfect" type="number" value="15" min="0" max="99" />
         </div>
         <div class="points-row">
-          <div><div class="points-label">✅ Winner + 1 Score</div><div class="points-sub">Correct winner + goals of one team</div></div>
+          <div><div class="points-label">✅ Vencedor + 1 placar</div><div class="points-sub">Vencedor certo + gols de um dos times</div></div>
           <input class="points-input" id="pts_winnerOne" type="number" value="7" min="0" max="99" />
         </div>
         <div class="points-row">
-          <div><div class="points-label">🏆 Winner Only</div><div class="points-sub">Correct winner, wrong scores</div></div>
+          <div><div class="points-label">🏆 Só o Vencedor</div><div class="points-sub">Vencedor certo, placar errado</div></div>
           <input class="points-input" id="pts_winnerOnly" type="number" value="4" min="0" max="99" />
         </div>
         <div class="points-row">
@@ -1271,9 +1277,9 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
       <div class="card">
         <div class="card-header"><strong>Legend</strong></div>
         <div style="font-size:13px;line-height:2;color:var(--muted)">
-          <p><span class="result-badge badge-perfect">🎯 Perfect</span> Exact score</p>
-          <p><span class="result-badge badge-win">✅ Great</span> Winner + 1 score</p>
-          <p><span class="result-badge badge-half">🏆 Winner</span> Correct winner only</p>
+          <p><span class="result-badge badge-perfect">🎯 Cravou</span> Placar exato</p>
+          <p><span class="result-badge badge-win">✅ Quase</span> Vencedor + 1 placar</p>
+          <p><span class="result-badge badge-half">🏆 Vencedor</span> Só o vencedor certo</p>
           <p><span class="result-badge badge-half" style="background:rgba(61,127,255,.1)">⚽ Partial</span> One score only</p>
           <p><span class="result-badge badge-miss">❌ Miss</span> No match</p>
         </div>
@@ -1894,7 +1900,7 @@ function updatePhaseUI() {
 
   if(activePhase === "groups") {
     phaseTitle.textContent = open ? "📋 Phase 1 Open — Classification" : "🔒 Phase 1 Betting Closed";
-    phaseDesc.textContent = open ? "Submit your predictions for all 72 group stage matches" : "Betting for Phase 1 is currently closed.";
+    phaseDesc.textContent = open ? "Envie seus palpites de todos os jogos do mata-mata" : "As apostas estão fechadas no momento.";
     betsTitleEl.textContent = "Phase 1 — Classification";
   } else {
     phaseTitle.textContent = open ? "⚡ Phase 2 Open — Brackets" : "🔒 Phase 2 Betting Closed";
@@ -2251,9 +2257,20 @@ function _koResolve(slot, results){
   }
   return null;
 }
+// rótulo curto a partir do código do slot: "1E"→"1E", "3:A/B/C/D/F"→"3 ABCDF",
+// "W74"→"Venc. 74", "L101"→"Perd. 101". Time já definido mostra o nome real.
+function _brSlotLabel(slot){
+  if(!slot) return "?";
+  const c=slot[0];
+  if(c==="1"||c==="2") return slot;                 // 1E, 2C…
+  if(c==="3") return "3 "+slot.slice(2).replace(/\//g,"");  // 3:A/B/C/D/F → 3 ABCDF
+  if(c==="W") return "Venc. "+slot.slice(1);
+  if(c==="L") return "Perd. "+slot.slice(1);
+  return slot;
+}
 function _brNode(m){
   const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
-  const hName=home||m.homeTeam, aName=away||m.awayTeam, resolved=!!home && !!away;
+  const hName=home||_brSlotLabel(m.homeSlot), aName=away||_brSlotLabel(m.awaySlot), resolved=!!home && !!away;
   const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
   const open = resolved && !has && !live;
   const bet=_brBets[m.id]||{};
@@ -2340,17 +2357,18 @@ function _brQuadHTML(q){
    Lado direito : chaves Verde + Vermelha → Semi 2 (M102)
    Centro       : Final (M104) + Campeão + Disputa de 3º (M103)         */
 function _brColHTML(top, nos, flip, qcByNo){
-  // coluna de nós, com rótulo no topo
+  // coluna de nós: cada card num slot que cresce igual (centro previsível)
   const cells = nos.map(no=>{
     const m=_brByNo(no); if(!m) return "";
     const qc = (qcByNo && qcByNo[no]) || "var(--border)";
-    return `<div style="--qc:${qc}">${_brNode(m)}</div>`;
+    return `<div class="br-slot" style="--qc:${qc}">${_brNode(m)}</div>`;
   }).join("");
   return `<div class="br-col"><div class="br-coltop">${top}</div>${cells}</div>`;
 }
 function _brLinkHTML(count, flip){
+  // mesmo nº de slots que de elbows; coltop vazio para alinhar com as colunas
   let el=""; for(let i=0;i<count;i++) el+=`<div class="elbow"></div>`;
-  return `<div class="br-link${flip?" flip":""}">${el}</div>`;
+  return `<div class="br-link${flip?" flip":""}"><div class="br-coltop"></div>${el}</div>`;
 }
 function _brTreeHTML(){
   // mapa cor por nº de jogo, para a borda colorida dos cards na árvore
@@ -2401,7 +2419,7 @@ function _brTreeHTML(){
       ${_brNode(_brByNo(103))}
     </div>`;
 
-  return `<div class="br-tree">${left}${center}${right}</div>`;
+  return `<div class="br-scrollhint">↔ arraste para o lado para ver todo o chaveamento</div><div class="br-tree"><div class="br-tree-inner">${left}${center}${right}</div></div>`;
 }
 function loadBracket(){
   const wrap=document.getElementById("bracketWrap"); if(!wrap) return;
@@ -2422,7 +2440,7 @@ function loadBracket(){
       const pos = me.rank ? (me.rank+"º") : "—";
       meCard = `<div class="br-mecard">
         <div><div class="me-pts">${me.pts}</div><div class="me-lab">seus pontos</div></div>
-        <div class="me-rank"><div class="pos">${pos}</div><div class="me-lab">de ${me.total} · ${me.exact} placares exatos</div></div>
+        <div class="me-rank"><div class="pos">${pos} <small>de ${me.total}</small></div><div class="me-lab">no ranking · ${me.exact} placares exatos</div></div>
       </div>`;
     }
 
@@ -2536,7 +2554,7 @@ async function loadBets() { return loadBracket(); }
 
 async function loadMatchCards() {
   const container = document.getElementById("matchList");
-  container.innerHTML = `<div class="loader"><div class="spinner"></div>Loading...</div>`;
+  container.innerHTML = `<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   
   let matches;
   if(activePhase === "groups") {
@@ -2783,11 +2801,11 @@ function isExactScore(bet, result) {
 }
 
 function getResultBadge(pts) {
-  if(pts >= pointsConfig.perfect) return {cls:"perfect",icon:"🎯",label:"Perfect!"};
-  if(pts >= pointsConfig.winnerOne) return {cls:"win",icon:"✅",label:"Great"};
-  if(pts >= pointsConfig.winnerOnly) return {cls:"half",icon:"🏆",label:"Winner"};
-  if(pts > 0) return {cls:"half",icon:"⚽",label:"Partial"};
-  return {cls:"miss",icon:"❌",label:"Miss"};
+  if(pts >= pointsConfig.perfect) return {cls:"perfect",icon:"🎯",label:"Cravou!"};
+  if(pts >= pointsConfig.winnerOne) return {cls:"win",icon:"✅",label:"Quase"};
+  if(pts >= pointsConfig.winnerOnly) return {cls:"half",icon:"🏆",label:"Vencedor"};
+  if(pts > 0) return {cls:"half",icon:"⚽",label:"Parcial"};
+  return {cls:"miss",icon:"❌",label:"Errou"};
 }
 
 async function saveBet(matchId, homeTeam, awayTeam) {
@@ -3625,7 +3643,7 @@ let _pubResultsCache = {};
 async function loadPublicResults() {
   buildPubResultTabs();
   const list = document.getElementById("pubResultList");
-  list.innerHTML = `<div class="loader"><div class="spinner"></div>Loading...</div>`;
+  list.innerHTML = `<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   try {
     const snap = await col("results").get();
     _pubResultsCache = {};
@@ -3948,7 +3966,7 @@ async function recalculateAllScores() {
 async function loadUsers() {
   if(!isAdmin) return;
   const container = document.getElementById("userList");
-  container.innerHTML = `<div class="loader"><div class="spinner"></div>Loading...</div>`;
+  container.innerHTML = `<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   
   try {
     const [snap, betsSnap] = await Promise.all([
@@ -4159,7 +4177,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v1.5";
+  var APP_VERSION = "v2.1";
   var APP_BUILD = "Jun 20, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
