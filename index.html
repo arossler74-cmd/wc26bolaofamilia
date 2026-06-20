@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚽ Copa do Mundo 2026 | Bolão da Família</title>
 <style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
-<style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
 /* ── My points / rank card on top of bracket ── */
 .br-mecard{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--fifa-blue,#15205C),#1d2a72);border:1px solid var(--border,#2A3470);border-radius:16px;padding:14px 18px;margin-bottom:16px}
 .br-mecard .me-pts{font-family:'Anton',sans-serif;font-size:34px;line-height:1;color:var(--orange)}
@@ -41,6 +40,7 @@
   .br-sides{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
   .br-center-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center}
 }
+</style>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -779,15 +779,15 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
 <!-- NAV TABS -->
 <div class="nav-wrap" id="mainNav" style="display:none">
 <nav class="nav">
-  <div class="nav-tab" data-page="instructions" onclick="showPage('instructions')">📖 How to Play</div>
+  <div class="nav-tab" data-page="instructions" onclick="showPage('instructions')">📖 Como Jogar</div>
   <div class="nav-tab active" data-page="bets" onclick="showPage('bets')">🎯 Apostas</div>
-    <div class="nav-tab" data-page="schedule" onclick="showPage('schedule')">📅 Calendar</div>
-  <div class="nav-tab" data-page="scoreboard" onclick="showPage('scoreboard')">🏆 Leaderboard</div>
-  <div class="nav-tab" data-page="liverace" onclick="showPage('liverace')">🏁 Live Race</div>
-  <div class="nav-tab admin-only" data-page="admin-results" onclick="showPage('admin-results')" style="display:none">📋 Enter Results</div>
-  <div class="nav-tab admin-only" data-page="admin-users" onclick="showPage('admin-users')" style="display:none">👥 Members</div>
-  <div class="nav-tab admin-only" data-page="admin-invites" onclick="showPage('admin-invites')" style="display:none">🔗 Invites</div>
-  <div class="nav-tab admin-only" data-page="admin-points" onclick="showPage('admin-points')" style="display:none">⚙️ Scoring</div>
+    <div class="nav-tab" data-page="schedule" onclick="showPage('schedule')">📅 Calendário</div>
+  <div class="nav-tab" data-page="scoreboard" onclick="showPage('scoreboard')">🏆 Classificação</div>
+  <div class="nav-tab" data-page="liverace" onclick="showPage('liverace')">🏁 Corrida ao Vivo</div>
+  <div class="nav-tab admin-only" data-page="admin-results" onclick="showPage('admin-results')" style="display:none">📋 Resultados</div>
+  <div class="nav-tab admin-only" data-page="admin-users" onclick="showPage('admin-users')" style="display:none">👥 Membros</div>
+  <div class="nav-tab admin-only" data-page="admin-invites" onclick="showPage('admin-invites')" style="display:none">🔗 Convites</div>
+  <div class="nav-tab admin-only" data-page="admin-points" onclick="showPage('admin-points')" style="display:none">⚙️ Pontuação</div>
 </nav>
 </div>
 <div class="admin-banner" id="adminBanner" style="display:none">ADMIN MODE — you control betting phases, results, members &amp; invites</div>
