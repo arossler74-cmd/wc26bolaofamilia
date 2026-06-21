@@ -27,6 +27,23 @@
 .br-in:disabled{opacity:.4;cursor:not-allowed}
 .br-foot{font-size:10.5px;color:var(--muted);margin-top:5px;border-top:1px dashed var(--border,#2A3470);padding-top:4px;line-height:1.4}
 .br-foot b{color:#fff}
+/* palpite de classificados (dropdown por vaga, R32) */
+.br-picks{margin-top:6px;border-top:1px dashed var(--border,#2A3470);padding-top:6px;display:flex;flex-direction:column;gap:5px}
+.br-pickrow{display:flex;align-items:center;gap:6px}
+.br-picklab{flex:none;min-width:46px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.br-pick{flex:1;height:28px;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;font-size:11.5px;font-weight:600;padding:0 6px;cursor:pointer;max-width:100%}
+.br-pick:disabled{opacity:.5;cursor:not-allowed}
+.br-pick option{background:var(--card2,#10183f);color:#fff}
+.br-pick option:disabled{color:#6b7280}
+/* cadeados do admin (mata-mata) */
+.lock-card{flex:1 1 150px;min-width:150px;max-width:220px;text-align:left;cursor:pointer;border-radius:14px;padding:12px 14px;border:1.5px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;transition:all .15s}
+.lock-card:hover{border-color:#7AA2FF}
+.lock-card.on{border-color:var(--green,#16B364);background:rgba(22,179,100,.12)}
+.lock-top{font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px;line-height:1.2}
+.lock-name{font-size:13px}
+.lock-sub{font-size:10.5px;color:var(--muted);margin:4px 0 8px}
+.lock-state{font-size:11px;font-weight:800;letter-spacing:.5px;color:var(--muted)}
+.lock-card.on .lock-state{color:var(--green,#16B364)}
 /* campeão */
 .br-champ{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;background:radial-gradient(circle at 50% 0%,#2a3a8f,var(--card,#15205C));border:2px solid var(--gold,#F5B301);border-radius:18px;padding:16px 14px;box-shadow:0 0 24px rgba(245,179,1,.18)}
 .br-champ .cup{font-size:42px;line-height:1}
@@ -955,9 +972,20 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="score-row"><span class="score-pts">4</span><span class="score-ico">👍</span><span class="score-desc"><strong>Só o vencedor certo</strong> (placar errado)</span></div>
         <div class="score-row"><span class="score-pts">3</span><span class="score-ico">➕</span><span class="score-desc">Acertou os gols de um time, mas <strong>errou quem venceu</strong></span></div>
         <div class="score-row bonus"><span class="score-pts">+2</span><span class="score-ico">📐</span><span class="score-desc"><strong>Bônus de diferença de gols</strong> — acertou por quanto o jogo terminou (ex.: previu 2×0 e foi 3×1, ambos diferença de 2). Soma em cima dos pontos acima.</span></div>
+        <div class="score-row bonus"><span class="score-pts">+5</span><span class="score-ico">🎯</span><span class="score-desc"><strong>Classificado certo</strong> — para cada seleção que você acertar nas vagas dos 32-avos (veja o passo 4).</span></div>
         <div class="score-row miss"><span class="score-pts">0</span><span class="score-ico">❌</span><span class="score-desc">Não acertou nada</span></div>
       </div>
       <p class="howto-note">Em jogos do mata-mata, vale o resultado do <strong>tempo normal</strong> para a contagem de pontos. Quem somar mais pontos no total lidera o ranking.</p>
+    </div>
+
+    <!-- 4. PALPITE DE CLASSIFICADOS -->
+    <div class="howto-card">
+      <div class="howto-h"><span class="howto-num">4</span> Palpite quem se classifica</div>
+      <p class="howto-p">Direto no chaveamento, em cada vaga dos <strong>32-avos</strong> tem um menu para você escolher <strong>qual seleção</strong> vai ocupar aquele lugar (ex.: quem será o 1º do Grupo E). Cada acerto vale <strong style="color:var(--orange)">+5 pontos</strong>.</p>
+      <div class="step"><div class="step-ico">🧠</div><div>O menu é <strong>inteligente</strong>: numa vaga “1º do Grupo E” só aparecem os times do Grupo E; numa vaga de “melhor 3º” aparecem os times de todos os grupos elegíveis — com o grupo indicado ao lado do nome.</div></div>
+      <div class="step"><div class="step-ico">🚫</div><div>Cada seleção só pode ser usada <strong>uma vez</strong> em todo o chaveamento. Ao escolher um time numa vaga, ele some das outras.</div></div>
+      <div class="step"><div class="step-ico">💾</div><div>Escolha os classificados e clique em <strong>💾 Salvar palpites</strong> — o mesmo botão salva placares e classificados juntos.</div></div>
+      <p class="howto-note">Quando o resultado oficial define quem realmente ficou em cada vaga, você ganha +5 por seleção certa. O menu desaparece e o time real aparece com a bandeira.</p>
     </div>
 
     <div class="howto-cta">
@@ -1151,14 +1179,14 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
             <option value="closed">Closed 🔒</option>
           </select>
         </div>
-        <div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:6px">Apostas do Mata-Mata</div>
-          <select class="input-select" id="bettingOpenP2" onchange="savePhaseConfig()" style="width:180px">
-            <option value="open">Open ✅</option>
-            <option value="closed">Closed 🔒</option>
-          </select>
-        </div>
       </div>
+    </div>
+
+    <!-- ── 6 CADEADOS DO MATA-MATA ── -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><strong>🔐 Cadeados do Mata-Mata</strong></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Abra ou feche cada etapa independentemente. <b>Pré-mata</b> libera a escolha de quem se classifica (qualquer time em qualquer vaga). As demais liberam o palpite de <b>placar</b> de cada rodada — abra-as só quando os confrontos já estiverem definidos. Conforme os resultados oficiais chegam, os times reais preenchem as chaves e a pontuação dos classificados é somada automaticamente.</div>
+      <div id="roundLockGrid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
     </div>
 
     <div class="group-tabs" id="resultGroupTabs"></div>
@@ -1271,6 +1299,10 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="points-row" style="border-top:2px solid var(--border,#2A3470);margin-top:6px;padding-top:12px">
           <div><div class="points-label">📐 Diferença de Gols</div><div class="points-sub">Bônus por acertar o saldo do jogo (vale desde os 32)</div></div>
           <input class="points-input" id="pts_diffBonus" type="number" value="2" min="0" max="99" />
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">🎯 Classificado certo</div><div class="points-sub">Por seleção certa em cada vaga dos 32-avos</div></div>
+          <input class="points-input" id="pts_qualifPts" type="number" value="5" min="0" max="99" />
         </div>
         <button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="savePointsConfig()">Save Configuration</button>
       </div>
@@ -1697,10 +1729,27 @@ const ALL_MATCHES = [...GROUP_MATCHES, ...KNOCKOUT_MATCHES];
 let db, auth;
 let currentUser = null;
 let isAdmin = false;
-let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, diffBonus: 2 };
+let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, diffBonus: 2, qualifPts: 5 };
 let activePhase = "groups";
 let bettingOpenP1 = true;   // Phase 1 — Classification (groups)
 let bettingOpenP2 = false;  // Phase 2 — Brackets (knockouts)
+// ── 6 cadeados independentes do mata-mata (admin abre/fecha cada um) ──
+//    prematch = palpite de classificados (quem ocupa cada vaga da R32)
+//    R32/R16/QF/SF/FINAL = palpites de placar de cada rodada
+let roundLocks = { prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false };
+// mapeia o nome da rodada de um jogo para a chave do cadeado
+function _lockKeyForRound(round){
+  if(round==="Round of 32") return "R32";
+  if(round==="Round of 16") return "R16";
+  if(round==="Quartas")     return "QF";
+  if(round==="Semifinal")   return "SF";
+  if(round==="Final" || round==="3º Lugar") return "FINAL";
+  return null;
+}
+// placar daquela rodada está aberto para apostas?
+function _roundScoreOpen(round){ const k=_lockKeyForRound(round); return k?!!roundLocks[k]:false; }
+// palpite de classificados (pré-mata) está aberto?
+function _prematchOpen(){ return !!roundLocks.prematch; }
 let inviteCode = null;      // active invite token (admin-managed)
 let pendingInvite = null;   // invite token from URL on this visit
 let pendingAdminInvite = null;  // single-use ADMIN invite token from URL (?ainvite=)
@@ -1878,13 +1927,15 @@ async function loadConfig() {
     const cfg = await col("config").doc("main").get();
     if(cfg.exists) {
       const data = cfg.data();
-      pointsConfig = data.points || pointsConfig;
+      pointsConfig = Object.assign({ perfect:15, winnerOne:7, winnerOnly:4, oneScore:3, diffBonus:2, qualifPts:5 }, data.points || {});
       activePhase = data.activePhase || "groups";
       // Back-compat with old single `bettingOpen`
       if(data.bettingOpenP1 !== undefined) bettingOpenP1 = data.bettingOpenP1 !== false;
       else if(data.bettingOpen !== undefined && activePhase==="groups") bettingOpenP1 = data.bettingOpen !== false;
       if(data.bettingOpenP2 !== undefined) bettingOpenP2 = data.bettingOpenP2 === true;
       else if(data.bettingOpen !== undefined && activePhase==="knockouts") bettingOpenP2 = data.bettingOpen !== false;
+      // 6 cadeados do mata-mata
+      roundLocks = Object.assign({ prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false }, data.roundLocks || {});
     }
     const inv = await col("config").doc("invites").get();
     inviteCode = inv.exists ? (inv.data().activeCode || null) : null;
@@ -2268,16 +2319,101 @@ function _brSlotLabel(slot){
   if(c==="L") return "Perd. "+slot.slice(1);
   return slot;
 }
+
+// ═══════════════════════════════════════════════════════════
+//  PALPITE DE CLASSIFICADOS (quem ocupa cada vaga na R32)
+//  +5 pts por seleção certa · dropdown inteligente por grupo · sem repetir
+// ═══════════════════════════════════════════════════════════
+let _brQuali = {};   // { "R32_73:home": "Brazil", ... }  (palpites do usuário)
+
+// grupos elegíveis de uma vaga: "1E"→["E"]  · "3:A/B/C/D/F"→["A","B","C","D","F"]
+function _slotGroups(slot){
+  if(!slot) return [];
+  const c=slot[0];
+  if(c==="1"||c==="2") return [slot.slice(1)];
+  if(c==="3") return slot.slice(2).split("/").filter(Boolean);
+  return []; // W/L não têm escolha de seleção (vêm do placar)
+}
+// só vagas de grupo (1x/2x/3:...) recebem dropdown
+function _slotIsGroupPick(slot){ return _slotGroups(slot).length>0; }
+// opções do dropdown: [{team, group}] ordenadas por grupo e nome
+function _slotTeamOptions(slot){
+  const opts=[];
+  _slotGroups(slot).forEach(g=>{
+    (GROUPS[g]||[]).forEach(team=>opts.push({team, group:g}));
+  });
+  return opts.sort((a,b)=> a.group.localeCompare(b.group) || a.team.localeCompare(b.team));
+}
+// times já escolhidos em OUTRAS vagas (no-repeat global no chaveamento)
+function _brQualiTaken(exceptKey){
+  const taken=new Set();
+  for(const k in _brQuali){ if(k!==exceptKey && _brQuali[k]) taken.add(_brQuali[k]); }
+  return taken;
+}
+// monta o <select> de uma vaga (key = "R32_73:home")
+function _qualiSelectHTML(slot, key, disabled){
+  const opts=_slotTeamOptions(slot);
+  const taken=_brQualiTaken(key);
+  const cur=_brQuali[key]||"";
+  let html=`<select class="br-pick" id="qp_${key.replace(/[:]/g,'_')}" data-key="${key}" ${disabled?"disabled":""} onchange="onQualiPick(this)">`;
+  html+=`<option value="">— escolher —</option>`;
+  opts.forEach(o=>{
+    const isTaken = taken.has(o.team) && o.team!==cur;
+    html+=`<option value="${_brEsc(o.team)}"${o.team===cur?" selected":""}${isTaken?" disabled":""}>${_brEsc(o.team)} (${o.group})${isTaken?" — escolhido":""}</option>`;
+  });
+  html+=`</select>`;
+  return html;
+}
+// ao escolher um time, grava e re-renderiza o chaveamento para refletir o no-repeat
+function onQualiPick(sel){
+  const key=sel.getAttribute("data-key");
+  if(sel.value) _brQuali[key]=sel.value; else delete _brQuali[key];
+  // preserva placares digitados mas ainda não salvos (a re-renderização lê de _brBets)
+  KNOCKOUT_MATCHES.forEach(m=>{
+    const hEl=document.getElementById("bh_"+m.id), aEl=document.getElementById("ba_"+m.id);
+    if(hEl&&aEl&&(hEl.value!==""||aEl.value!=="")){
+      const b=_brBets[m.id]||{matchId:m.id};
+      if(hEl.value!=="") b.homeGoals=parseInt(hEl.value);
+      if(aEl.value!=="") b.awayGoals=parseInt(aEl.value);
+      _brBets[m.id]=b;
+    }
+  });
+  // re-render mantém a posição de scroll
+  const wrap=document.getElementById("bracketWrap");
+  const sx=wrap?wrap.scrollLeft:0, sy=window.scrollY;
+  _brRenderTree();
+  if(wrap) wrap.scrollLeft=sx; window.scrollTo(0,sy);
+}
+// pontos de classificados do usuário atual, dados os resultados oficiais
+function _brQualiPoints(quali, results){
+  const per = pointsConfig.qualifPts || 0;
+  if(!per) return {pts:0, hits:0};
+  let pts=0, hits=0;
+  KNOCKOUT_MATCHES.filter(m=>m.round==="Round of 32").forEach(m=>{
+    [["home",m.homeSlot],["away",m.awaySlot]].forEach(([side,slot])=>{
+      if(!_slotIsGroupPick(slot)) return;
+      const pick=quali[`${m.id}:${side}`];
+      if(!pick) return;
+      const real=_koResolve(slot, results);
+      if(real && pick===real){ pts+=per; hits++; }
+    });
+  });
+  return {pts, hits};
+}
+
 function _brNode(m){
   const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
   const hName=home||_brSlotLabel(m.homeSlot), aName=away||_brSlotLabel(m.awaySlot), resolved=!!home && !!away;
   const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
-  const open = resolved && !has && !live;
+  // placar abre só quando: rodada liberada pelo admin + times definidos + sem resultado + não-admin
+  const scoreLockOpen = _roundScoreOpen(m.round);
+  const open = scoreLockOpen && resolved && !has && !live;
   const bet=_brBets[m.id]||{};
   const hv=(bet.homeGoals!==undefined?bet.homeGoals:""), av=(bet.awayGoals!==undefined?bet.awayGoals:"");
   const dis = (open && !_brRO)?"":"disabled";
   const flag = n => resolved ? flagImg(n) : "\u2754";
   const isFinal = (m.id==="FINAL");
+  const isR32 = (m.round==="Round of 32");
   // meta: jogo nº · venue · data + horário local
   const when = m.kickoff ? (fmtDateShort(m.kickoff)+" · "+fmtKick(m.kickoff)) : (m.date||"");
   let meta = `<span>Jogo ${m.mNo}</span>`;
@@ -2296,36 +2432,61 @@ function _brNode(m){
   } else if(bet.homeGoals!==undefined && _brRO){
     foot=`<div class="br-foot">Palpite: <b>${bet.homeGoals} \u00d7 ${bet.awayGoals}</b></div>`;
   }
+  // palpite de classificado (R32) aparece em _qualiRows abaixo dos slots
   return `<div class="br-node ${resolved?'':'br-tbd'} ${isFinal?'br-final':''}" id="brc-${m.id}">
     <div class="br-meta">${meta}</div>
     <div class="br-team"><span class="br-flag">${flag(hName)}</span><span class="br-name">${_brEsc(hName)}</span><input class="br-in" id="bh_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${hv}" ${dis}></div>
     <div class="br-team"><span class="br-flag">${flag(aName)}</span><span class="br-name">${_brEsc(aName)}</span><input class="br-in" id="ba_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${av}" ${dis}></div>
+    ${isR32?_qualiRows(m):""}
     ${foot}
   </div>`;
+}
+// linhas de dropdown de classificados (R32) — exibidas abaixo dos slots quando ainda não há time oficial
+function _qualiRows(m){
+  const homeReal=_koResolve(m.homeSlot,_brResults), awayReal=_koResolve(m.awaySlot,_brResults);
+  const rows=[];
+  // dropdown só fica editável com o cadeado "pré-mata" aberto (e fora do modo admin)
+  const editable = _prematchOpen() && !_brRO;
+  [["home",m.homeSlot,homeReal],["away",m.awaySlot,awayReal]].forEach(([side,slot,real])=>{
+    if(real || !_slotIsGroupPick(slot)) return;          // já oficial, ou não é vaga de grupo
+    const lock = editable ? "" : "disabled";
+    rows.push(`<div class="br-pickrow"><span class="br-picklab">${_brEsc(_brSlotLabel(slot))}</span>${_qualiSelectHTML(slot, `${m.id}:${side}`, lock)}</div>`);
+  });
+  return rows.length ? `<div class="br-picks">${rows.join("")}</div>` : "";
 }
 // computa pontos + ranking do jogador atual para o card do topo
 async function _brMyStanding(results){
   if(!currentUser) return null;
   try{
     const bsnap = await col("bets").get();
-    const byUser = {}; // uid -> {pts,exact,name}
+    const byUser = {}; // uid -> {pts,exact,name,qhits}
     bsnap.forEach(d=>{
       const b=d.data(); const r=results[b.matchId];
       if(!r || r.homeGoals===undefined || r.homeGoals===null) return;
       const ko = KNOCKOUT_MATCHES.some(m=>m.id===b.matchId);
       if(!ko) return;
-      const u=byUser[b.userId]||(byUser[b.userId]={pts:0,exact:0,name:b.userName||"—"});
+      const u=byUser[b.userId]||(byUser[b.userId]={pts:0,exact:0,qhits:0,name:b.userName||"—"});
       u.pts += calcPoints(b,r);
       if(isExactScore(b,r)) u.exact++;
     });
+    // ── pontos de classificados (quem ocupa cada vaga da R32) ──
+    try{
+      const qsnap = await col("qualipicks").get();
+      qsnap.forEach(d=>{
+        const q=d.data(); if(!q || !q.slotPicks) return;
+        const u=byUser[q.userId]||(byUser[q.userId]={pts:0,exact:0,qhits:0,name:q.userName||"—"});
+        const qp=_brQualiPoints(q.slotPicks, results);
+        u.pts += qp.pts; u.qhits += qp.hits;
+      });
+    }catch(e){}
     // garante que o jogador atual apareça mesmo zerado
-    if(!byUser[currentUser.uid]) byUser[currentUser.uid]={pts:0,exact:0,name:currentUser.displayName||currentUser.email};
+    if(!byUser[currentUser.uid]) byUser[currentUser.uid]={pts:0,exact:0,qhits:0,name:currentUser.displayName||currentUser.email};
     const arr=Object.entries(byUser).map(([uid,v])=>({uid,...v}))
       .sort((a,b)=>b.pts-a.pts || b.exact-a.exact || a.name.localeCompare(b.name));
     let rank=0,prevK=null,seen=0;
     arr.forEach(p=>{ seen++; const k=p.pts+"|"+p.exact; if(k!==prevK){ rank=seen; prevK=k; } p.rank=rank; });
     const me=arr.find(p=>p.uid===currentUser.uid);
-    return me?{pts:me.pts,rank:me.rank,total:arr.length,exact:me.exact}:null;
+    return me?{pts:me.pts,rank:me.rank,total:arr.length,exact:me.exact,qhits:me.qhits}:null;
   }catch(e){ return null; }
 }
 // Estrutura FIFA: 4 quadrantes convergindo ao centro (campeão).
@@ -2426,57 +2587,84 @@ function loadBracket(){
   _brRO = (typeof isAdmin!=="undefined" && isAdmin);
   if(!currentUser){ return; }
   wrap.innerHTML=`<div class="loader"><div class="spinner"></div>Carregando…</div>`;
-  Promise.all([ col("results").get().catch(()=>null), col("bets").where("userId","==",currentUser.uid).get().catch(()=>null) ])
-   .then(async ([rs,bs])=>{
+  Promise.all([
+    col("results").get().catch(()=>null),
+    col("bets").where("userId","==",currentUser.uid).get().catch(()=>null),
+    col("qualipicks").doc(currentUser.uid).get().catch(()=>null)
+  ])
+   .then(async ([rs,bs,qp])=>{
     const results={}, bets={};
     if(rs) rs.forEach(d=>results[d.id]=d.data());
     if(bs) bs.forEach(d=>{ const x=d.data(); bets[x.matchId]=x; });
     _brResults=results; _brBets=bets;
+    _brQuali = (qp && qp.exists && qp.data().slotPicks) ? qp.data().slotPicks : {};
 
     // card do topo: meus pontos + ranking
     const me = await _brMyStanding(results);
     let meCard="";
     if(me){
       const pos = me.rank ? (me.rank+"º") : "—";
+      const qhit = (me.qhits!==undefined) ? ` · ${me.qhits} classificados certos` : "";
       meCard = `<div class="br-mecard">
         <div><div class="me-pts">${me.pts}</div><div class="me-lab">seus pontos</div></div>
-        <div class="me-rank"><div class="pos">${pos} <small>de ${me.total}</small></div><div class="me-lab">no ranking · ${me.exact} placares exatos</div></div>
+        <div class="me-rank"><div class="pos">${pos} <small>de ${me.total}</small></div><div class="me-lab">no ranking · ${me.exact} placares exatos${qhit}</div></div>
       </div>`;
     }
-
-    // ── MOBILE: empilhado por chave + centro ──
-    const champ=_koResolve("W104",results);
-    const champBox = `<div class="br-champ">
-        <div class="cup">\ud83c\udfc6</div>
-        <div class="clab">Campeão</div>
-        <div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div>
-      </div>`;
-    const quadsHTML = BR_QUADS.map(_brQuadHTML).join("");
-    const centerStack = `<div class="br-center">
-      <div class="br-rlabel" style="text-align:center">Semifinais</div>
-      <div class="br-rgrid">${_brNode(_brByNo(101))}${_brNode(_brByNo(102))}</div>
-      ${champBox}
-      <div class="br-rlabel" style="text-align:center">Final</div>
-      <div class="br-rgrid">${_brNode(_brByNo(104))}</div>
-      <div class="br-rlabel" style="text-align:center">Disputa de 3º Lugar</div>
-      <div class="br-rgrid">${_brNode(_brByNo(103))}</div>
-    </div>`;
-    const stack = `<div class="br-stack">${quadsHTML}${centerStack}</div>`;
-
-    // ── DESKTOP: árvore horizontal convergente ──
-    const tree = _brTreeHTML();
-
-    wrap.innerHTML = meCard + `<div class="br-wrap">${tree}${stack}</div>` +
-      (_brRO
-        ? '<div class="br-hint">👁️ Visão do admin (somente leitura). Os jogadores apostam por aqui.</div>'
-        : '<div class="br-savebar"><button class="btn btn-gold" id="brSaveBtn" onclick="saveBracket()">\ud83d\udcbe Salvar palpites</button></div>');
+    _brMeCard = meCard;
+    _brRenderTree();
   });
+}
+// (re)desenha a árvore + stack, preservando o card do topo já calculado
+let _brMeCard = "";
+function _brRenderTree(){
+  const wrap=document.getElementById("bracketWrap"); if(!wrap) return;
+  const results=_brResults;
+  // ── MOBILE: empilhado por chave + centro ──
+  const champ=_koResolve("W104",results);
+  const champBox = `<div class="br-champ">
+      <div class="cup">\ud83c\udfc6</div>
+      <div class="clab">Campeão</div>
+      <div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div>
+    </div>`;
+  const quadsHTML = BR_QUADS.map(_brQuadHTML).join("");
+  const centerStack = `<div class="br-center">
+    <div class="br-rlabel" style="text-align:center">Semifinais</div>
+    <div class="br-rgrid">${_brNode(_brByNo(101))}${_brNode(_brByNo(102))}</div>
+    ${champBox}
+    <div class="br-rlabel" style="text-align:center">Final</div>
+    <div class="br-rgrid">${_brNode(_brByNo(104))}</div>
+    <div class="br-rlabel" style="text-align:center">Disputa de 3º Lugar</div>
+    <div class="br-rgrid">${_brNode(_brByNo(103))}</div>
+  </div>`;
+  const stack = `<div class="br-stack">${quadsHTML}${centerStack}</div>`;
+  // ── DESKTOP: árvore horizontal convergente ──
+  const tree = _brTreeHTML();
+  // ── banner de status dos cadeados (o que está aberto agora) ──
+  let statusBanner = "";
+  if(!_brRO){
+    const openRounds = [];
+    if(_prematchOpen()) openRounds.push("classificados (pré-mata)");
+    [["R32","32-avos"],["R16","oitavas"],["QF","quartas"],["SF","semis"],["FINAL","final/3º"]]
+      .forEach(([k,lab])=>{ if(roundLocks[k]) openRounds.push("placar das "+lab); });
+    if(openRounds.length){
+      statusBanner = '<div class="br-hint" style="margin-top:10px">🔓 <b>Aberto para apostas:</b> '+openRounds.join(" · ")+'.</div>';
+    } else {
+      statusBanner = '<div class="br-hint" style="margin-top:10px">🔒 As apostas estão <b>fechadas</b> no momento. Aguarde o admin liberar a próxima rodada.</div>';
+    }
+  }
+  const pickHint = (_brRO || !_prematchOpen()) ? "" :
+    '<div class="br-hint" style="margin-top:6px">🎯 Palpite <b>quem se classifica</b> em cada vaga dos 32-avos: <b style="color:var(--orange)">+'+(pointsConfig.qualifPts||5)+' pts</b> por seleção certa. Cada time só pode ser usado uma vez.</div>';
+  wrap.innerHTML = _brMeCard + `<div class="br-wrap">${tree}${stack}</div>` + statusBanner + pickHint +
+    (_brRO
+      ? '<div class="br-hint">👁️ Visão do admin (somente leitura). Os jogadores apostam por aqui.</div>'
+      : '<div class="br-savebar"><button class="btn btn-gold" id="brSaveBtn" onclick="saveBracket()">\ud83d\udcbe Salvar palpites</button></div>');
 }
 async function saveBracket(){
   if(isAdmin) return;
   const btn=document.getElementById("brSaveBtn"); if(btn){ btn.disabled=true; btn.textContent="Salvando…"; }
   let saved=0, err=0;
   for(const m of KNOCKOUT_MATCHES){
+    if(!_roundScoreOpen(m.round)) continue;   // rodada travada pelo admin
     const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
     const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
     if(!home || !away || has || live) continue;
@@ -2494,9 +2682,23 @@ async function saveBracket(){
     }catch(e){ err++; }
   }
   if(btn){ btn.disabled=false; btn.textContent="\ud83d\udcbe Salvar palpites"; }
-  if(err) showToast(`Salvou ${saved}, ${err} falharam.`,"error");
-  else if(saved) showToast(`\u2705 ${saved} palpite(s) salvo(s)`);
-  else showToast("Preencha algum placar primeiro.","error");
+  // ── salva os palpites de classificados só se o cadeado pré-mata estiver aberto ──
+  let qSaved=false;
+  if(_prematchOpen()){
+    try{
+      await col("qualipicks").doc(currentUser.uid).set({
+        userId: currentUser.uid,
+        userName: currentUser.displayName||currentUser.email,
+        slotPicks: _brQuali,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      qSaved = Object.keys(_brQuali).length>0;
+    }catch(e){ err++; }
+  }
+  const qN = Object.keys(_brQuali).length;
+  if(err) showToast(`Salvou ${saved} placar(es)${qSaved?` e ${qN} classificado(s)`:""}, ${err} falharam.`,"error");
+  else if(saved||qSaved) showToast(`\u2705 ${saved} placar(es)${qSaved?` · ${qN} classificado(s)`:""} salvo(s)`);
+  else showToast("Preencha algum placar ou escolha um classificado primeiro.","error");
   setTimeout(()=>{ document.querySelectorAll(".br-node").forEach(c=>c.style.borderColor=""); }, 2000);
 }
 
@@ -3728,11 +3930,11 @@ async function loadAdminResults() {
       const d = cfg.data();
       document.getElementById("phaseSelect").value = d.activePhase || "groups";
       const p1 = d.bettingOpenP1 !== undefined ? d.bettingOpenP1 !== false : (d.activePhase!=="knockouts" ? d.bettingOpen !== false : true);
-      const p2 = d.bettingOpenP2 !== undefined ? d.bettingOpenP2 === true : (d.activePhase==="knockouts" ? d.bettingOpen !== false : false);
       document.getElementById("bettingOpenP1").value = p1 ? "open" : "closed";
-      document.getElementById("bettingOpenP2").value = p2 ? "open" : "closed";
+      roundLocks = Object.assign({ prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false }, d.roundLocks || {});
     }
   } catch(e) {}
+  renderRoundLockGrid();
 
   container.innerHTML = matches.map(m => {
     const res = existingResults[m.id] || {};
@@ -3800,13 +4002,46 @@ async function savePhaseConfig() {
   if(!isAdmin) return;
   const phase = document.getElementById("phaseSelect").value;
   const p1 = document.getElementById("bettingOpenP1").value === "open";
-  const p2 = document.getElementById("bettingOpenP2").value === "open";
   try {
-    await col("config").doc("main").set({ activePhase: phase, bettingOpenP1: p1, bettingOpenP2: p2 }, { merge: true });
-    activePhase = phase; bettingOpenP1 = p1; bettingOpenP2 = p2;
+    await col("config").doc("main").set({ activePhase: phase, bettingOpenP1: p1 }, { merge: true });
+    activePhase = phase; bettingOpenP1 = p1;
     updatePhaseUI();
     showToast("✅ Phase configuration saved!");
   } catch(e) { showToast("Error: " + e.message, "error"); }
+}
+
+// ── 6 cadeados do mata-mata ──
+const ROUND_LOCK_DEFS = [
+  { key:"prematch", label:"Pré-mata (classificados)", emoji:"🎯", sub:"Escolher quem ocupa cada vaga da R32" },
+  { key:"R32", label:"32-avos · placar",  emoji:"⚽", sub:"Round of 32" },
+  { key:"R16", label:"Oitavas · placar",  emoji:"⚽", sub:"Round of 16" },
+  { key:"QF",  label:"Quartas · placar",  emoji:"⚽", sub:"Quartas de final" },
+  { key:"SF",  label:"Semis · placar",    emoji:"⚽", sub:"Semifinais" },
+  { key:"FINAL", label:"Final/3º · placar", emoji:"🏆", sub:"Final e disputa de 3º" },
+];
+function renderRoundLockGrid(){
+  const grid = document.getElementById("roundLockGrid");
+  if(!grid) return;
+  grid.innerHTML = ROUND_LOCK_DEFS.map(d=>{
+    const on = !!roundLocks[d.key];
+    return `<button type="button" class="lock-card${on?" on":""}" onclick="toggleRoundLock('${d.key}')">
+      <div class="lock-top">${on?"🔓":"🔒"} <span class="lock-name">${d.emoji} ${d.label}</span></div>
+      <div class="lock-sub">${d.sub}</div>
+      <div class="lock-state">${on?"ABERTO":"FECHADO"}</div>
+    </button>`;
+  }).join("");
+}
+async function toggleRoundLock(key){
+  if(!isAdmin) return;
+  roundLocks[key] = !roundLocks[key];
+  renderRoundLockGrid();
+  try{
+    await col("config").doc("main").set({ roundLocks }, { merge:true });
+    showToast(`${roundLocks[key]?"🔓 Aberto":"🔒 Fechado"}: ${ROUND_LOCK_DEFS.find(d=>d.key===key).label}`);
+  }catch(e){
+    roundLocks[key] = !roundLocks[key]; renderRoundLockGrid();
+    showToast("Erro ao salvar: "+e.message,"error");
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -4130,6 +4365,7 @@ async function loadPointsConfig() {
       document.getElementById("pts_winnerOnly").value = p.winnerOnly ?? 4;
       document.getElementById("pts_oneScore").value = p.oneScore ?? 3;
       const _db=document.getElementById("pts_diffBonus"); if(_db) _db.value = p.diffBonus ?? 2;
+      const _qp=document.getElementById("pts_qualifPts"); if(_qp) _qp.value = p.qualifPts ?? 5;
     }
   } catch(e) {}
 }
@@ -4141,6 +4377,7 @@ async function savePointsConfig() {
     winnerOnly: parseInt(document.getElementById("pts_winnerOnly").value),
     oneScore: parseInt(document.getElementById("pts_oneScore").value),
     diffBonus: parseInt((document.getElementById("pts_diffBonus")||{value:2}).value || 2),
+    qualifPts: parseInt((document.getElementById("pts_qualifPts")||{value:5}).value || 5),
   };
   try {
     await col("config").doc("main").set({ points: pts }, { merge: true });
@@ -4177,8 +4414,8 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v2.1";
-  var APP_BUILD = "Jun 20, 2026";
+  var APP_VERSION = "v2.3";
+  var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
 </body>
