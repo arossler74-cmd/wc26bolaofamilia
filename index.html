@@ -18,8 +18,8 @@
 /* ══════════════ Bracket — árvore horizontal convergente ══════════════ */
 .br-wrap{padding:4px 0 16px;width:100%;min-width:0;max-width:100%}
 /* nó (card de jogo) — compartilhado entre os dois layouts */
-.br-node{background:var(--card,#15205C);border:1px solid var(--border,#2A3470);border-left:4px solid var(--qc,#2A3470);border-radius:12px;padding:11px 12px}
-.br-node.br-tbd{opacity:.62}
+.br-node{background:var(--navy,#131A4A);border:1px solid var(--border,#2E3A7A);border-left:4px solid var(--qc,#2E3A7A);border-radius:12px;padding:11px 12px}
+.br-node.br-tbd{opacity:.9}
 .br-node.br-final{border-left-color:var(--gold,#F5B301);border-color:var(--gold,#F5B301)}
 .br-meta{font-size:10.5px;color:#AEB7E8;letter-spacing:.02em;margin-bottom:7px;display:flex;flex-wrap:wrap;gap:3px 8px;align-items:center}
 .br-team{display:flex;align-items:center;gap:8px;padding:4px 0;min-height:26px}
@@ -63,11 +63,17 @@
 /* ─── MOBILE (padrão): empilhado por rodada, agrupado por chave ─── */
 .br-tree{display:none}                 /* árvore horizontal só no desktop */
 .br-stack{display:block}
-.br-quad{border-radius:16px;padding:12px 12px 6px;margin:14px 0;border:1px solid var(--qc,#2A3470);background:rgba(255,255,255,.02)}
-.br-quad-h{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--qc,#fff);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.br-quad{border-radius:16px;padding:16px 14px 12px;margin:20px 0;border:1px solid var(--qc,#2A3470);background:rgba(13,19,54,.45)}
+.br-quad-h{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.6px;text-transform:uppercase;color:var(--qc,#fff);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .br-quad-h .dot{width:12px;height:12px;border-radius:50%;background:var(--qc)}
-.br-rgrid{display:flex;flex-direction:column;gap:10px}
-.br-rlabel{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:8px 0 -2px;font-weight:700}
+.br-round{margin-bottom:6px}
+.br-rgrid{display:flex;flex-direction:column;gap:16px}
+.br-rlabel{font-size:11px;color:#AEB7E8;text-transform:uppercase;letter-spacing:.7px;margin:18px 0 8px;font-weight:800}
+/* recuo progressivo das rodadas → impressão de chaveamento (só mobile) */
+.br-depth-1{margin-left:18px}
+.br-depth-2{margin-left:36px}
+.br-depth-1 .br-rlabel,.br-depth-2 .br-rlabel{position:relative}
+.br-depth-1 .br-rlabel::before,.br-depth-2 .br-rlabel::before{content:"↳";position:absolute;left:-14px;color:var(--qc,#7AA2FF);opacity:.6;font-weight:400}
 .br-center{margin-top:18px}
 .br-center .br-champ{max-width:340px;margin:14px auto}
 
@@ -82,8 +88,13 @@
   /* cada card vive num "slot" que cresce igual: assim o CENTRO de cada card
      cai sempre na mesma fração da altura da coluna, em qualquer coluna.
      min-height garante que 8 slots não comprimam os cards (sem sobreposição) */
-  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:165px}
+  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:150px}
   .br-col .br-node{width:144px}
+  /* densidade compacta do desktop (mobile usa o padrão mais espaçado) */
+  .br-node{padding:8px 10px}
+  .br-node .br-team{padding:2px 0;min-height:0;gap:7px}
+  .br-node .br-meta{font-size:9.5px;margin-bottom:4px}
+  .br-node .br-foot{font-size:10.5px;margin-top:5px}
   /* rótulo de coluna — altura fixa, presente em TODA coluna (inclusive links) */
   .br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:18px;line-height:18px;margin-bottom:0;flex:none}
   /* conectores entre colunas (cotovelos) — mesma estrutura de slots dos cards */
@@ -2543,15 +2554,15 @@ function _brByNo(no){ return KNOCKOUT_MATCHES.find(m=>m.mNo===no); }
 
 /* ── MOBILE: agrupado por chave, empilhado por rodada ── */
 function _brQuadHTML(q){
-  const grp = (label, nos) => {
+  const grp = (label, nos, depth) => {
     const nodes = nos.map(_brByNo).filter(Boolean).map(_brNode).join("");
-    return `<div class="br-rlabel">${label}</div><div class="br-rgrid">${nodes}</div>`;
+    return `<div class="br-round br-depth-${depth}"><div class="br-rlabel">${label}</div><div class="br-rgrid">${nodes}</div></div>`;
   };
   return `<div class="br-quad" style="--qc:${q.color}">
     <div class="br-quad-h"><span class="dot"></span>${q.label}</div>
-    ${grp("32-avos", q.r32)}
-    ${grp("Oitavas", q.r16)}
-    ${grp("Quartas", [q.qf])}
+    ${grp("32-avos", q.r32, 0)}
+    ${grp("Oitavas", q.r16, 1)}
+    ${grp("Quartas", [q.qf], 2)}
   </div>`;
 }
 
@@ -4469,7 +4480,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v2.6";
+  var APP_VERSION = "v2.7";
   var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
