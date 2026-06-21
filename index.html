@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light only">
-<meta name="supported-color-schemes" content="light">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <meta name="theme-color" content="#4256E8">
 <title>⚽ Copa do Mundo 2026 | Bolão da Família</title>
 <style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
@@ -24,8 +24,9 @@
 .br-meta{font-size:9.5px;color:var(--muted);letter-spacing:.02em;margin-bottom:4px;display:flex;flex-wrap:wrap;gap:3px 7px;align-items:center}
 .br-team{display:flex;align-items:center;gap:7px;padding:2px 0}
 .br-flag{width:22px;text-align:center;flex:none;font-size:13px}
-.br-flag img{height:14px;border-radius:2px;vertical-align:middle}
-.br-name{flex:1;font-size:12.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br-flag img,.br-flag .br-flag-img{height:14px;width:auto;border-radius:2px;vertical-align:middle}
+.br-flag-abbr{font-size:9px;font-weight:800;color:#fff}
+.br-name{flex:1;min-width:0;font-size:12.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px}
 .br-in{width:34px;height:30px;text-align:center;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;font-weight:800;font-size:14px;flex:none}
 .br-in:disabled{opacity:.4;cursor:not-allowed}
 .br-foot{font-size:10.5px;color:var(--muted);margin-top:5px;border-top:1px dashed var(--border,#2A3470);padding-top:4px;line-height:1.4}
@@ -38,7 +39,7 @@
 .br-pick:disabled{opacity:.5;cursor:not-allowed}
 .br-pick option{background:#232E6E;color:#fff}
 .br-pick option:disabled{color:#8089b5}
-.br-picktag{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--orange);background:rgba(232,115,12,.16);padding:1px 5px;border-radius:6px;margin-left:4px;vertical-align:middle}
+.br-picktag{flex:none;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:var(--orange);background:rgba(232,115,12,.16);padding:1px 5px;border-radius:6px;line-height:1.4}
 .br-name-tbd{opacity:.65;font-style:italic}
 /* cadeados do admin (mata-mata) */
 .lock-card{flex:1 1 150px;min-width:150px;max-width:220px;text-align:left;cursor:pointer;border-radius:14px;padding:12px 14px;border:1.5px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;transition:all .15s}
@@ -113,7 +114,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  color-scheme: light only;
+  color-scheme: dark;
   /* FIFA World Cup 26 Bracket Challenge palette */
   --fifa-blue:   #4256E8;   /* royal indigo hero background */
   --fifa-blue-2: #3344C9;   /* deeper blue for swoosh / depth */
@@ -1470,6 +1471,13 @@ function flagImg(team) {
   const img = `<img class="team-flag-img" src="https://flagcdn.com/w40/${code}.png" srcset="https://flagcdn.com/w80/${code}.png 2x" alt="${team}" loading="lazy" onerror="this.outerHTML='<span class=&quot;flag-abbr&quot;>${abbr}</span>'">`;
   return `<span class="flag-stack">${img}${fifaRankChip(team)}</span>`;
 }
+// versão compacta só com a bandeira (sem chip FIFA) — usada no chaveamento
+function _brFlag(team){
+  const code = FLAG_CODES[team];
+  if(!code) return "\u2754";
+  const abbr = FLAG_ABBR[team] || (team.slice(0,3).toUpperCase());
+  return `<img class="br-flag-img" src="https://flagcdn.com/w40/${code}.png" srcset="https://flagcdn.com/w80/${code}.png 2x" alt="${_brEsc(team)}" loading="lazy" onerror="this.outerHTML='<span class=&quot;br-flag-abbr&quot;>${abbr}</span>'">`;
+}
 
 // Approximate FIFA ranking points per team (factual rating data; used only to
 // seed an auto-prediction the user can then edit). Higher = stronger.
@@ -2443,12 +2451,12 @@ function _brNode(m){
   function rowHTML(side, realTeam, slot, label, inputId, val){
     let flg, nameHTML;
     if(realTeam){                       // time oficial já definido pelo resultado
-      flg = flagImg(realTeam); nameHTML = `<span class="br-name">${_brEsc(realTeam)}</span>`;
+      flg = _brFlag(realTeam); nameHTML = `<span class="br-name">${_brEsc(realTeam)}</span>`;
     } else {
       const pick = isR32 && _slotIsGroupPick(slot) ? _brQuali[`${m.id}:${side}`] : null;
       if(pick){                         // mostra o palpite do usuário com bandeira
-        flg = flagImg(pick);
-        nameHTML = `<span class="br-name">${_brEsc(pick)} <span class="br-picktag">palpite</span></span>`;
+        flg = _brFlag(pick);
+        nameHTML = `<span class="br-name">${_brEsc(pick)}<span class="br-picktag">palpite</span></span>`;
       } else {                          // ainda sem escolha → rótulo da vaga
         flg = "\u2754"; nameHTML = `<span class="br-name br-name-tbd">${_brEsc(label)}</span>`;
       }
@@ -4448,7 +4456,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v2.4";
+  var APP_VERSION = "v2.5";
   var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
