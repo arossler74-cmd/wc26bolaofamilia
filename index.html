@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#4256E8">
 <title>⚽ Copa do Mundo 2026 | Bolão da Família</title>
 <style>#payBanner,#buyinCard,#sbPrizeCard,.pay-card,.mf-btn[data-pay],#adminPhaseControl{display:none !important;}
 /* ── My points / rank card on top of bracket ── */
@@ -31,10 +34,12 @@
 .br-picks{margin-top:6px;border-top:1px dashed var(--border,#2A3470);padding-top:6px;display:flex;flex-direction:column;gap:5px}
 .br-pickrow{display:flex;align-items:center;gap:6px}
 .br-picklab{flex:none;min-width:46px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
-.br-pick{flex:1;height:28px;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;font-size:11.5px;font-weight:600;padding:0 6px;cursor:pointer;max-width:100%}
+.br-pick{flex:1;height:28px;border-radius:8px;border:1px solid var(--border,#2A3470);background:var(--card2,#232E6E);color:#fff;font-size:11.5px;font-weight:600;padding:0 6px;cursor:pointer;max-width:100%;color-scheme:dark;-webkit-appearance:menulist;appearance:menulist}
 .br-pick:disabled{opacity:.5;cursor:not-allowed}
-.br-pick option{background:var(--card2,#10183f);color:#fff}
-.br-pick option:disabled{color:#6b7280}
+.br-pick option{background:#232E6E;color:#fff}
+.br-pick option:disabled{color:#8089b5}
+.br-picktag{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--orange);background:rgba(232,115,12,.16);padding:1px 5px;border-radius:6px;margin-left:4px;vertical-align:middle}
+.br-name-tbd{opacity:.65;font-style:italic}
 /* cadeados do admin (mata-mata) */
 .lock-card{flex:1 1 150px;min-width:150px;max-width:220px;text-align:left;cursor:pointer;border-radius:14px;padding:12px 14px;border:1.5px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;transition:all .15s}
 .lock-card:hover{border-color:#7AA2FF}
@@ -108,6 +113,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap');
 
 :root {
+  color-scheme: light only;
   /* FIFA World Cup 26 Bracket Challenge palette */
   --fifa-blue:   #4256E8;   /* royal indigo hero background */
   --fifa-blue-2: #3344C9;   /* deeper blue for swoosh / depth */
@@ -2433,10 +2439,26 @@ function _brNode(m){
     foot=`<div class="br-foot">Palpite: <b>${bet.homeGoals} \u00d7 ${bet.awayGoals}</b></div>`;
   }
   // palpite de classificado (R32) aparece em _qualiRows abaixo dos slots
+  // — no topo do card, mostra o time escolhido (com bandeira) quando ainda não há time oficial —
+  function rowHTML(side, realTeam, slot, label, inputId, val){
+    let flg, nameHTML;
+    if(realTeam){                       // time oficial já definido pelo resultado
+      flg = flagImg(realTeam); nameHTML = `<span class="br-name">${_brEsc(realTeam)}</span>`;
+    } else {
+      const pick = isR32 && _slotIsGroupPick(slot) ? _brQuali[`${m.id}:${side}`] : null;
+      if(pick){                         // mostra o palpite do usuário com bandeira
+        flg = flagImg(pick);
+        nameHTML = `<span class="br-name">${_brEsc(pick)} <span class="br-picktag">palpite</span></span>`;
+      } else {                          // ainda sem escolha → rótulo da vaga
+        flg = "\u2754"; nameHTML = `<span class="br-name br-name-tbd">${_brEsc(label)}</span>`;
+      }
+    }
+    return `<div class="br-team"><span class="br-flag">${flg}</span>${nameHTML}<input class="br-in" id="${inputId}" type="number" min="0" max="20" inputmode="numeric" value="${val}" ${dis}></div>`;
+  }
   return `<div class="br-node ${resolved?'':'br-tbd'} ${isFinal?'br-final':''}" id="brc-${m.id}">
     <div class="br-meta">${meta}</div>
-    <div class="br-team"><span class="br-flag">${flag(hName)}</span><span class="br-name">${_brEsc(hName)}</span><input class="br-in" id="bh_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${hv}" ${dis}></div>
-    <div class="br-team"><span class="br-flag">${flag(aName)}</span><span class="br-name">${_brEsc(aName)}</span><input class="br-in" id="ba_${m.id}" type="number" min="0" max="20" inputmode="numeric" value="${av}" ${dis}></div>
+    ${rowHTML("home", home, m.homeSlot, hName, "bh_"+m.id, hv)}
+    ${rowHTML("away", away, m.awaySlot, aName, "ba_"+m.id, av)}
     ${isR32?_qualiRows(m):""}
     ${foot}
   </div>`;
@@ -2461,7 +2483,16 @@ async function _brMyStanding(results){
     const bsnap = await col("bets").get();
     const byUser = {}; // uid -> {pts,exact,name,qhits}
     bsnap.forEach(d=>{
-      const b=d.data(); const r=results[b.matchId];
+      const b=d.data();
+      // doc sentinela de classificados: pontua +5 por vaga certa
+      if(b.matchId==="QUALIPICKS"){
+        if(!b.slotPicks) return;
+        const u=byUser[b.userId]||(byUser[b.userId]={pts:0,exact:0,qhits:0,name:b.userName||"—"});
+        const qp=_brQualiPoints(b.slotPicks, results);
+        u.pts += qp.pts; u.qhits += qp.hits;
+        return;
+      }
+      const r=results[b.matchId];
       if(!r || r.homeGoals===undefined || r.homeGoals===null) return;
       const ko = KNOCKOUT_MATCHES.some(m=>m.id===b.matchId);
       if(!ko) return;
@@ -2469,16 +2500,6 @@ async function _brMyStanding(results){
       u.pts += calcPoints(b,r);
       if(isExactScore(b,r)) u.exact++;
     });
-    // ── pontos de classificados (quem ocupa cada vaga da R32) ──
-    try{
-      const qsnap = await col("qualipicks").get();
-      qsnap.forEach(d=>{
-        const q=d.data(); if(!q || !q.slotPicks) return;
-        const u=byUser[q.userId]||(byUser[q.userId]={pts:0,exact:0,qhits:0,name:q.userName||"—"});
-        const qp=_brQualiPoints(q.slotPicks, results);
-        u.pts += qp.pts; u.qhits += qp.hits;
-      });
-    }catch(e){}
     // garante que o jogador atual apareça mesmo zerado
     if(!byUser[currentUser.uid]) byUser[currentUser.uid]={pts:0,exact:0,qhits:0,name:currentUser.displayName||currentUser.email};
     const arr=Object.entries(byUser).map(([uid,v])=>({uid,...v}))
@@ -2589,15 +2610,15 @@ function loadBracket(){
   wrap.innerHTML=`<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   Promise.all([
     col("results").get().catch(()=>null),
-    col("bets").where("userId","==",currentUser.uid).get().catch(()=>null),
-    col("qualipicks").doc(currentUser.uid).get().catch(()=>null)
+    col("bets").where("userId","==",currentUser.uid).get().catch(()=>null)
   ])
-   .then(async ([rs,bs,qp])=>{
+   .then(async ([rs,bs])=>{
     const results={}, bets={};
     if(rs) rs.forEach(d=>results[d.id]=d.data());
     if(bs) bs.forEach(d=>{ const x=d.data(); bets[x.matchId]=x; });
     _brResults=results; _brBets=bets;
-    _brQuali = (qp && qp.exists && qp.data().slotPicks) ? qp.data().slotPicks : {};
+    // palpites de classificados ficam no doc sentinela bets/{uid}_QUALIPICKS
+    _brQuali = (bets["QUALIPICKS"] && bets["QUALIPICKS"].slotPicks) ? bets["QUALIPICKS"].slotPicks : {};
 
     // card do topo: meus pontos + ranking
     const me = await _brMyStanding(results);
@@ -2683,20 +2704,26 @@ async function saveBracket(){
   }
   if(btn){ btn.disabled=false; btn.textContent="\ud83d\udcbe Salvar palpites"; }
   // ── salva os palpites de classificados só se o cadeado pré-mata estiver aberto ──
-  let qSaved=false;
+  // Guardado na coleção 'bets' (já liberada nas regras) com id sentinela _QUALIPICKS.
+  let qSaved=false, qErrMsg="";
   if(_prematchOpen()){
     try{
-      await col("qualipicks").doc(currentUser.uid).set({
+      await col("bets").doc(`${currentUser.uid}_QUALIPICKS`).set({
         userId: currentUser.uid,
         userName: currentUser.displayName||currentUser.email,
+        matchId: "QUALIPICKS",
         slotPicks: _brQuali,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
       qSaved = Object.keys(_brQuali).length>0;
-    }catch(e){ err++; }
+    }catch(e){ err++; qErrMsg = (e&&e.code)?e.code:(e&&e.message)?e.message:String(e); }
   }
   const qN = Object.keys(_brQuali).length;
-  if(err) showToast(`Salvou ${saved} placar(es)${qSaved?` e ${qN} classificado(s)`:""}, ${err} falharam.`,"error");
+  if(err){
+    const detail = qErrMsg ? ` (${qErrMsg})` : "";
+    showToast(`Falha ao salvar${detail}. ${saved} placar(es) ok.`,"error", 6000);
+    console.error("saveBracket error:", qErrMsg);
+  }
   else if(saved||qSaved) showToast(`\u2705 ${saved} placar(es)${qSaved?` · ${qN} classificado(s)`:""} salvo(s)`);
   else showToast("Preencha algum placar ou escolha um classificado primeiro.","error");
   setTimeout(()=>{ document.querySelectorAll(".br-node").forEach(c=>c.style.borderColor=""); }, 2000);
@@ -3448,6 +3475,13 @@ async function loadScoreboard() {
     betsSnap.forEach(doc => {
       const bet = doc.data();
       if(!userMap[bet.userId]) return;   // skip admins, removed users, and non-players
+      // doc sentinela de classificados → +5 por vaga certa
+      if(bet.matchId==="QUALIPICKS"){
+        if(!bet.slotPicks) return;
+        if(!scores[bet.userId]) { scores[bet.userId] = 0; details[bet.userId] = {perfect:0, partial:0, exact:0}; }
+        scores[bet.userId] += _brQualiPoints(bet.slotPicks, results).pts;
+        return;
+      }
       (_sbBetsByUser[bet.userId] || (_sbBetsByUser[bet.userId] = {}))[bet.matchId] = bet;
       const result = results[bet.matchId];
       if(!result || result.homeGoals === undefined) return;
@@ -4414,7 +4448,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v2.3";
+  var APP_VERSION = "v2.4";
   var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
