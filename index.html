@@ -88,13 +88,19 @@
   /* cada card vive num "slot" que cresce igual: assim o CENTRO de cada card
      cai sempre na mesma fração da altura da coluna, em qualquer coluna.
      min-height garante que 8 slots não comprimam os cards (sem sobreposição) */
-  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:150px}
-  .br-col .br-node{width:144px}
+  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:210px}
+  .br-col{width:158px}
+  .br-col .br-node{width:158px}
   /* densidade compacta do desktop (mobile usa o padrão mais espaçado) */
   .br-node{padding:8px 10px}
   .br-node .br-team{padding:2px 0;min-height:0;gap:7px}
   .br-node .br-meta{font-size:9.5px;margin-bottom:4px}
   .br-node .br-foot{font-size:10.5px;margin-top:5px}
+  /* dropdowns de classificado dentro do card no desktop — compactos */
+  .br-node .br-picks{margin-top:5px;padding-top:5px;gap:4px}
+  .br-node .br-pickrow{gap:4px}
+  .br-node .br-picklab{min-width:38px;font-size:8.5px}
+  .br-node .br-pick{height:26px;font-size:10.5px;padding:0 4px}
   /* rótulo de coluna — altura fixa, presente em TODA coluna (inclusive links) */
   .br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:18px;line-height:18px;margin-bottom:0;flex:none}
   /* conectores entre colunas (cotovelos) — mesma estrutura de slots dos cards */
@@ -4487,7 +4493,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v3.1";
+  var APP_VERSION = "v3.2";
   var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
