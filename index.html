@@ -2390,7 +2390,8 @@ function _qualiSelectHTML(slot, key, disabled){
   html+=`<option value="">— escolher —</option>`;
   opts.forEach(o=>{
     const isTaken = taken.has(o.team) && o.team!==cur;
-    html+=`<option value="${_brEsc(o.team)}"${o.team===cur?" selected":""}${isTaken?" disabled":""}>${_brEsc(o.team)} (${o.group})${isTaken?" — escolhido":""}</option>`;
+    const base = `${_brEsc(o.team)} (${o.group})`;
+    html+=`<option value="${_brEsc(o.team)}" data-base="${base}"${o.team===cur?" selected":""}${isTaken?" disabled":""}>${base}${isTaken?" — escolhido":""}</option>`;
   });
   html+=`</select>`;
   return html;
@@ -2399,21 +2400,43 @@ function _qualiSelectHTML(slot, key, disabled){
 function onQualiPick(sel){
   const key=sel.getAttribute("data-key");
   if(sel.value) _brQuali[key]=sel.value; else delete _brQuali[key];
-  // preserva placares digitados mas ainda não salvos (a re-renderização lê de _brBets)
-  KNOCKOUT_MATCHES.forEach(m=>{
-    const hEl=document.getElementById("bh_"+m.id), aEl=document.getElementById("ba_"+m.id);
-    if(hEl&&aEl&&(hEl.value!==""||aEl.value!=="")){
-      const b=_brBets[m.id]||{matchId:m.id};
-      if(hEl.value!=="") b.homeGoals=parseInt(hEl.value);
-      if(aEl.value!=="") b.awayGoals=parseInt(aEl.value);
-      _brBets[m.id]=b;
-    }
+  // ── atualiza TODOS os dropdowns no lugar (sem re-render → sem resetar scroll) ──
+  const taken=new Set(); for(const k in _brQuali){ if(_brQuali[k]) taken.add(_brQuali[k]); }
+  document.querySelectorAll("select.br-pick").forEach(s=>{
+    const k=s.getAttribute("data-key"); const cur=_brQuali[k]||"";
+    Array.from(s.options).forEach(opt=>{
+      if(!opt.value) return;                       // "— escolher —"
+      const isTaken = taken.has(opt.value) && opt.value!==cur;
+      opt.disabled = isTaken;
+      const base = opt.getAttribute("data-base") || opt.textContent.replace(/ — escolhido$/,"");
+      opt.setAttribute("data-base", base);
+      opt.textContent = base + (isTaken ? " — escolhido" : "");
+    });
+    if(s.value !== cur) s.value = cur;              // mantém seleção coerente
   });
-  // re-render mantém a posição de scroll
-  const wrap=document.getElementById("bracketWrap");
-  const sx=wrap?wrap.scrollLeft:0, sy=window.scrollY;
-  _brRenderTree();
-  if(wrap) wrap.scrollLeft=sx; window.scrollTo(0,sy);
+  // ── atualiza a bandeira + nome do time escolhido no topo do card correspondente ──
+  const m = key.split(":")[0], side = key.split(":")[1];
+  const node = document.getElementById("brc-"+m);
+  if(node){
+    const rows = node.querySelectorAll(".br-team");
+    const row = side==="home" ? rows[0] : rows[1];
+    if(row){
+      const pick = _brQuali[key];
+      const flagEl = row.querySelector(".br-flag");
+      const nameEl = row.querySelector(".br-name");
+      if(pick){
+        if(flagEl) flagEl.innerHTML = _brFlag(pick);
+        if(nameEl){ nameEl.classList.remove("br-name-tbd");
+          nameEl.innerHTML = `${_brEsc(pick)}<span class="br-picktag">palpite</span>`; }
+      } else {
+        const mt = KNOCKOUT_MATCHES.find(x=>x.id===m);
+        const slot = side==="home" ? (mt&&mt.homeSlot) : (mt&&mt.awaySlot);
+        if(flagEl) flagEl.innerHTML = "\u2754";
+        if(nameEl){ nameEl.classList.add("br-name-tbd");
+          nameEl.textContent = _brSlotLabel(slot||""); }
+      }
+    }
+  }
 }
 // pontos de classificados do usuário atual, dados os resultados oficiais
 function _brQualiPoints(quali, results){
@@ -4504,7 +4527,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v3.4";
+  var APP_VERSION = "v3.5";
   var APP_BUILD = "Jun 21, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
