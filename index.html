@@ -60,69 +60,50 @@
 .br-savebar{position:sticky;bottom:0;background:linear-gradient(0deg,var(--fifa-blue,#15205C) 60%,transparent);padding:12px 0;display:flex;justify-content:center;z-index:5}
 .br-hint{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 12px;line-height:1.5}
 
-/* ─── MOBILE (padrão): empilhado por rodada, agrupado por chave ─── */
-.br-tree{display:none}                 /* árvore horizontal só no desktop */
-.br-stack{display:block}
-.br-quad{border-radius:16px;padding:16px 14px 12px;margin:20px 0;border:1px solid var(--qc,#2A3470);background:rgba(13,19,54,.45)}
-.br-quad-h{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.6px;text-transform:uppercase;color:var(--qc,#fff);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.br-quad-h .dot{width:12px;height:12px;border-radius:50%;background:var(--qc)}
-.br-round{margin-bottom:6px}
-.br-rgrid{display:flex;flex-direction:column;gap:16px}
-.br-rlabel{font-size:11px;color:#AEB7E8;text-transform:uppercase;letter-spacing:.7px;margin:18px 0 8px;font-weight:800}
-/* recuo progressivo das rodadas → impressão de chaveamento (só mobile) */
-.br-depth-1{margin-left:18px}
-.br-depth-2{margin-left:36px}
-.br-depth-1 .br-rlabel,.br-depth-2 .br-rlabel{position:relative}
-.br-depth-1 .br-rlabel::before,.br-depth-2 .br-rlabel::before{content:"↳";position:absolute;left:-14px;color:var(--qc,#7AA2FF);opacity:.6;font-weight:400}
-.br-center{margin-top:18px}
-.br-center .br-champ{max-width:340px;margin:14px auto}
-
-/* ─── DESKTOP: árvore horizontal de verdade ─── */
+/* ─── BRACKET ÚNICO (esquerda → direita), igual em mobile e desktop ─── */
+.br-stack{display:none}                /* layout antigo de quadrantes desativado */
+.br-tree{display:block;overflow-x:auto;overflow-y:hidden;padding:8px 0 18px;-webkit-overflow-scrolling:touch}
+.br-tree-inner{display:flex;align-items:stretch;gap:0;width:max-content;min-width:100%;padding:0 4px}
+.br-col{display:flex;flex-direction:column;width:176px;flex:none}
+/* cada card vive num "slot" que cresce igual: o CENTRO de cada card cai sempre
+   na mesma fração da altura da coluna → cotovelos alinhados entre colunas */
+.br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:120px;padding:6px 0}
+.br-col .br-node{width:176px;box-sizing:border-box}
+/* densidade compacta */
+.br-node{padding:9px 11px;overflow:hidden}
+.br-node .br-team{padding:3px 0;min-height:0;gap:6px}
+.br-node .br-name{font-size:12px}
+.br-node .br-meta{font-size:9px;margin-bottom:4px;gap:2px 6px}
+.br-node .br-in{width:30px;height:28px;font-size:13px}
+.br-node .br-in-lock{width:30px;height:28px}
+.br-node .br-foot{font-size:10px;margin-top:5px}
+/* rótulo de coluna — altura fixa, presente em TODA coluna (inclusive links) */
+.br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:18px;line-height:18px;margin-bottom:0;flex:none}
+/* conectores entre colunas (cotovelos) — sempre apontando da esquerda p/ direita */
+.br-link{flex:none;width:22px;display:flex;flex-direction:column;position:relative}
+.br-link .elbow{flex:1 1 0;position:relative;min-height:0}
+.br-link .elbow::before{content:"";position:absolute;left:0;top:25%;bottom:25%;width:50%;border:2px solid var(--border,#2A3470);border-left:none;border-radius:0 8px 8px 0}
+.br-link .elbow::after{content:"";position:absolute;top:50%;width:50%;height:2px;background:var(--border,#2A3470);right:0}
+/* coluna final: a Final fica centralizada na altura da semifinal;
+   campeão e disputa de 3º descem logo abaixo, sem desalinhar a Final */
+.br-col-final{justify-content:flex-start}
+.br-final-center{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.br-final-anchor{position:relative}
+.br-slot-final{flex:none;min-height:0;padding:0}
+/* campeão + 3º fluem ABAIXO do card da Final sem empurrar o centro */
+.br-final-extra{position:absolute;top:100%;left:0;right:0;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.br-3rd-top{margin-top:6px}
+.br-node-wrap{display:flex;flex-direction:column}
+.br-col-final .br-champ{width:176px;margin:0;padding:12px 10px}
+.br-col-final .br-champ .cup{font-size:34px}
+.br-col-final .br-champ .who{font-size:18px}
+/* dica de rolagem */
+.br-scrollhint{display:block;font-size:11px;color:var(--muted);text-align:center;margin:-2px 0 8px}
 @media(min-width:980px){
   .bets-main{max-width:none;padding-left:24px;padding-right:24px}
-  .bets-main .section-header,.bets-main .br-hint,.bets-main .br-mecard{max-width:1100px;margin-left:auto;margin-right:auto}
-  .br-stack{display:none}
-  .br-tree{display:block;overflow-x:auto;overflow-y:hidden;padding:8px 0 18px;-webkit-overflow-scrolling:touch}
-  .br-tree-inner{display:flex;align-items:stretch;gap:0;width:max-content;min-width:100%;justify-content:center;padding:0 4px}
-  .br-col{display:flex;flex-direction:column;width:176px;flex:none}
-  /* cada card vive num "slot" que cresce igual: assim o CENTRO de cada card
-     cai sempre na mesma fração da altura da coluna, em qualquer coluna.
-     min-height garante que 8 slots não comprimam os cards (sem sobreposição) */
-  .br-slot{flex:1 1 0;display:flex;flex-direction:column;justify-content:center;min-height:226px;padding:6px 0}
-  .br-col .br-node{width:176px;box-sizing:border-box}
-  /* densidade compacta do desktop (mobile usa o padrão mais espaçado) */
-  .br-node{padding:9px 11px;overflow:hidden}
-  .br-node .br-team{padding:3px 0;min-height:0;gap:6px}
-  .br-node .br-name{font-size:12px}
-  .br-node .br-meta{font-size:9px;margin-bottom:4px;gap:2px 6px}
-  .br-node .br-in{width:30px;height:28px;font-size:13px}
-  .br-node .br-in-lock{width:30px;height:28px}
-  .br-node .br-foot{font-size:10px;margin-top:5px}
-  /* dropdowns de classificado dentro do card no desktop — compactos e contidos */
-  .br-node .br-picks{margin-top:6px;padding-top:6px;gap:5px}
-  .br-node .br-pickrow{gap:5px}
-  .br-node .br-picklab{min-width:34px;font-size:8px}
-  .br-node .br-pick{flex:1;min-width:0;width:auto;max-width:100%;height:26px;font-size:10px;padding:0 4px}
-  /* rótulo de coluna — altura fixa, presente em TODA coluna (inclusive links) */
-  .br-coltop{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;text-align:center;height:18px;line-height:18px;margin-bottom:0;flex:none}
-  /* conectores entre colunas (cotovelos) — mesma estrutura de slots dos cards */
-  .br-link{flex:none;width:30px;display:flex;flex-direction:column;position:relative}
-  .br-link .elbow{flex:1 1 0;position:relative;min-height:0}
-  .br-link .elbow::before{content:"";position:absolute;left:0;top:25%;bottom:25%;width:50%;border:2px solid var(--border,#2A3470);border-left:none;border-radius:0 8px 8px 0}
-  .br-link.flip .elbow::before{left:auto;right:0;border:2px solid var(--border,#2A3470);border-right:none;border-radius:8px 0 0 8px}
-  .br-link .elbow::after{content:"";position:absolute;top:50%;width:50%;height:2px;background:var(--border,#2A3470);right:0}
-  .br-link.flip .elbow::after{left:0;right:auto}
-  /* coluna do centro: semis em cima, campeão no meio, final/3º embaixo */
-  .br-center-stack{display:flex;flex-direction:column;align-items:center;gap:10px;width:180px;flex:none;justify-content:center}
-  .br-center-stack .br-coltop{width:100%}
-  .br-center-stack .br-node{width:174px}
-  .br-center-stack .br-champ{width:174px;margin:2px 0;padding:12px 10px}
-  .br-center-stack .br-champ .cup{font-size:34px}
-  .br-center-stack .br-champ .who{font-size:18px}
-  /* dica de rolagem */
-  .br-scrollhint{display:block;font-size:11px;color:var(--muted);text-align:center;margin:-6px 0 8px}
+  .bets-main .section-header,.bets-main .br-hint,.bets-main .br-mecard,.bets-main .br-wrap,.bets-main .br-scrollhint,.bets-main .br-savebar{max-width:1100px;margin-left:auto;margin-right:auto}
+  .br-slot{min-height:150px}
 }
-.br-scrollhint{display:none}
 </style>
 
 <!-- Firebase -->
@@ -996,20 +977,23 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="score-row"><span class="score-pts">4</span><span class="score-ico">👍</span><span class="score-desc"><strong>Só o vencedor certo</strong> (placar errado)</span></div>
         <div class="score-row"><span class="score-pts">3</span><span class="score-ico">➕</span><span class="score-desc">Acertou os gols de um time, mas <strong>errou quem venceu</strong></span></div>
         <div class="score-row bonus"><span class="score-pts">+2</span><span class="score-ico">📐</span><span class="score-desc"><strong>Bônus de diferença de gols</strong> — acertou por quanto o jogo terminou (ex.: previu 2×0 e foi 3×1, ambos diferença de 2). Soma em cima dos pontos acima.</span></div>
-        <div class="score-row bonus"><span class="score-pts">+5</span><span class="score-ico">🎯</span><span class="score-desc"><strong>Classificado certo</strong> — para cada seleção que você acertar nas vagas dos 32-avos (veja o passo 4).</span></div>
         <div class="score-row miss"><span class="score-pts">0</span><span class="score-ico">❌</span><span class="score-desc">Não acertou nada</span></div>
       </div>
       <p class="howto-note">Em jogos do mata-mata, vale o resultado do <strong>tempo normal</strong> para a contagem de pontos. Quem somar mais pontos no total lidera o ranking.</p>
     </div>
 
-    <!-- 4. PALPITE DE CLASSIFICADOS -->
+    <!-- 4. MULTIPLICADOR POR RODADA -->
     <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">4</span> Palpite quem se classifica</div>
-      <p class="howto-p">Direto no chaveamento, em cada vaga dos <strong>32-avos</strong> tem um menu para você escolher <strong>qual seleção</strong> vai ocupar aquele lugar (ex.: quem será o 1º do Grupo E). Cada acerto vale <strong style="color:var(--orange)">+5 pontos</strong>.</p>
-      <div class="step"><div class="step-ico">🧠</div><div>O menu é <strong>inteligente</strong>: numa vaga “1º do Grupo E” só aparecem os times do Grupo E; numa vaga de “melhor 3º” aparecem os times de todos os grupos elegíveis — com o grupo indicado ao lado do nome.</div></div>
-      <div class="step"><div class="step-ico">🚫</div><div>Cada seleção só pode ser usada <strong>uma vez</strong> em todo o chaveamento. Ao escolher um time numa vaga, ele some das outras.</div></div>
-      <div class="step"><div class="step-ico">💾</div><div>Escolha os classificados e clique em <strong>💾 Salvar palpites</strong> — o mesmo botão salva placares e classificados juntos.</div></div>
-      <p class="howto-note">Quando o resultado oficial define quem realmente ficou em cada vaga, você ganha +5 por seleção certa. O menu desaparece e o time real aparece com a bandeira.</p>
+      <div class="howto-h"><span class="howto-num">4</span> Quanto mais avança, mais vale</div>
+      <p class="howto-p">Os pontos da tabela acima são <strong>multiplicados</strong> em cada fase do mata-mata. Acertar nas fases finais vale muito mais do que nos 32-avos.</p>
+      <div class="score-table">
+        <div class="score-row"><span class="score-pts">×1,0</span><span class="score-ico">⚽</span><span class="score-desc"><strong>32-avos</strong> — placar exato = 15 pts</span></div>
+        <div class="score-row"><span class="score-pts">×1,2</span><span class="score-ico">⚽</span><span class="score-desc"><strong>Oitavas</strong> — placar exato = 18 pts</span></div>
+        <div class="score-row"><span class="score-pts">×1,4</span><span class="score-ico">⚽</span><span class="score-desc"><strong>Quartas</strong> — placar exato = 21 pts</span></div>
+        <div class="score-row"><span class="score-pts">×1,6</span><span class="score-ico">⚽</span><span class="score-desc"><strong>Semifinais</strong> — placar exato = 24 pts</span></div>
+        <div class="score-row bonus"><span class="score-pts">×2,0</span><span class="score-ico">🏆</span><span class="score-desc"><strong>Final e 3º lugar</strong> — placar exato = 30 pts</span></div>
+      </div>
+      <p class="howto-note">O administrador pode ajustar esses multiplicadores. Os valores acima são o padrão.</p>
     </div>
 
     <div class="howto-cta">
@@ -1209,7 +1193,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     <!-- ── 6 CADEADOS DO MATA-MATA ── -->
     <div class="card" style="margin-bottom:20px">
       <div class="card-header"><strong>🔐 Cadeados do Mata-Mata</strong></div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Abra ou feche cada etapa independentemente. <b>Pré-mata</b> libera a escolha de quem se classifica (qualquer time em qualquer vaga). As demais liberam o palpite de <b>placar</b> de cada rodada — abra-as só quando os confrontos já estiverem definidos. Conforme os resultados oficiais chegam, os times reais preenchem as chaves e a pontuação dos classificados é somada automaticamente.</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Abra ou feche cada rodada independentemente. Cada uma libera o palpite de <b>placar</b> da rodada — abra-as só quando os confrontos já estiverem definidos. Os times já entram definidos nas chaves e, conforme os resultados oficiais chegam, os vencedores avançam automaticamente.</div>
       <div id="roundLockGrid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
     </div>
 
@@ -1302,7 +1286,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
         <div class="card-header"><strong>Points per Prediction</strong></div>
         <div class="points-row">
           <div><div class="points-label">🎯 Exact Score</div><div class="points-sub">Correct winner + both team goals</div></div>
-          <input class="points-input" id="pts_perfect" type="number" value="15" min="0" max="99" />
+          <input class="points-input" id="pts_perfect" type="number" value="15" min="0" max="99" oninput="_renderMultPreview()" />
         </div>
         <div class="points-row">
           <div><div class="points-label">✅ Vencedor + 1 placar</div><div class="points-sub">Vencedor certo + gols de um dos times</div></div>
@@ -1324,11 +1308,41 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
           <div><div class="points-label">📐 Diferença de Gols</div><div class="points-sub">Bônus por acertar o saldo do jogo (vale desde os 32)</div></div>
           <input class="points-input" id="pts_diffBonus" type="number" value="2" min="0" max="99" />
         </div>
-        <div class="points-row">
+        <div class="points-row" style="display:none">
           <div><div class="points-label">🎯 Classificado certo</div><div class="points-sub">Por seleção certa em cada vaga dos 32-avos</div></div>
           <input class="points-input" id="pts_qualifPts" type="number" value="5" min="0" max="99" />
         </div>
-        <button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="savePointsConfig()">Save Configuration</button>
+        <button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="savePointsConfig()">Salvar configuração</button>
+      </div>
+
+      <!-- ── Multiplicador por rodada ── -->
+      <div class="card">
+        <div class="card-header"><strong>Multiplicador por rodada</strong></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+          Os pontos base acima são <b>multiplicados</b> pelo fator de cada rodada. Ex.: placar exato 15 pts × 1,4 nas Quartas = <b>21 pts</b>. Use 1,0 para não dar bônus.
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">⚽ 32-avos (R32)</div><div class="points-sub">Round of 32</div></div>
+          <input class="points-input" id="mult_R32" type="number" value="1.0" min="0" max="9" step="0.1" oninput="_renderMultPreview()" />
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">⚽ Oitavas (R16)</div><div class="points-sub">Round of 16</div></div>
+          <input class="points-input" id="mult_R16" type="number" value="1.2" min="0" max="9" step="0.1" oninput="_renderMultPreview()" />
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">⚽ Quartas (QF)</div><div class="points-sub">Quartas de final</div></div>
+          <input class="points-input" id="mult_QF" type="number" value="1.4" min="0" max="9" step="0.1" oninput="_renderMultPreview()" />
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">⚽ Semis (SF)</div><div class="points-sub">Semifinais</div></div>
+          <input class="points-input" id="mult_SF" type="number" value="1.6" min="0" max="9" step="0.1" oninput="_renderMultPreview()" />
+        </div>
+        <div class="points-row">
+          <div><div class="points-label">🏆 Final / 3º</div><div class="points-sub">Final e disputa de 3º lugar</div></div>
+          <input class="points-input" id="mult_FINAL" type="number" value="2.0" min="0" max="9" step="0.1" oninput="_renderMultPreview()" />
+        </div>
+        <button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="savePointsConfig()">Salvar configuração</button>
+        <div id="multPreview" style="margin-top:14px;padding:12px;background:var(--dark);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.8"></div>
       </div>
       <div class="card">
         <div class="card-header"><strong>Legend</strong></div>
@@ -1760,7 +1774,13 @@ const ALL_MATCHES = [...GROUP_MATCHES, ...KNOCKOUT_MATCHES];
 let db, auth;
 let currentUser = null;
 let isAdmin = false;
-let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, diffBonus: 2, qualifPts: 5 };
+let pointsConfig = { perfect: 15, winnerOne: 7, winnerOnly: 4, oneScore: 3, diffBonus: 2, qualifPts: 5,
+  // multiplicador de pontos por rodada (admin edita). base × mult = pontos finais.
+  roundMult: { R32:1.0, R16:1.2, QF:1.4, SF:1.6, FINAL:2.0 } };
+// ── Fase de palpites de classificados (pré-mata) DESATIVADA ──
+// Os times já entram definidos nos slots (SLOT_TEAMS) + auto-preenchimento ESPN.
+// Mantido como kill-switch para não quebrar referências antigas no código.
+const QUALI_PICKS_ENABLED = false;
 let activePhase = "groups";
 let bettingOpenP1 = true;   // Phase 1 — Classification (groups)
 let bettingOpenP2 = false;  // Phase 2 — Brackets (knockouts)
@@ -1780,7 +1800,7 @@ function _lockKeyForRound(round){
 // placar daquela rodada está aberto para apostas?
 function _roundScoreOpen(round){ const k=_lockKeyForRound(round); return k?!!roundLocks[k]:false; }
 // palpite de classificados (pré-mata) está aberto?
-function _prematchOpen(){ return !!roundLocks.prematch; }
+function _prematchOpen(){ return QUALI_PICKS_ENABLED && !!roundLocks.prematch; }
 let inviteCode = null;      // active invite token (admin-managed)
 let pendingInvite = null;   // invite token from URL on this visit
 let pendingAdminInvite = null;  // single-use ADMIN invite token from URL (?ainvite=)
@@ -1958,7 +1978,8 @@ async function loadConfig() {
     const cfg = await col("config").doc("main").get();
     if(cfg.exists) {
       const data = cfg.data();
-      pointsConfig = Object.assign({ perfect:15, winnerOne:7, winnerOnly:4, oneScore:3, diffBonus:2, qualifPts:5 }, data.points || {});
+      pointsConfig = Object.assign({ perfect:15, winnerOne:7, winnerOnly:4, oneScore:3, diffBonus:2, qualifPts:5, roundMult:{ R32:1.0, R16:1.2, QF:1.4, SF:1.6, FINAL:2.0 } }, data.points || {});
+      if(!pointsConfig.roundMult) pointsConfig.roundMult = { R32:1.0, R16:1.2, QF:1.4, SF:1.6, FINAL:2.0 };
       activePhase = data.activePhase || "groups";
       // Back-compat with old single `bettingOpen`
       if(data.bettingOpenP1 !== undefined) bettingOpenP1 = data.bettingOpenP1 !== false;
@@ -2300,6 +2321,25 @@ function scrollToToday(){
 let _brResults = {}, _brBets = {}, _brRO = false;
 function _brEsc(s){ return String(s==null?"":s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
+// ── Classificados OFICIAIS já definidos (override manual de slot → seleção) ──
+// Preenche os times que já se classificaram na fase de grupos, com bandeira,
+// sem depender de placares de grupo. Slots ausentes continuam "A definir" e
+// são resolvidos automaticamente pelos resultados oficiais (ESPN) quando saírem.
+// Atualize aqui conforme os grupos forem encerrando. (Atualizado 27/Jun/2026)
+const SLOT_TEAMS = {
+  "1A":"Mexico",   "2A":"South Africa",
+  "1B":"Switzerland", "2B":"Canada",   "3B":"Bosnia",
+  "1C":"Brazil",   "2C":"Morocco",
+  "1D":"United States", "2D":"Australia",
+  "1E":"Germany",  "2E":"Ivory Coast", "3E":"Ecuador",
+  "1F":"Netherlands", "2F":"Japan",    "3F":"Sweden",
+  "1G":"Belgium",  "2G":"Egypt",
+  "1H":"Spain",    "2H":"Cape Verde",
+  "1I":"France",   "2I":"Norway",
+  "1J":"Argentina"
+  // 2J, grupos K/L e melhores 3ºs ainda em aberto → resolvidos ao vivo pelo ESPN
+};
+
 // Real group standings from results (only when the whole group has finished).
 function _koGroupOrder(group, results){
   const gms = GROUP_MATCHES.filter(m => m.group === group);
@@ -2320,6 +2360,8 @@ function _koGroupOrder(group, results){
 // Resolve a slot code to a real team name, or null = "A definir".
 function _koResolve(slot, results){
   if(!slot) return null;
+  // 1) override oficial: time já classificado e fixado em SLOT_TEAMS
+  if(SLOT_TEAMS[slot]) return SLOT_TEAMS[slot];
   const c = slot[0];
   if(c==="1" || c==="2"){
     const { order, complete } = _koGroupOrder(slot.slice(1), results);
@@ -2440,6 +2482,7 @@ function onQualiPick(sel){
 }
 // pontos de classificados do usuário atual, dados os resultados oficiais
 function _brQualiPoints(quali, results){
+  if(!QUALI_PICKS_ENABLED) return {pts:0, hits:0};  // fase desativada
   const per = pointsConfig.qualifPts || 0;
   if(!per) return {pts:0, hits:0};
   // normaliza chaves: aceita tanto "R32_73:home" (memória) quanto "R32_73__home" (Firestore)
@@ -2499,7 +2542,7 @@ function _brNode(m){
     if(realTeam){                       // time oficial já definido pelo resultado
       flg = _brFlag(realTeam); nameHTML = `<span class="br-name">${_brEsc(realTeam)}</span>`;
     } else {
-      const pick = isR32 && _slotIsGroupPick(slot) ? _brQuali[`${m.id}:${side}`] : null;
+      const pick = QUALI_PICKS_ENABLED && isR32 && _slotIsGroupPick(slot) ? _brQuali[`${m.id}:${side}`] : null;
       if(pick){                         // mostra o palpite do usuário com bandeira
         flg = _brFlag(pick);
         nameHTML = `<span class="br-name">${_brEsc(pick)}<span class="br-picktag">palpite</span></span>`;
@@ -2526,6 +2569,7 @@ function _brNode(m){
 }
 // linhas de dropdown de classificados (R32) — exibidas abaixo dos slots quando ainda não há time oficial
 function _qualiRows(m){
+  if(!QUALI_PICKS_ENABLED) return "";   // fase de classificados desativada
   const homeReal=_koResolve(m.homeSlot,_brResults), awayReal=_koResolve(m.awaySlot,_brResults);
   const rows=[];
   // dropdown só fica editável com o cadeado "pré-mata" aberto (e fora do modo admin)
@@ -2595,74 +2639,62 @@ function _brQuadHTML(q){
   </div>`;
 }
 
-/* ── DESKTOP: árvore horizontal convergente (igual à imagem de referência) ──
-   Lado esquerdo: chaves Azul + Ciano → Semi 1 (M101)
-   Lado direito : chaves Verde + Vermelha → Semi 2 (M102)
-   Centro       : Final (M104) + Campeão + Disputa de 3º (M103)         */
-function _brColHTML(top, nos, flip, qcByNo){
-  // coluna de nós: cada card num slot que cresce igual (centro previsível)
+/* ── BRACKET ÚNICO, esquerda → direita (estilo ESPN) ──
+   Uma só direção: 32-avos (16) → Oitavas (8) → Quartas (4) → Semis (2) → Final (1) → Campeão.
+   Ordem vertical preservando as ligações retas entre as colunas.                   */
+// ordem top→bottom de cada coluna (números de jogo FIFA)
+const BR_ORDER = {
+  r32: [74,77, 73,75, 83,84, 81,82, 76,78, 79,80, 86,88, 85,87],
+  r16: [89, 90, 93, 94, 91, 92, 95, 96],
+  qf:  [97, 98, 99, 100],
+  sf:  [101, 102],
+  fin: [104]
+};
+function _brColHTML(top, nos){
   const cells = nos.map(no=>{
     const m=_brByNo(no); if(!m) return "";
-    const qc = (qcByNo && qcByNo[no]) || "var(--border)";
-    return `<div class="br-slot" style="--qc:${qc}">${_brNode(m)}</div>`;
+    return `<div class="br-slot">${_brNode(m)}</div>`;
   }).join("");
   return `<div class="br-col"><div class="br-coltop">${top}</div>${cells}</div>`;
 }
-function _brLinkHTML(count, flip){
-  // mesmo nº de slots que de elbows; coltop vazio para alinhar com as colunas
+function _brLinkHTML(count){
   let el=""; for(let i=0;i<count;i++) el+=`<div class="elbow"></div>`;
-  return `<div class="br-link${flip?" flip":""}"><div class="br-coltop"></div>${el}</div>`;
+  return `<div class="br-link"><div class="br-coltop"></div>${el}</div>`;
 }
 function _brTreeHTML(){
-  // mapa cor por nº de jogo, para a borda colorida dos cards na árvore
-  const qcByNo={};
-  BR_QUADS.forEach(q=>{ [...q.r32,...q.r16,q.qf].forEach(n=>qcByNo[n]=q.color); });
-
-  const blue =BR_QUADS.find(q=>q.key==="blue"),  teal=BR_QUADS.find(q=>q.key==="teal");
-  const green=BR_QUADS.find(q=>q.key==="green"), red =BR_QUADS.find(q=>q.key==="red");
-
-  // ── LADO ESQUERDO (lê da esquerda p/ o centro): R32 → R16 → QF → SF ──
-  const L_r32 = [...blue.r32, ...teal.r32];           // 8 jogos
-  const L_r16 = [...blue.r16, ...teal.r16];           // 4 jogos
-  const L_qf  = [blue.qf, teal.qf];                   // 2 jogos
-  const left = `
-    ${_brColHTML("32-avos", L_r32, false, qcByNo)}
-    ${_brLinkHTML(4,false)}
-    ${_brColHTML("Oitavas", L_r16, false, qcByNo)}
-    ${_brLinkHTML(2,false)}
-    ${_brColHTML("Quartas", L_qf, false, qcByNo)}
-    ${_brLinkHTML(1,false)}
-    ${_brColHTML("Semifinal", [101], false, qcByNo)}`;
-
-  // ── LADO DIREITO (espelhado: do centro p/ a direita) ──
-  const R_r32 = [...green.r32, ...red.r32];
-  const R_r16 = [...green.r16, ...red.r16];
-  const R_qf  = [green.qf, red.qf];
-  const right = `
-    ${_brColHTML("Semifinal", [102], true, qcByNo)}
-    ${_brLinkHTML(1,true)}
-    ${_brColHTML("Quartas", R_qf, true, qcByNo)}
-    ${_brLinkHTML(2,true)}
-    ${_brColHTML("Oitavas", R_r16, true, qcByNo)}
-    ${_brLinkHTML(4,true)}
-    ${_brColHTML("32-avos", R_r32, true, qcByNo)}`;
-
-  // ── CENTRO: Final + Campeão + 3º lugar ──
   const champ=_koResolve("W104",_brResults);
   const champBox=`<div class="br-champ">
       <div class="cup">\ud83c\udfc6</div>
       <div class="clab">Campeão</div>
       <div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div>
     </div>`;
-  const center = `<div class="br-center-stack">
+  // coluna final: Final centralizada na altura da semifinal; campeão e 3º logo abaixo
+  const finalCol = `<div class="br-col br-col-final">
       <div class="br-coltop">Final</div>
-      ${_brNode(_brByNo(104))}
-      ${champBox}
-      <div class="br-coltop">3º Lugar</div>
-      ${_brNode(_brByNo(103))}
+      <div class="br-final-center">
+        <div class="br-final-anchor">
+          <div class="br-slot br-slot-final">${_brNode(_brByNo(104))}</div>
+          <div class="br-final-extra">
+            ${champBox}
+            <div class="br-coltop br-3rd-top">3º Lugar</div>
+            <div class="br-node-wrap">${_brNode(_brByNo(103))}</div>
+          </div>
+        </div>
+      </div>
     </div>`;
 
-  return `<div class="br-scrollhint">↔ arraste para o lado para ver todo o chaveamento</div><div class="br-tree"><div class="br-tree-inner">${left}${center}${right}</div></div>`;
+  const inner = `
+    ${_brColHTML("32-avos", BR_ORDER.r32)}
+    ${_brLinkHTML(8)}
+    ${_brColHTML("Oitavas", BR_ORDER.r16)}
+    ${_brLinkHTML(4)}
+    ${_brColHTML("Quartas", BR_ORDER.qf)}
+    ${_brLinkHTML(2)}
+    ${_brColHTML("Semifinal", BR_ORDER.sf)}
+    ${_brLinkHTML(1)}
+    ${finalCol}`;
+
+  return `<div class="br-scrollhint">↔ arraste para o lado para ver todo o chaveamento</div><div class="br-tree"><div class="br-tree-inner br-ltr">${inner}</div></div>`;
 }
 function loadBracket(){
   const wrap=document.getElementById("bracketWrap"); if(!wrap) return;
@@ -2703,32 +2735,12 @@ function loadBracket(){
 let _brMeCard = "";
 function _brRenderTree(){
   const wrap=document.getElementById("bracketWrap"); if(!wrap) return;
-  const results=_brResults;
-  // ── MOBILE: empilhado por chave + centro ──
-  const champ=_koResolve("W104",results);
-  const champBox = `<div class="br-champ">
-      <div class="cup">\ud83c\udfc6</div>
-      <div class="clab">Campeão</div>
-      <div class="who">${champ?(flagImg(champ)+" "+_brEsc(champ)):"A definir"}</div>
-    </div>`;
-  const quadsHTML = BR_QUADS.map(_brQuadHTML).join("");
-  const centerStack = `<div class="br-center">
-    <div class="br-rlabel" style="text-align:center">Semifinais</div>
-    <div class="br-rgrid">${_brNode(_brByNo(101))}${_brNode(_brByNo(102))}</div>
-    ${champBox}
-    <div class="br-rlabel" style="text-align:center">Final</div>
-    <div class="br-rgrid">${_brNode(_brByNo(104))}</div>
-    <div class="br-rlabel" style="text-align:center">Disputa de 3º Lugar</div>
-    <div class="br-rgrid">${_brNode(_brByNo(103))}</div>
-  </div>`;
-  const stack = `<div class="br-stack">${quadsHTML}${centerStack}</div>`;
-  // ── DESKTOP: árvore horizontal convergente ──
+  // ── BRACKET ÚNICO (esquerda → direita), igual em desktop e mobile ──
   const tree = _brTreeHTML();
   // ── banner de status dos cadeados (o que está aberto agora) ──
   let statusBanner = "";
   if(!_brRO){
     const openRounds = [];
-    if(_prematchOpen()) openRounds.push("classificados (pré-mata)");
     [["R32","32-avos"],["R16","oitavas"],["QF","quartas"],["SF","semis"],["FINAL","final/3º"]]
       .forEach(([k,lab])=>{ if(roundLocks[k]) openRounds.push("placar das "+lab); });
     if(openRounds.length){
@@ -2737,9 +2749,7 @@ function _brRenderTree(){
       statusBanner = '<div class="br-hint" style="margin-top:10px">🔒 As apostas estão <b>fechadas</b> no momento. Aguarde o admin liberar a próxima rodada.</div>';
     }
   }
-  const pickHint = (_brRO || !_prematchOpen()) ? "" :
-    '<div class="br-hint" style="margin-top:6px">🎯 Palpite <b>quem se classifica</b> em cada vaga dos 32-avos: <b style="color:var(--orange)">+'+(pointsConfig.qualifPts||5)+' pts</b> por seleção certa. Cada time só pode ser usado uma vez.</div>';
-  wrap.innerHTML = _brMeCard + `<div class="br-wrap">${tree}${stack}</div>` + statusBanner + pickHint +
+  wrap.innerHTML = _brMeCard + `<div class="br-wrap">${tree}</div>` + statusBanner +
     (_brRO
       ? '<div class="br-hint">👁️ Visão do admin (somente leitura). Os jogadores apostam por aqui.</div>'
       : '<div class="br-savebar"><button class="btn btn-gold" id="brSaveBtn" onclick="saveBracket()">\ud83d\udcbe Salvar palpites</button></div>');
@@ -2793,7 +2803,7 @@ async function saveBracket(){
     console.error("saveBracket error:", qErrMsg);
   }
   else if(saved||qSaved) showToast(`\u2705 ${saved} placar(es)${qSaved?` · ${qN} classificado(s)`:""} salvo(s)`);
-  else showToast("Preencha algum placar ou escolha um classificado primeiro.","error");
+  else showToast("Preencha algum placar primeiro.","error");
   setTimeout(()=>{ document.querySelectorAll(".br-node").forEach(c=>c.style.borderColor=""); }, 2000);
 }
 
@@ -3020,7 +3030,7 @@ function buildMatchCard(match, bet, result) {
   let resultHtml = "";
   if(result && result.homeGoals !== undefined && bet) {
     const pts = calcPoints(bet, result);
-    const badge = getResultBadge(pts);
+    const badge = getResultBadge(pts, _roundOfBet(bet, result));
     resultHtml = `<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">
       ${result.live ? liveBadge(result) : ""}
       <span>${result.live ? "Live" : "Result"}: <strong>${result.homeGoals} × ${result.awayGoals}</strong></span>
@@ -3061,6 +3071,22 @@ function buildMatchCard(match, bet, result) {
   </div>`;
 }
 
+// multiplicador da rodada de um jogo (R32=1.0, R16=1.2, …). Default 1.0.
+function _roundMultFor(round){
+  const k = _lockKeyForRound(round);
+  const mm = (pointsConfig && pointsConfig.roundMult) || {};
+  const v = k ? mm[k] : undefined;
+  return (typeof v === "number" && v > 0) ? v : 1.0;
+}
+// resolve a rodada a partir do bet/result (campo round) ou do matchId
+function _roundOfBet(bet, result){
+  if(result && result.round) return result.round;
+  if(bet && bet.round) return bet.round;
+  const id = (bet && bet.matchId) || (result && result.matchId);
+  if(id){ const m = KNOCKOUT_MATCHES.find(x=>x.id===id); if(m) return m.round; }
+  return null;
+}
+
 function calcPoints(bet, result) {
   const bH = parseInt(bet.homeGoals), bA = parseInt(bet.awayGoals);
   const rH = parseInt(result.homeGoals), rA = parseInt(result.awayGoals);
@@ -3085,7 +3111,9 @@ function calcPoints(bet, result) {
   if(diffBonus && !(correctHome && correctAway) && (bH - bA) === (rH - rA)) {
     base += diffBonus;
   }
-  return base;
+  // multiplicador da rodada (R32=1.0x, R16=1.2x, …) — definido pelo admin
+  const mult = _roundMultFor(_roundOfBet(bet, result));
+  return Math.round(base * mult);
 }
 
 // Conta os acertos de placar completo (exato) — usado como critério de desempate.
@@ -3097,11 +3125,14 @@ function isExactScore(bet, result) {
   return bH === rH && bA === rA;
 }
 
-function getResultBadge(pts) {
-  if(pts >= pointsConfig.perfect) return {cls:"perfect",icon:"🎯",label:"Cravou!"};
-  if(pts >= pointsConfig.winnerOne) return {cls:"win",icon:"✅",label:"Quase"};
-  if(pts >= pointsConfig.winnerOnly) return {cls:"half",icon:"🏆",label:"Vencedor"};
-  if(pts > 0) return {cls:"half",icon:"⚽",label:"Parcial"};
+function getResultBadge(pts, round) {
+  // normaliza para a faixa base (desfaz o multiplicador da rodada) p/ rótulo correto
+  const mult = round ? _roundMultFor(round) : 1.0;
+  const base = mult ? (pts / mult) : pts;
+  if(base >= pointsConfig.perfect) return {cls:"perfect",icon:"🎯",label:"Cravou!"};
+  if(base >= pointsConfig.winnerOne) return {cls:"win",icon:"✅",label:"Quase"};
+  if(base >= pointsConfig.winnerOnly) return {cls:"half",icon:"🏆",label:"Vencedor"};
+  if(base > 0) return {cls:"half",icon:"⚽",label:"Parcial"};
   return {cls:"miss",icon:"❌",label:"Errou"};
 }
 
@@ -3380,8 +3411,8 @@ function openUserBreakdown(uid){
       resultCell = `<strong>${r.homeGoals} \u00d7 ${r.awayGoals}</strong>${liveTag}`;
       if(bet){
         const pts = calcPoints(bet, r); total += pts;
-        const b = getResultBadge(pts);
-        if(pts >= pointsConfig.perfect) perfect++;
+        const b = getResultBadge(pts, _roundOfBet(bet, r));
+        if(b.cls === "perfect") perfect++;
         ptsCell = `<span class="result-badge badge-${b.cls}" style="font-size:10px">${b.icon}</span> <strong>+${pts}</strong>`;
       } else { ptsCell = `<span style="color:var(--muted)">\u2014</span>`; }
     } else {
@@ -4114,7 +4145,6 @@ async function savePhaseConfig() {
 
 // ── 6 cadeados do mata-mata ──
 const ROUND_LOCK_DEFS = [
-  { key:"prematch", label:"Pré-mata (classificados)", emoji:"🎯", sub:"Escolher quem ocupa cada vaga da R32" },
   { key:"R32", label:"32-avos · placar",  emoji:"⚽", sub:"Round of 32" },
   { key:"R16", label:"Oitavas · placar",  emoji:"⚽", sub:"Round of 16" },
   { key:"QF",  label:"Quartas · placar",  emoji:"⚽", sub:"Quartas de final" },
@@ -4317,8 +4347,8 @@ async function loadUsers() {
     const koIds = new Set(KNOCKOUT_MATCHES.map(m => m.id));
     const koTotal = koIds.size;                          // 32 jogos de placar
     // nº de vagas de classificado na R32 (todas as vagas de grupo dos 16 jogos)
-    const qualiTotal = KNOCKOUT_MATCHES.filter(m=>m.round==="Round of 32")
-      .reduce((n,m)=>n + (_slotIsGroupPick(m.homeSlot)?1:0) + (_slotIsGroupPick(m.awaySlot)?1:0), 0);
+    const qualiTotal = QUALI_PICKS_ENABLED ? KNOCKOUT_MATCHES.filter(m=>m.round==="Round of 32")
+      .reduce((n,m)=>n + (_slotIsGroupPick(m.homeSlot)?1:0) + (_slotIsGroupPick(m.awaySlot)?1:0), 0) : 0;
     const grandTotal = koTotal + qualiTotal;             // total de palpites possíveis
     const scoreTally = {}, qualiTally = {};
     betsSnap.forEach(doc => {
@@ -4368,7 +4398,7 @@ async function loadUsers() {
         ${u.role === "admin"
           ? `<div class="comp-cell admin-cell">🛠 Admin — gerencia o bolão</div>`
           : `<div class="comp-cell">
-          <div class="comp-row"><span class="comp-ph p2" title="Classificados (pré-mata)">🎯</span><div class="comp-bar"><i style="width:${qPct}%"></i></div><span class="comp-num">${ql}/${qualiTotal}<small>${qPct}%</small></span></div>
+          ${qualiTotal ? `<div class="comp-row"><span class="comp-ph p2" title="Classificados (pré-mata)">🎯</span><div class="comp-bar"><i style="width:${qPct}%"></i></div><span class="comp-num">${ql}/${qualiTotal}<small>${qPct}%</small></span></div>` : ""}
           <div class="comp-row"><span class="comp-ph p2" title="Placares do mata-mata">⚽</span><div class="comp-bar"><i style="width:${sPct}%"></i></div><span class="comp-num">${sc}/${koTotal}<small>${sPct}%</small></span></div>
         </div>`}
         <div class="user-actions">
@@ -4479,11 +4509,28 @@ async function loadPointsConfig() {
       document.getElementById("pts_oneScore").value = p.oneScore ?? 3;
       const _db=document.getElementById("pts_diffBonus"); if(_db) _db.value = p.diffBonus ?? 2;
       const _qp=document.getElementById("pts_qualifPts"); if(_qp) _qp.value = p.qualifPts ?? 5;
+      const rm = p.roundMult || {};
+      const setM=(id,def)=>{ const el=document.getElementById(id); if(el) el.value = (rm[id.slice(5)] ?? def); };
+      setM("mult_R32",1.0); setM("mult_R16",1.2); setM("mult_QF",1.4); setM("mult_SF",1.6); setM("mult_FINAL",2.0);
     }
   } catch(e) {}
+  _renderMultPreview();
+}
+
+// preview ao vivo dos pontos máximos (placar exato) por rodada
+function _renderMultPreview(){
+  const box = document.getElementById("multPreview"); if(!box) return;
+  const base = parseFloat((document.getElementById("pts_perfect")||{value:15}).value)||15;
+  const rows = [["R32","32-avos"],["R16","Oitavas"],["QF","Quartas"],["SF","Semis"],["FINAL","Final/3º"]];
+  box.innerHTML = "<strong style='color:var(--text)'>Placar exato por rodada:</strong><br>" +
+    rows.map(([k,lab])=>{
+      const m = parseFloat((document.getElementById("mult_"+k)||{value:1}).value)||1;
+      return `${lab}: <strong style="color:var(--gold)">${Math.round(base*m)} pts</strong> <span style="opacity:.6">(${base} × ${m})</span>`;
+    }).join("<br>");
 }
 
 async function savePointsConfig() {
+  const num=(id,def)=>{ const v=parseFloat((document.getElementById(id)||{value:def}).value); return isNaN(v)?def:v; };
   const pts = {
     perfect: parseInt(document.getElementById("pts_perfect").value),
     winnerOne: parseInt(document.getElementById("pts_winnerOne").value),
@@ -4491,12 +4538,17 @@ async function savePointsConfig() {
     oneScore: parseInt(document.getElementById("pts_oneScore").value),
     diffBonus: parseInt((document.getElementById("pts_diffBonus")||{value:2}).value || 2),
     qualifPts: parseInt((document.getElementById("pts_qualifPts")||{value:5}).value || 5),
+    roundMult: {
+      R32: num("mult_R32",1.0), R16: num("mult_R16",1.2), QF: num("mult_QF",1.4),
+      SF: num("mult_SF",1.6), FINAL: num("mult_FINAL",2.0)
+    }
   };
   try {
     await col("config").doc("main").set({ points: pts }, { merge: true });
     pointsConfig = pts;
-    showToast("✅ Scoring configuration saved!");
-  } catch(e) { showToast("Error: " + e.message, "error"); }
+    _renderMultPreview();
+    showToast("✅ Configuração de pontos salva!");
+  } catch(e) { showToast("Erro: " + e.message, "error"); }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -4527,8 +4579,8 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v3.5";
-  var APP_BUILD = "Jun 21, 2026";
+  var APP_VERSION = "v3.8";
+  var APP_BUILD = "Jun 27, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
 </body>
