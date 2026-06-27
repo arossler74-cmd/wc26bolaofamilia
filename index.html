@@ -42,6 +42,7 @@
 .br-pick option:disabled{color:#8089b5}
 .br-picktag{flex:none;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:var(--orange);background:rgba(232,115,12,.16);padding:1px 5px;border-radius:6px;line-height:1.4}
 .br-lockbadge{flex:none;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:#FFC773;background:rgba(232,115,12,.14);border:1px solid rgba(232,115,12,.28);padding:1px 6px;border-radius:6px;line-height:1.5}
+.br-openbadge{flex:none;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:#5BE3A0;background:rgba(22,179,100,.14);border:1px solid rgba(22,179,100,.30);padding:1px 6px;border-radius:6px;line-height:1.5}
 .br-name-tbd{opacity:.65;font-style:italic}
 /* cadeados do admin (mata-mata) */
 .lock-card{flex:1 1 150px;min-width:150px;max-width:220px;text-align:left;cursor:pointer;border-radius:14px;padding:12px 14px;border:1.5px solid var(--border,#2A3470);background:var(--card2,#10183f);color:#fff;transition:all .15s}
@@ -959,12 +960,12 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
 
     <!-- 2. AS APOSTAS ABREM POR RODADA -->
     <div class="howto-card">
-      <div class="howto-h"><span class="howto-num">2</span> As apostas abrem por rodada</div>
-      <p class="howto-p">Vá na aba <strong>🎯 Apostas</strong>. Os campos de placar de cada jogo só <strong>liberam quando os dois times do confronto estão definidos</strong> — ou seja, quando os grupos (ou a rodada anterior) terminam.</p>
-      <div class="step"><div class="step-ico">❔</div><div><strong>Ainda indefinido</strong> — o jogo aparece como “A definir” e fica bloqueado até saírem os classificados.</div></div>
-      <div class="step"><div class="step-ico">✍️</div><div><strong>Já definido</strong> — digite seu placar nas duas caixas e clique em <strong>💾 Salvar palpites</strong>.</div></div>
-      <div class="step"><div class="step-ico">🔒</div><div>Quando o resultado oficial de um jogo é lançado, aquele palpite trava automaticamente — então palpite antes de a bola rolar.</div></div>
-      <p class="howto-note">Você pode voltar à aba sempre que uma nova rodada abrir para palpitar os jogos recém-definidos.</p>
+      <div class="howto-h"><span class="howto-num">2</span> Quando apostar</div>
+      <p class="howto-p">Vá na aba <strong>🎯 Apostas</strong>. Os campos de placar de cada jogo <strong>abrem assim que os dois times do confronto se definem</strong> e <strong>fecham 24 horas antes do apito inicial</strong>.</p>
+      <div class="step"><div class="step-ico">❔</div><div><strong>Ainda indefinido</strong> — o jogo aparece como “A definir” e fica bloqueado até saírem os dois times.</div></div>
+      <div class="step"><div class="step-ico">✍️</div><div><strong>Aberto</strong> — digite seu placar nas duas caixas e clique em <strong>💾 Salvar palpites</strong>. Dá para mudar o palpite quantas vezes quiser até o prazo.</div></div>
+      <div class="step"><div class="step-ico">🔒</div><div><strong>Fecha 24h antes do jogo</strong> — depois disso o palpite trava e não dá mais para alterar. Cada card mostra até quando você pode apostar.</div></div>
+      <p class="howto-note">Volte à aba sempre que novos jogos forem definidos para palpitar antes do prazo de cada um.</p>
     </div>
 
     <!-- 3. PONTUAÇÃO -->
@@ -1190,11 +1191,10 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
       </div>
     </div>
 
-    <!-- ── 6 CADEADOS DO MATA-MATA ── -->
+    <!-- ── TRAVA AUTOMÁTICA DE APOSTAS ── -->
     <div class="card" style="margin-bottom:20px">
-      <div class="card-header"><strong>🔐 Cadeados do Mata-Mata</strong></div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Abra ou feche cada rodada independentemente. Cada uma libera o palpite de <b>placar</b> da rodada — abra-as só quando os confrontos já estiverem definidos. Os times já entram definidos nas chaves e, conforme os resultados oficiais chegam, os vencedores avançam automaticamente.</div>
-      <div id="roundLockGrid" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+      <div class="card-header"><strong>🔒 Apostas — trava automática</strong></div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">As apostas de cada jogo <b>abrem assim que os dois times se definem</b> (via ESPN) e <b>fecham automaticamente 24h antes do apito inicial</b> — igual para todos os jogadores, sem precisar abrir/fechar nada manualmente. Os vencedores avançam sozinhos conforme os resultados oficiais chegam.</div>
     </div>
 
     <div class="group-tabs" id="resultGroupTabs"></div>
@@ -1784,11 +1784,10 @@ const QUALI_PICKS_ENABLED = false;
 let activePhase = "groups";
 let bettingOpenP1 = true;   // Phase 1 — Classification (groups)
 let bettingOpenP2 = false;  // Phase 2 — Brackets (knockouts)
-// ── 6 cadeados independentes do mata-mata (admin abre/fecha cada um) ──
-//    prematch = palpite de classificados (quem ocupa cada vaga da R32)
-//    R32/R16/QF/SF/FINAL = palpites de placar de cada rodada
-let roundLocks = { prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false };
-// mapeia o nome da rodada de um jogo para a chave do cadeado
+// (legado) cadeados manuais de rodada — substituídos pela trava automática por kickoff.
+// Mantido como objeto vazio só para não quebrar referências antigas.
+let roundLocks = {};
+// mapeia o nome da rodada de um jogo para a chave do multiplicador
 function _lockKeyForRound(round){
   if(round==="Round of 32") return "R32";
   if(round==="Round of 16") return "R16";
@@ -1797,10 +1796,42 @@ function _lockKeyForRound(round){
   if(round==="Final" || round==="3º Lugar") return "FINAL";
   return null;
 }
-// placar daquela rodada está aberto para apostas?
-function _roundScoreOpen(round){ const k=_lockKeyForRound(round); return k?!!roundLocks[k]:false; }
+// ── TRAVA AUTOMÁTICA: apostas fecham X horas antes do kickoff (UTC, igual p/ todos) ──
+const BET_LOCK_HOURS = 24;
+// instante (ms) em que as apostas daquele jogo fecham; null se sem kickoff definido
+function _betDeadline(m){
+  if(!m || !m.kickoff) return null;
+  const ko = new Date(m.kickoff).getTime();
+  if(isNaN(ko)) return null;
+  return ko - BET_LOCK_HOURS*3600*1000;
+}
+// janela AUTOMÁTICA pura (só a regra das 24h), sem considerar override nem resultado
+function _matchBetOpenAuto(m){
+  if(!m) return false;
+  const dl = _betDeadline(m);
+  if(dl===null) return true;
+  return Date.now() < dl;
+}
+// overrides do admin (jogos reabertos manualmente): { "R32_73": true, ... }
+let _betOverrides = {};
+// apostas deste JOGO estão abertas agora?
+//  - travado se já houver resultado oficial
+//  - aberto se o admin reabriu o jogo (override), ignorando as 24h
+//  - senão, aberto enquanto faltam +24h pro kickoff
+function _matchBetOpen(m){
+  if(!m) return false;
+  const r = (typeof _brResults!=="undefined" && _brResults) ? _brResults[m.id] : null;
+  const hasResult = r && r.homeGoals!==undefined && r.homeGoals!==null;
+  if(hasResult) return false;                 // já tem placar → nunca abre
+  if(_betOverrides && _betOverrides[m.id]===true) return true;  // admin reabriu
+  const dl = _betDeadline(m);
+  if(dl===null) return true;                  // sem horário ainda → liberado
+  return Date.now() < dl;
+}
+// compat: chamadas antigas por rodada → agora resolvem pelo jogo específico.
+function _roundScoreOpen(round){ return true; }
 // palpite de classificados (pré-mata) está aberto?
-function _prematchOpen(){ return QUALI_PICKS_ENABLED && !!roundLocks.prematch; }
+function _prematchOpen(){ return false; }
 let inviteCode = null;      // active invite token (admin-managed)
 let pendingInvite = null;   // invite token from URL on this visit
 let pendingAdminInvite = null;  // single-use ADMIN invite token from URL (?ainvite=)
@@ -1986,8 +2017,7 @@ async function loadConfig() {
       else if(data.bettingOpen !== undefined && activePhase==="groups") bettingOpenP1 = data.bettingOpen !== false;
       if(data.bettingOpenP2 !== undefined) bettingOpenP2 = data.bettingOpenP2 === true;
       else if(data.bettingOpen !== undefined && activePhase==="knockouts") bettingOpenP2 = data.bettingOpen !== false;
-      // 6 cadeados do mata-mata
-      roundLocks = Object.assign({ prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false }, data.roundLocks || {});
+      // (cadeados manuais de rodada removidos — trava agora é automática por kickoff)
     }
     const inv = await col("config").doc("invites").get();
     inviteCode = inv.exists ? (inv.data().activeCode || null) : null;
@@ -2376,8 +2406,16 @@ function _koResolve(slot, results){
     const home=_koResolve(m.homeSlot,results), away=_koResolve(m.awaySlot,results);
     if(!home || !away) return null;
     const hg=+r.homeGoals, ag=+r.awayGoals;
-    if(hg===ag) return null; // tie needs a recorded shootout winner (later)
-    return (c==="W") === (hg>ag) ? home : away;
+    let homeWon;
+    if(hg===ag){
+      // empate no tempo normal → decidido nos pênaltis: usa "advanced"
+      if(r.advanced==="home") homeWon=true;
+      else if(r.advanced==="away") homeWon=false;
+      else return null; // admin ainda não indicou quem avançou
+    } else {
+      homeWon = hg>ag;
+    }
+    return (c==="W") === homeWon ? home : away;
   }
   return null;
 }
@@ -2504,9 +2542,10 @@ function _brNode(m){
   const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
   const hName=home||_brSlotLabel(m.homeSlot), aName=away||_brSlotLabel(m.awaySlot), resolved=!!home && !!away;
   const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
-  // placar abre só quando: rodada liberada pelo admin + times definidos + sem resultado + não-admin
-  const scoreLockOpen = _roundScoreOpen(m.round);
-  const open = scoreLockOpen && resolved && !has && !live;
+  // placar abre quando: times definidos + sem resultado + ainda faltam +24h pro kickoff
+  const betWindowOpen = _matchBetOpen(m);
+  const scoreLockOpen = betWindowOpen;
+  const open = betWindowOpen && resolved && !has && !live;
   const bet=_brBets[m.id]||{};
   const hv=(bet.homeGoals!==undefined?bet.homeGoals:""), av=(bet.awayGoals!==undefined?bet.awayGoals:"");
   const dis = (open && !_brRO)?"":"disabled";
@@ -2518,9 +2557,22 @@ function _brNode(m){
   let meta = `<span>Jogo ${m.mNo}</span>`;
   if(when) meta += `<span>🗓️ ${when}</span>`;
   if(m.venue) meta += `<span>📍 ${_brEsc(m.venue)}</span>`;
-  // selo de cadeado: placar desta rodada ainda fechado pelo admin (e ainda sem resultado)
-  if(!_brRO && !has && !live && !scoreLockOpen){
-    meta += `<span class="br-lockbadge" title="Palpite de placar ainda fechado para esta rodada">🔒 placar travado</span>`;
+  // selo de status: travado por horário (faltam <24h) ou aguardando os times
+  if(!_brRO && !has && !live){
+    if(!resolved){
+      meta += `<span class="br-lockbadge" title="Aguardando os times se definirem">⏳ a definir</span>`;
+    } else if(!betWindowOpen){
+      meta += `<span class="br-lockbadge" title="Apostas encerradas — fecha 24h antes do jogo">🔒 apostas encerradas</span>`;
+    } else {
+      const isOv = _betOverrides && _betOverrides[m.id]===true;
+      const autoOpen = _matchBetOpenAuto(m);
+      if(isOv && !autoOpen){
+        meta += `<span class="br-openbadge" title="O admin reabriu as apostas deste jogo">🔓 reaberto pelo admin</span>`;
+      } else {
+        const dl=_betDeadline(m);
+        if(dl) meta += `<span class="br-openbadge" title="Aposte até 24h antes do jogo">🔓 aposte até ${fmtDateShort(new Date(dl).toISOString())} · ${fmtKick(new Date(dl).toISOString())}</span>`;
+      }
+    }
   }
   // rodapé: resultado oficial + seu palpite + pontos
   let foot="";
@@ -2553,7 +2605,8 @@ function _brNode(m){
     // campo de placar: input editável quando aberto; cadeado quando travado; valor fixo quando há resultado
     let scoreCell;
     if(!_brRO && !has && !live && !scoreLockOpen){
-      scoreCell = `<span class="br-in br-in-lock" title="Placar travado — aguarde o admin liberar esta rodada">🔒</span>`;
+      const why = resolved ? "Apostas encerradas (fecha 24h antes do jogo)" : "Aguardando os times se definirem";
+      scoreCell = `<span class="br-in br-in-lock" title="${why}">🔒</span>`;
     } else {
       scoreCell = `<input class="br-in" id="${inputId}" type="number" min="0" max="20" inputmode="numeric" value="${val}" ${dis}>`;
     }
@@ -2703,12 +2756,14 @@ function loadBracket(){
   wrap.innerHTML=`<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   Promise.all([
     col("results").get().catch(()=>null),
-    col("bets").where("userId","==",currentUser.uid).get().catch(()=>null)
+    col("bets").where("userId","==",currentUser.uid).get().catch(()=>null),
+    col("config").doc("overrides").get().catch(()=>null)
   ])
-   .then(async ([rs,bs])=>{
+   .then(async ([rs,bs,ov])=>{
     const results={}, bets={};
     if(rs) rs.forEach(d=>results[d.id]=d.data());
     if(bs) bs.forEach(d=>{ const x=d.data(); bets[x.matchId]=x; });
+    _betOverrides = (ov && ov.exists) ? (ov.data()||{}) : {};
     _brResults=results; _brBets=bets;
     // palpites de classificados ficam no doc sentinela bets/{uid}_QUALIPICKS
     // (chaves vêm com '__' no lugar de ':' — convertemos de volta para uso em memória)
@@ -2740,13 +2795,22 @@ function _brRenderTree(){
   // ── banner de status dos cadeados (o que está aberto agora) ──
   let statusBanner = "";
   if(!_brRO){
-    const openRounds = [];
-    [["R32","32-avos"],["R16","oitavas"],["QF","quartas"],["SF","semis"],["FINAL","final/3º"]]
-      .forEach(([k,lab])=>{ if(roundLocks[k]) openRounds.push("placar das "+lab); });
-    if(openRounds.length){
-      statusBanner = '<div class="br-hint" style="margin-top:10px">🔓 <b>Aberto para apostas:</b> '+openRounds.join(" · ")+'.</div>';
+    // conta jogos abertos agora (times definidos + dentro da janela de 24h)
+    let abertos=0, proxFecha=null;
+    for(const m of KNOCKOUT_MATCHES){
+      const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
+      const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
+      if(home&&away&&!has&&!live&&_matchBetOpen(m)){
+        abertos++;
+        const dl=_betDeadline(m);
+        if(dl && (proxFecha===null || dl<proxFecha)) proxFecha=dl;
+      }
+    }
+    if(abertos>0){
+      const quando = proxFecha ? ` · próximo a fechar: ${fmtDateShort(new Date(proxFecha).toISOString())} ${fmtKick(new Date(proxFecha).toISOString())}` : "";
+      statusBanner = `<div class="br-hint" style="margin-top:10px">🔓 <b>${abertos} jogo(s) aberto(s)</b> para aposta. Cada jogo fecha <b>24h antes</b> do apito inicial${quando}.</div>`;
     } else {
-      statusBanner = '<div class="br-hint" style="margin-top:10px">🔒 As apostas estão <b>fechadas</b> no momento. Aguarde o admin liberar a próxima rodada.</div>';
+      statusBanner = '<div class="br-hint" style="margin-top:10px">⏳ Nenhum jogo aberto agora. As apostas abrem assim que os times forem definidos e fecham 24h antes de cada jogo.</div>';
     }
   }
   wrap.innerHTML = _brMeCard + `<div class="br-wrap">${tree}</div>` + statusBanner +
@@ -2759,7 +2823,7 @@ async function saveBracket(){
   const btn=document.getElementById("brSaveBtn"); if(btn){ btn.disabled=true; btn.textContent="Salvando…"; }
   let saved=0, err=0;
   for(const m of KNOCKOUT_MATCHES){
-    if(!_roundScoreOpen(m.round)) continue;   // rodada travada pelo admin
+    if(!_matchBetOpen(m)) continue;           // apostas deste jogo já fecharam (24h antes)
     const home=_koResolve(m.homeSlot,_brResults), away=_koResolve(m.awaySlot,_brResults);
     const r=_brResults[m.id], live=r&&r.live, has=r&&r.homeGoals!==undefined&&r.homeGoals!==null;
     if(!home || !away || has || live) continue;
@@ -3091,21 +3155,30 @@ function calcPoints(bet, result) {
   const bH = parseInt(bet.homeGoals), bA = parseInt(bet.awayGoals);
   const rH = parseInt(result.homeGoals), rA = parseInt(result.awayGoals);
   if(isNaN(bH)||isNaN(bA)||isNaN(rH)||isNaN(rA)) return 0;
-  
-  const bWin = bH > bA ? "home" : bH < bA ? "away" : "draw";
-  const rWin = rH > rA ? "home" : rH < rA ? "away" : "draw";
-  const correctWinner = bWin === rWin;
+
+  // Placar/gols/diferença: SEMPRE pelo tempo normal (não entra prorrogação/pênaltis).
   const correctHome = bH === rH;
   const correctAway = bA === rA;
 
+  // Vencedor: quem AVANÇOU. Se o tempo normal empatou e foi aos pênaltis,
+  // o vencedor é result.advanced ("home"/"away"); senão, é quem fez mais gols.
+  const rWin = (rH===rA)
+    ? (result.advanced==="home" ? "home" : result.advanced==="away" ? "away" : "draw")
+    : (rH>rA ? "home" : "away");
+  const bWin = bH > bA ? "home" : bH < bA ? "away" : "draw";
+  // acertou o vencedor: o palpite indicou um lado (não-empate) e bate com quem avançou.
+  // (quem apostou empate não escolheu vencedor → não ganha ponto de vencedor,
+  //  mas ainda pode pontuar por placar exato pelo tempo normal abaixo.)
+  const correctWinner = (bWin !== "draw" && bWin === rWin) || (bWin === "draw" && rWin === "draw");
+
   // Base de pontos pelo resultado:
   let base = 0;
-  if(correctHome && correctAway) base = pointsConfig.perfect; // placar exato = vencedor implícito
+  if(correctHome && correctAway) base = pointsConfig.perfect; // placar exato (tempo normal)
   else if(correctWinner && (correctHome || correctAway)) base = pointsConfig.winnerOne;
   else if(correctWinner) base = pointsConfig.winnerOnly;
   else if(correctHome || correctAway) base = pointsConfig.oneScore;
 
-  // +2 pela diferença de gols certa (vale desde a fase de 32, tanto faz quem vence).
+  // +2 pela diferença de gols certa (tempo normal, tanto faz quem vence).
   // Não soma em cima do placar exato (já está implícito).
   const diffBonus = pointsConfig.diffBonus || 0;
   if(diffBonus && !(correctHome && correctAway) && (bH - bA) === (rH - rA)) {
@@ -4043,10 +4116,35 @@ function buildResultGroupTabs() {
   });
 }
 
+// Publica o horário oficial de cada jogo (epoch ms) em k_config/schedule.
+// É a fonte de verdade usada pelas REGRAS do Firestore para travar apostas
+// 24h antes do kickoff (server-side, à prova de relógio adulterado).
+let _schedulePublished = false;
+async function publishSchedule(){
+  if(!isAdmin || _schedulePublished) return;
+  try{
+    const sched = {};
+    for(const m of KNOCKOUT_MATCHES){
+      if(!m.kickoff) continue;
+      const ms = new Date(m.kickoff).getTime();
+      if(!isNaN(ms)) sched[m.id] = ms;
+    }
+    // só grava se houver algo; merge:false para refletir o schedule canônico do app
+    if(Object.keys(sched).length){
+      await col("config").doc("schedule").set(sched);
+      _schedulePublished = true;
+    }
+  }catch(e){ /* silencioso: não bloqueia o painel se falhar */ }
+}
+
 async function loadAdminResults() {
   if(!isAdmin) return;
   const container = document.getElementById("resultMatchList");
   if(!container) return;
+
+  // publica/atualiza o schedule oficial (kickoffs em epoch ms) que as REGRAS do
+  // Firestore usam para travar apostas 24h antes — fonte de verdade no servidor.
+  publishSchedule();
 
   let existingResults = {};
   try {
@@ -4054,20 +4152,24 @@ async function loadAdminResults() {
     snap.forEach(doc => { existingResults[doc.id] = doc.data(); });
   } catch(e) {}
 
+  // overrides ativos (jogos reabertos manualmente)
+  try {
+    const ov = await col("config").doc("overrides").get();
+    _betOverrides = (ov.exists) ? (ov.data()||{}) : {};
+  } catch(e) { _betOverrides = {}; }
+
   let matches = KNOCKOUT_MATCHES.filter(m => m.round === currentResultGroup);
 
-  // Phase config (admin)
+  // Phase config (admin) — leitura defensiva (campos legados podem não existir)
   try {
     const cfg = await col("config").doc("main").get();
     if(cfg.exists) {
       const d = cfg.data();
-      document.getElementById("phaseSelect").value = d.activePhase || "groups";
+      const ps=document.getElementById("phaseSelect"); if(ps) ps.value = d.activePhase || "groups";
       const p1 = d.bettingOpenP1 !== undefined ? d.bettingOpenP1 !== false : (d.activePhase!=="knockouts" ? d.bettingOpen !== false : true);
-      document.getElementById("bettingOpenP1").value = p1 ? "open" : "closed";
-      roundLocks = Object.assign({ prematch:false, R32:false, R16:false, QF:false, SF:false, FINAL:false }, d.roundLocks || {});
+      const bo=document.getElementById("bettingOpenP1"); if(bo) bo.value = p1 ? "open" : "closed";
     }
   } catch(e) {}
-  renderRoundLockGrid();
 
   container.innerHTML = matches.map(m => {
     const res = existingResults[m.id] || {};
@@ -4079,6 +4181,33 @@ async function loadAdminResults() {
     const awayFlag = awayReal ? flagImg(awayReal) : "❔";
     const resolved = homeReal && awayReal;
     const hasResult = res.homeGoals !== undefined;
+    const isKO = true; // todos os jogos aqui são mata-mata
+    const advSel = `<div id="advwrap_${m.id}" style="display:${(hasResult && res.homeGoals===res.awayGoals)?'flex':'none'};align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--gold)">⚽ Empate no tempo normal — quem avançou (pênaltis)?</span>
+        <select class="result-input" id="adv_${m.id}" style="width:auto;min-width:160px">
+          <option value="">— selecione —</option>
+          <option value="home" ${res.advanced==="home"?"selected":""}>${homeName}</option>
+          <option value="away" ${res.advanced==="away"?"selected":""}>${awayName}</option>
+        </select>
+      </div>`;
+    // controle de override (reabrir/fechar apostas ignorando a trava de 24h)
+    const overridden = _betOverrides && _betOverrides[m.id]===true;
+    const autoOpen = _matchBetOpenAuto(m);   // janela automática (sem considerar override)
+    let ovRow = "";
+    if(resolved && !hasResult){
+      const statusTxt = overridden
+        ? `<span style="color:var(--green)">🔓 Reaberto manualmente — todos podem apostar</span>`
+        : (autoOpen
+            ? `<span style="color:var(--muted)">🔓 Aberto automaticamente (faltam +24h)</span>`
+            : `<span style="color:#FFC773">🔒 Fechado pela trava de 24h</span>`);
+      ovRow = `<div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;border-top:1px dashed var(--border,#2A3470);padding-top:10px">
+          <span style="font-size:12px">${statusTxt}</span>
+          <button class="btn ${overridden?"btn-danger":"btn-ghost"}" style="padding:6px 12px;font-size:11px;margin-left:auto"
+            onclick="toggleOverride('${m.id}')">
+            ${overridden ? "🔒 Fechar de novo" : "🔓 Reabrir apostas"}
+          </button>
+        </div>`;
+    }
     return `
     <div class="result-entry-card">
       <div class="result-teams" style="display:flex;align-items:center;gap:6px">
@@ -4088,33 +4217,75 @@ async function loadAdminResults() {
         <span style="margin-left:auto;font-size:11px;color:var(--muted)">📍 ${m.venue||""} · 📅 ${m.date||""}</span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
-        <input class="result-input" type="number" min="0" max="20" id="rh_${m.id}" value="${hasResult?res.homeGoals:""}" placeholder="0" ${resolved?"":"disabled"} />
+        <input class="result-input" type="number" min="0" max="20" id="rh_${m.id}" value="${hasResult?res.homeGoals:""}" placeholder="0" ${resolved?"":"disabled"} oninput="_toggleAdv('${m.id}')" />
         <span style="color:var(--muted);font-weight:700">×</span>
-        <input class="result-input" type="number" min="0" max="20" id="ra_${m.id}" value="${hasResult?res.awayGoals:""}" placeholder="0" ${resolved?"":"disabled"} />
+        <input class="result-input" type="number" min="0" max="20" id="ra_${m.id}" value="${hasResult?res.awayGoals:""}" placeholder="0" ${resolved?"":"disabled"} oninput="_toggleAdv('${m.id}')" />
         <button class="btn btn-gold" style="padding:8px 16px;font-size:12px" onclick="saveResult('${m.id}','${(homeName).replace(/'/g,"\\'")}','${(awayName).replace(/'/g,"\\'")}')" ${resolved?"":"disabled"}>
           ${hasResult ? "✏️ Atualizar" : "💾 Salvar"}
         </button>
         ${hasResult ? `<button class="btn btn-danger" style="padding:8px 14px;font-size:12px" onclick="deleteResult('${m.id}','${homeName.replace(/'/g,"\\'")} × ${awayName.replace(/'/g,"\\'")}')">🗑 Remover</button>` : ""}
-        ${hasResult ? `<span style="font-size:12px;color:var(--green)">✅ ${res.homeGoals}×${res.awayGoals} registrado</span>` : (resolved ? "" : `<span style="font-size:12px;color:var(--muted)">⏳ Confronto a definir</span>`)}
+        ${hasResult ? `<span style="font-size:12px;color:var(--green)">✅ ${res.homeGoals}×${res.awayGoals}${res.homeGoals===res.awayGoals&&res.advanced?` · avançou: ${res.advanced==="home"?homeName:awayName}`:""} registrado</span>` : (resolved ? "" : `<span style="font-size:12px;color:var(--muted)">⏳ Confronto a definir</span>`)}
       </div>
+      ${advSel}
+      ${ovRow}
     </div>`;
   }).join("");
+}
+
+// mostra/esconde o seletor "quem avançou" conforme o placar digitado é empate
+function _toggleAdv(matchId){
+  const h = document.getElementById(`rh_${matchId}`), a = document.getElementById(`ra_${matchId}`);
+  const wrap = document.getElementById(`advwrap_${matchId}`);
+  if(!h||!a||!wrap) return;
+  const tie = h.value!=="" && a.value!=="" && parseInt(h.value)===parseInt(a.value);
+  wrap.style.display = tie ? "flex" : "none";
+}
+
+// reabre/fecha as apostas de um jogo específico (override admin da trava de 24h)
+async function toggleOverride(matchId){
+  if(!isAdmin) return;
+  const turningOn = !(_betOverrides && _betOverrides[matchId]===true);
+  try{
+    await col("config").doc("overrides").set(
+      { [matchId]: turningOn ? true : firebase.firestore.FieldValue.delete() },
+      { merge: true }
+    );
+    _betOverrides = _betOverrides || {};
+    if(turningOn) _betOverrides[matchId]=true; else delete _betOverrides[matchId];
+    showToast(turningOn ? "🔓 Apostas reabertas para este jogo." : "🔒 Apostas fechadas novamente.");
+    loadAdminResults();
+  }catch(e){ showToast("Erro: "+e.message, "error"); }
 }
 
 async function saveResult(matchId, homeTeam, awayTeam) {
   const h = document.getElementById(`rh_${matchId}`).value;
   const a = document.getElementById(`ra_${matchId}`).value;
-  if(h === "" || a === "") { showToast("Please fill in both scores!", "error"); return; }
+  if(h === "" || a === "") { showToast("Preencha os dois placares!", "error"); return; }
+  const hg = parseInt(h), ag = parseInt(a);
+  const data = {
+    matchId, homeTeam, awayTeam,
+    homeGoals: hg, awayGoals: ag,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  // mata-mata: empate no tempo normal exige indicar quem avançou (pênaltis)
+  if(hg === ag){
+    const advEl = document.getElementById(`adv_${matchId}`);
+    const adv = advEl ? advEl.value : "";
+    if(!adv){ showToast("Empate no tempo normal — selecione quem avançou nos pênaltis.", "error", 5000); return; }
+    data.advanced = adv;
+  } else {
+    data.advanced = firebase.firestore.FieldValue.delete(); // limpa se deixou de ser empate
+  }
   try {
-    await col("results").doc(matchId).set({
-      matchId, homeTeam, awayTeam,
-      homeGoals: parseInt(h), awayGoals: parseInt(a),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    showToast("✅ Result saved!");
+    await col("results").doc(matchId).set(data, { merge: true });
+    // se o jogo estava reaberto manualmente, limpa o override (já tem resultado)
+    if(_betOverrides && _betOverrides[matchId]){
+      try{ await col("config").doc("overrides").set({ [matchId]: firebase.firestore.FieldValue.delete() }, { merge:true }); delete _betOverrides[matchId]; }catch(_){}
+    }
+    showToast("✅ Resultado salvo!");
     loadAdminResults();
   } catch(e) {
-    showToast("Error: " + e.message, "error");
+    showToast("Erro: " + e.message, "error");
   }
 }
 
@@ -4143,38 +4314,10 @@ async function savePhaseConfig() {
   } catch(e) { showToast("Error: " + e.message, "error"); }
 }
 
-// ── 6 cadeados do mata-mata ──
-const ROUND_LOCK_DEFS = [
-  { key:"R32", label:"32-avos · placar",  emoji:"⚽", sub:"Round of 32" },
-  { key:"R16", label:"Oitavas · placar",  emoji:"⚽", sub:"Round of 16" },
-  { key:"QF",  label:"Quartas · placar",  emoji:"⚽", sub:"Quartas de final" },
-  { key:"SF",  label:"Semis · placar",    emoji:"⚽", sub:"Semifinais" },
-  { key:"FINAL", label:"Final/3º · placar", emoji:"🏆", sub:"Final e disputa de 3º" },
-];
-function renderRoundLockGrid(){
-  const grid = document.getElementById("roundLockGrid");
-  if(!grid) return;
-  grid.innerHTML = ROUND_LOCK_DEFS.map(d=>{
-    const on = !!roundLocks[d.key];
-    return `<button type="button" class="lock-card${on?" on":""}" onclick="toggleRoundLock('${d.key}')">
-      <div class="lock-top">${on?"🔓":"🔒"} <span class="lock-name">${d.emoji} ${d.label}</span></div>
-      <div class="lock-sub">${d.sub}</div>
-      <div class="lock-state">${on?"ABERTO":"FECHADO"}</div>
-    </button>`;
-  }).join("");
-}
-async function toggleRoundLock(key){
-  if(!isAdmin) return;
-  roundLocks[key] = !roundLocks[key];
-  renderRoundLockGrid();
-  try{
-    await col("config").doc("main").set({ roundLocks }, { merge:true });
-    showToast(`${roundLocks[key]?"🔓 Aberto":"🔒 Fechado"}: ${ROUND_LOCK_DEFS.find(d=>d.key===key).label}`);
-  }catch(e){
-    roundLocks[key] = !roundLocks[key]; renderRoundLockGrid();
-    showToast("Erro ao salvar: "+e.message,"error");
-  }
-}
+// ── (legado) cadeados manuais de rodada — desativados; trava é automática por kickoff ──
+const ROUND_LOCK_DEFS = [];
+function renderRoundLockGrid(){ /* no-op: trava automática por horário */ }
+async function toggleRoundLock(){ /* no-op: trava automática por horário */ }
 
 // ═══════════════════════════════════════════════════════════
 //  ADMIN: INVITE LINKS
@@ -4579,7 +4722,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v3.8";
+  var APP_VERSION = "v4.2";
   var APP_BUILD = "Jun 27, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
