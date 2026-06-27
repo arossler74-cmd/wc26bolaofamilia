@@ -1221,7 +1221,7 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     </div>
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-label">Jogadores</div><div class="stat-value" id="mbTotal">-</div></div>
-      <div class="stat-card"><div class="stat-label">Palpites preenchidos</div><div class="stat-value" id="mbCompletion" style="color:#7AA2FF">-</div><div class="stat-sub" id="mbCompletionSub"></div></div>
+      <div class="stat-card"><div class="stat-label">Apostas nos jogos abertos</div><div class="stat-value" id="mbCompletion" style="color:#7AA2FF">-</div><div class="stat-sub" id="mbCompletionSub"></div></div>
     </div>
     <div class="card">
       <div class="member-filters">
@@ -1736,39 +1736,39 @@ const KNOCKOUT_MATCHES = [
   // slot codes: "1X"/"2X" = 1º/2º do grupo X · "3:A/B/.." = melhor 3º dentre esses grupos · "Wnn" = vencedor do jogo nn · "Lnn" = perdedor
   {id:"R32_73",mNo:73,round:"Round of 32",homeSlot:"2A",awaySlot:"2B",homeTeam:"2º Grupo A",awayTeam:"2º Grupo B",venue:"Los Angeles",date:"28/Jun",kickoff:"2026-06-28T19:00:00Z"},
   {id:"R32_74",mNo:74,round:"Round of 32",homeSlot:"1E",awaySlot:"3:A/B/C/D/F",homeTeam:"1º Grupo E",awayTeam:"Melhor 3º (A/B/C/D/F)",venue:"Boston",date:"29/Jun",kickoff:"2026-06-29T20:30:00Z"},
-  {id:"R32_75",mNo:75,round:"Round of 32",homeSlot:"1F",awaySlot:"2C",homeTeam:"1º Grupo F",awayTeam:"2º Grupo C",venue:"Monterrey",date:"29/Jun",kickoff:"2026-06-30T02:00:00Z"},
-  {id:"R32_76",mNo:76,round:"Round of 32",homeSlot:"1C",awaySlot:"2F",homeTeam:"1º Grupo C",awayTeam:"2º Grupo F",venue:"Houston",date:"28/Jun",kickoff:"2026-06-28T18:00:00Z"},
-  {id:"R32_77",mNo:77,round:"Round of 32",homeSlot:"1I",awaySlot:"3:C/D/F/G/H",homeTeam:"1º Grupo I",awayTeam:"Melhor 3º (C/D/F/G/H)",venue:"Nova York/Nova Jersey",date:"29/Jun",kickoff:"2026-06-29T21:00:00Z"},
-  {id:"R32_78",mNo:78,round:"Round of 32",homeSlot:"2E",awaySlot:"2I",homeTeam:"2º Grupo E",awayTeam:"2º Grupo I",venue:"Arlington (Dallas)",date:"30/Jun",kickoff:"2026-06-30T18:00:00Z"},
-  {id:"R32_79",mNo:79,round:"Round of 32",homeSlot:"1A",awaySlot:"3:C/E/F/H/I",homeTeam:"1º Grupo A",awayTeam:"Melhor 3º (C/E/F/H/I)",venue:"Cidade do México",date:"30/Jun",kickoff:"2026-07-01T02:00:00Z"},
+  {id:"R32_75",mNo:75,round:"Round of 32",homeSlot:"1F",awaySlot:"2C",homeTeam:"1º Grupo F",awayTeam:"2º Grupo C",venue:"Monterrey",date:"29/Jun",kickoff:"2026-06-30T01:00:00Z"},
+  {id:"R32_76",mNo:76,round:"Round of 32",homeSlot:"1C",awaySlot:"2F",homeTeam:"1º Grupo C",awayTeam:"2º Grupo F",venue:"Houston",date:"29/Jun",kickoff:"2026-06-29T17:00:00Z"},
+  {id:"R32_77",mNo:77,round:"Round of 32",homeSlot:"1I",awaySlot:"3:C/D/F/G/H",homeTeam:"1º Grupo I",awayTeam:"Melhor 3º (C/D/F/G/H)",venue:"Nova York/Nova Jersey",date:"30/Jun",kickoff:"2026-06-30T21:00:00Z"},
+  {id:"R32_78",mNo:78,round:"Round of 32",homeSlot:"2E",awaySlot:"2I",homeTeam:"2º Grupo E",awayTeam:"2º Grupo I",venue:"Arlington (Dallas)",date:"30/Jun",kickoff:"2026-06-30T17:00:00Z"},
+  {id:"R32_79",mNo:79,round:"Round of 32",homeSlot:"1A",awaySlot:"3:C/E/F/H/I",homeTeam:"1º Grupo A",awayTeam:"Melhor 3º (C/E/F/H/I)",venue:"Cidade do México",date:"30/Jun",kickoff:"2026-07-01T01:00:00Z"},
   {id:"R32_80",mNo:80,round:"Round of 32",homeSlot:"1L",awaySlot:"3:E/H/I/J/K",homeTeam:"1º Grupo L",awayTeam:"Melhor 3º (E/H/I/J/K)",venue:"Atlanta",date:"01/Jul",kickoff:"2026-07-01T16:00:00Z"},
-  {id:"R32_81",mNo:81,round:"Round of 32",homeSlot:"1D",awaySlot:"3:B/E/F/I/J",homeTeam:"1º Grupo D",awayTeam:"Melhor 3º (B/E/F/I/J)",venue:"San Francisco Bay",date:"01/Jul",kickoff:"2026-07-02T03:00:00Z"},
-  {id:"R32_82",mNo:82,round:"Round of 32",homeSlot:"1G",awaySlot:"3:A/E/H/I/J",homeTeam:"1º Grupo G",awayTeam:"Melhor 3º (A/E/H/I/J)",venue:"Seattle",date:"01/Jul",kickoff:"2026-07-01T23:00:00Z"},
+  {id:"R32_81",mNo:81,round:"Round of 32",homeSlot:"1D",awaySlot:"3:B/E/F/I/J",homeTeam:"1º Grupo D",awayTeam:"Melhor 3º (B/E/F/I/J)",venue:"San Francisco Bay",date:"01/Jul",kickoff:"2026-07-02T00:00:00Z"},
+  {id:"R32_82",mNo:82,round:"Round of 32",homeSlot:"1G",awaySlot:"3:A/E/H/I/J",homeTeam:"1º Grupo G",awayTeam:"Melhor 3º (A/E/H/I/J)",venue:"Seattle",date:"01/Jul",kickoff:"2026-07-01T20:00:00Z"},
   {id:"R32_83",mNo:83,round:"Round of 32",homeSlot:"2K",awaySlot:"2L",homeTeam:"2º Grupo K",awayTeam:"2º Grupo L",venue:"Toronto",date:"02/Jul",kickoff:"2026-07-02T23:00:00Z"},
-  {id:"R32_84",mNo:84,round:"Round of 32",homeSlot:"1H",awaySlot:"2J",homeTeam:"1º Grupo H",awayTeam:"2º Grupo J",venue:"Los Angeles",date:"02/Jul",kickoff:"2026-07-02T22:00:00Z"},
-  {id:"R32_85",mNo:85,round:"Round of 32",homeSlot:"1B",awaySlot:"3:E/F/G/I/J",homeTeam:"1º Grupo B",awayTeam:"Melhor 3º (E/F/G/I/J)",venue:"Vancouver",date:"02/Jul",kickoff:"2026-07-03T06:00:00Z"},
+  {id:"R32_84",mNo:84,round:"Round of 32",homeSlot:"1H",awaySlot:"2J",homeTeam:"1º Grupo H",awayTeam:"2º Grupo J",venue:"Los Angeles",date:"02/Jul",kickoff:"2026-07-02T19:00:00Z"},
+  {id:"R32_85",mNo:85,round:"Round of 32",homeSlot:"1B",awaySlot:"3:E/F/G/I/J",homeTeam:"1º Grupo B",awayTeam:"Melhor 3º (E/F/G/I/J)",venue:"Vancouver",date:"03/Jul",kickoff:"2026-07-03T03:00:00Z"},
   {id:"R32_86",mNo:86,round:"Round of 32",homeSlot:"1J",awaySlot:"2H",homeTeam:"1º Grupo J",awayTeam:"2º Grupo H",venue:"Miami",date:"03/Jul",kickoff:"2026-07-03T22:00:00Z"},
-  {id:"R32_87",mNo:87,round:"Round of 32",homeSlot:"1K",awaySlot:"3:D/E/I/J/L",homeTeam:"1º Grupo K",awayTeam:"Melhor 3º (D/E/I/J/L)",venue:"Kansas City",date:"03/Jul",kickoff:"2026-07-04T02:30:00Z"},
-  {id:"R32_88",mNo:88,round:"Round of 32",homeSlot:"2D",awaySlot:"2G",homeTeam:"2º Grupo D",awayTeam:"2º Grupo G",venue:"Arlington (Dallas)",date:"03/Jul",kickoff:"2026-07-03T19:00:00Z"},
+  {id:"R32_87",mNo:87,round:"Round of 32",homeSlot:"1K",awaySlot:"3:D/E/I/J/L",homeTeam:"1º Grupo K",awayTeam:"Melhor 3º (D/E/I/J/L)",venue:"Kansas City",date:"03/Jul",kickoff:"2026-07-04T01:30:00Z"},
+  {id:"R32_88",mNo:88,round:"Round of 32",homeSlot:"2D",awaySlot:"2G",homeTeam:"2º Grupo D",awayTeam:"2º Grupo G",venue:"Arlington (Dallas)",date:"03/Jul",kickoff:"2026-07-03T18:00:00Z"},
   // ── Round of 16 (jogos 89–96), 04–07/jul ──
-  {id:"R16_89",mNo:89,round:"Round of 16",homeSlot:"W74",awaySlot:"W77",homeTeam:"Vencedor Jogo 74",awayTeam:"Vencedor Jogo 77",venue:"Filadélfia",date:"04/Jul",kickoff:"2026-07-04T17:00:00Z"},
-  {id:"R16_90",mNo:90,round:"Round of 16",homeSlot:"W73",awaySlot:"W75",homeTeam:"Vencedor Jogo 73",awayTeam:"Vencedor Jogo 75",venue:"Houston",date:"04/Jul",kickoff:"2026-07-04T22:00:00Z"},
+  {id:"R16_89",mNo:89,round:"Round of 16",homeSlot:"W74",awaySlot:"W77",homeTeam:"Vencedor Jogo 74",awayTeam:"Vencedor Jogo 77",venue:"Filadélfia",date:"04/Jul",kickoff:"2026-07-04T21:00:00Z"},
+  {id:"R16_90",mNo:90,round:"Round of 16",homeSlot:"W73",awaySlot:"W75",homeTeam:"Vencedor Jogo 73",awayTeam:"Vencedor Jogo 75",venue:"Houston",date:"04/Jul",kickoff:"2026-07-04T17:00:00Z"},
   {id:"R16_91",mNo:91,round:"Round of 16",homeSlot:"W76",awaySlot:"W78",homeTeam:"Vencedor Jogo 76",awayTeam:"Vencedor Jogo 78",venue:"Nova York/Nova Jersey",date:"05/Jul",kickoff:"2026-07-05T20:00:00Z"},
-  {id:"R16_92",mNo:92,round:"Round of 16",homeSlot:"W79",awaySlot:"W80",homeTeam:"Vencedor Jogo 79",awayTeam:"Vencedor Jogo 80",venue:"Cidade do México",date:"05/Jul",kickoff:"2026-07-06T02:00:00Z"},
-  {id:"R16_93",mNo:93,round:"Round of 16",homeSlot:"W83",awaySlot:"W84",homeTeam:"Vencedor Jogo 83",awayTeam:"Vencedor Jogo 84",venue:"Dallas",date:"06/Jul",kickoff:"2026-07-06T20:00:00Z"},
-  {id:"R16_94",mNo:94,round:"Round of 16",homeSlot:"W81",awaySlot:"W82",homeTeam:"Vencedor Jogo 81",awayTeam:"Vencedor Jogo 82",venue:"Seattle",date:"06/Jul",kickoff:"2026-07-06T23:00:00Z"},
-  {id:"R16_95",mNo:95,round:"Round of 16",homeSlot:"W86",awaySlot:"W88",homeTeam:"Vencedor Jogo 86",awayTeam:"Vencedor Jogo 88",venue:"Atlanta",date:"07/Jul",kickoff:"2026-07-07T20:00:00Z"},
-  {id:"R16_96",mNo:96,round:"Round of 16",homeSlot:"W85",awaySlot:"W87",homeTeam:"Vencedor Jogo 85",awayTeam:"Vencedor Jogo 87",venue:"Vancouver",date:"07/Jul",kickoff:"2026-07-07T23:00:00Z"},
+  {id:"R16_92",mNo:92,round:"Round of 16",homeSlot:"W79",awaySlot:"W80",homeTeam:"Vencedor Jogo 79",awayTeam:"Vencedor Jogo 80",venue:"Cidade do México",date:"05/Jul",kickoff:"2026-07-06T00:00:00Z"},
+  {id:"R16_93",mNo:93,round:"Round of 16",homeSlot:"W83",awaySlot:"W84",homeTeam:"Vencedor Jogo 83",awayTeam:"Vencedor Jogo 84",venue:"Dallas",date:"06/Jul",kickoff:"2026-07-06T19:00:00Z"},
+  {id:"R16_94",mNo:94,round:"Round of 16",homeSlot:"W81",awaySlot:"W82",homeTeam:"Vencedor Jogo 81",awayTeam:"Vencedor Jogo 82",venue:"Seattle",date:"06/Jul",kickoff:"2026-07-07T00:00:00Z"},
+  {id:"R16_95",mNo:95,round:"Round of 16",homeSlot:"W86",awaySlot:"W88",homeTeam:"Vencedor Jogo 86",awayTeam:"Vencedor Jogo 88",venue:"Atlanta",date:"07/Jul",kickoff:"2026-07-07T16:00:00Z"},
+  {id:"R16_96",mNo:96,round:"Round of 16",homeSlot:"W85",awaySlot:"W87",homeTeam:"Vencedor Jogo 85",awayTeam:"Vencedor Jogo 87",venue:"Vancouver",date:"07/Jul",kickoff:"2026-07-07T20:00:00Z"},
   // ── Quartas de final (jogos 97–100), 09–11/jul ──
   {id:"QF_97",mNo:97,round:"Quartas",homeSlot:"W89",awaySlot:"W90",homeTeam:"Vencedor Jogo 89",awayTeam:"Vencedor Jogo 90",venue:"Boston",date:"09/Jul",kickoff:"2026-07-09T20:00:00Z"},
-  {id:"QF_98",mNo:98,round:"Quartas",homeSlot:"W93",awaySlot:"W94",homeTeam:"Vencedor Jogo 93",awayTeam:"Vencedor Jogo 94",venue:"Los Angeles",date:"10/Jul",kickoff:"2026-07-10T23:00:00Z"},
-  {id:"QF_99",mNo:99,round:"Quartas",homeSlot:"W91",awaySlot:"W92",homeTeam:"Vencedor Jogo 91",awayTeam:"Vencedor Jogo 92",venue:"Miami",date:"11/Jul",kickoff:"2026-07-11T20:00:00Z"},
-  {id:"QF_100",mNo:100,round:"Quartas",homeSlot:"W95",awaySlot:"W96",homeTeam:"Vencedor Jogo 95",awayTeam:"Vencedor Jogo 96",venue:"Kansas City",date:"11/Jul",kickoff:"2026-07-11T23:00:00Z"},
+  {id:"QF_98",mNo:98,round:"Quartas",homeSlot:"W93",awaySlot:"W94",homeTeam:"Vencedor Jogo 93",awayTeam:"Vencedor Jogo 94",venue:"Los Angeles",date:"10/Jul",kickoff:"2026-07-10T19:00:00Z"},
+  {id:"QF_99",mNo:99,round:"Quartas",homeSlot:"W91",awaySlot:"W92",homeTeam:"Vencedor Jogo 91",awayTeam:"Vencedor Jogo 92",venue:"Miami",date:"11/Jul",kickoff:"2026-07-11T21:00:00Z"},
+  {id:"QF_100",mNo:100,round:"Quartas",homeSlot:"W95",awaySlot:"W96",homeTeam:"Vencedor Jogo 95",awayTeam:"Vencedor Jogo 96",venue:"Kansas City",date:"11/Jul",kickoff:"2026-07-12T01:00:00Z"},
   // ── Semifinais (jogos 101–102), 14–15/jul ──
-  {id:"SF_101",mNo:101,round:"Semifinal",homeSlot:"W97",awaySlot:"W98",homeTeam:"Vencedor Jogo 97",awayTeam:"Vencedor Jogo 98",venue:"Dallas",date:"14/Jul",kickoff:"2026-07-14T23:00:00Z"},
-  {id:"SF_102",mNo:102,round:"Semifinal",homeSlot:"W99",awaySlot:"W100",homeTeam:"Vencedor Jogo 99",awayTeam:"Vencedor Jogo 100",venue:"Atlanta",date:"15/Jul",kickoff:"2026-07-15T23:00:00Z"},
+  {id:"SF_101",mNo:101,round:"Semifinal",homeSlot:"W97",awaySlot:"W98",homeTeam:"Vencedor Jogo 97",awayTeam:"Vencedor Jogo 98",venue:"Dallas",date:"14/Jul",kickoff:"2026-07-14T19:00:00Z"},
+  {id:"SF_102",mNo:102,round:"Semifinal",homeSlot:"W99",awaySlot:"W100",homeTeam:"Vencedor Jogo 99",awayTeam:"Vencedor Jogo 100",venue:"Atlanta",date:"15/Jul",kickoff:"2026-07-15T19:00:00Z"},
   // ── Disputa de 3º (jogo 103), 18/jul ──
-  {id:"M103",mNo:103,round:"3º Lugar",homeSlot:"L101",awaySlot:"L102",homeTeam:"Perdedor Semi 1",awayTeam:"Perdedor Semi 2",venue:"Miami",date:"18/Jul",kickoff:"2026-07-18T20:00:00Z"},
+  {id:"M103",mNo:103,round:"3º Lugar",homeSlot:"L101",awaySlot:"L102",homeTeam:"Perdedor Semi 1",awayTeam:"Perdedor Semi 2",venue:"Miami",date:"18/Jul",kickoff:"2026-07-18T21:00:00Z"},
   // ── FINAL (jogo 104), 19/jul ──
   {id:"FINAL",mNo:104,round:"Final",homeSlot:"W101",awaySlot:"W102",homeTeam:"Vencedor Semi 1",awayTeam:"Vencedor Semi 2",venue:"Nova York/Nova Jersey (MetLife)",date:"19/Jul",kickoff:"2026-07-19T19:00:00Z"},
 ];
@@ -4509,55 +4509,68 @@ async function loadUsers() {
   container.innerHTML = `<div class="loader"><div class="spinner"></div>Carregando…</div>`;
   
   try {
-    const [snap, betsSnap] = await Promise.all([
+    const [snap, betsSnap, resSnap, ovSnap] = await Promise.all([
       col("users").get(),
-      col("bets").get()
+      col("bets").get(),
+      col("results").get().catch(()=>null),
+      col("config").doc("overrides").get().catch(()=>null)
     ]);
     const users = [];
     snap.forEach(doc => users.push({id: doc.id, ...doc.data()}));
 
-    // Palpites por usuário: (1) classificados pré-mata + (2) placares do mata-mata
+    // estado necessário para avaliar quais jogos estão abertos agora
+    _brResults = {};
+    if(resSnap) resSnap.forEach(d => { _brResults[d.id] = d.data(); });
+    _betOverrides = (ovSnap && ovSnap.exists) ? (ovSnap.data()||{}) : {};
+
     const koIds = new Set(KNOCKOUT_MATCHES.map(m => m.id));
-    const koTotal = koIds.size;                          // 32 jogos de placar
-    // nº de vagas de classificado na R32 (todas as vagas de grupo dos 16 jogos)
-    const qualiTotal = QUALI_PICKS_ENABLED ? KNOCKOUT_MATCHES.filter(m=>m.round==="Round of 32")
-      .reduce((n,m)=>n + (_slotIsGroupPick(m.homeSlot)?1:0) + (_slotIsGroupPick(m.awaySlot)?1:0), 0) : 0;
-    const grandTotal = koTotal + qualiTotal;             // total de palpites possíveis
-    const scoreTally = {}, qualiTally = {};
+    const koTotal = koIds.size;                          // 32 jogos no total
+
+    // jogos ABERTOS agora = dois times definidos + sem resultado + janela aberta
+    const openMatches = KNOCKOUT_MATCHES.filter(m => {
+      const home = _koResolve(m.homeSlot, _brResults), away = _koResolve(m.awaySlot, _brResults);
+      if(!home || !away) return false;
+      const r = _brResults[m.id], live = r && r.live, has = r && r.homeGoals!==undefined && r.homeGoals!==null;
+      if(has || live) return false;
+      return _matchBetOpen(m);
+    });
+    const openIds = new Set(openMatches.map(m => m.id));
+    const openTotal = openIds.size;
+
+    // contagem por usuário: total (em qualquer jogo) e nos jogos abertos agora
+    const scoreTally = {}, openTally = {};
     betsSnap.forEach(doc => {
       const b = doc.data();
-      if(!b.userId) return;
-      if(b.matchId === "QUALIPICKS"){                    // doc sentinela de classificados
-        qualiTally[b.userId] = b.slotPicks ? Object.keys(b.slotPicks).filter(k=>b.slotPicks[k]).length : 0;
-        return;
-      }
+      if(!b.userId || b.matchId === "QUALIPICKS") return;
       if(koIds.has(b.matchId)) scoreTally[b.userId] = (scoreTally[b.userId]||0) + 1;
+      if(openIds.has(b.matchId)) openTally[b.userId] = (openTally[b.userId]||0) + 1;
     });
-    const totalOf = uid => (scoreTally[uid]||0) + (qualiTally[uid]||0);
+    const totalOf = uid => (scoreTally[uid]||0);
 
     const players = users.filter(u => u.role !== "admin");
     const activePlayers = players.filter(u => totalOf(u.id) > 0);
     const total = activePlayers.length;
     document.getElementById("mbTotal").textContent = total;
 
-    // Conclusão geral (classificados + placares)
-    let made = 0, doneCount = 0, notStarted = 0;
+    // Conclusão geral do topo = % sobre os jogos ABERTOS (o que dá pra apostar agora)
+    let madeOpen = 0, doneOpen = 0, notStarted = 0;
     players.forEach(u => {
-      const m = totalOf(u.id);
-      made += m;
-      if(grandTotal && m >= grandTotal) doneCount++;
-      if(m === 0) notStarted++;
+      const o = openTally[u.id] || 0;
+      madeOpen += o;
+      if(openTotal && o >= openTotal) doneOpen++;
+      if((scoreTally[u.id]||0) === 0) notStarted++;
     });
-    const possible = total * grandTotal;
-    const compPct = possible ? Math.round(made / possible * 100) : 0;
-    document.getElementById("mbCompletion").textContent = compPct + "%";
-    document.getElementById("mbCompletionSub").textContent =
-      doneCount + " com 100% · " + notStarted + " não começaram";
+    const possibleOpen = total * openTotal;
+    const compPct = possibleOpen ? Math.round(madeOpen / possibleOpen * 100) : 0;
+    document.getElementById("mbCompletion").textContent = openTotal ? (compPct + "%") : "—";
+    document.getElementById("mbCompletionSub").textContent = openTotal
+      ? (`dos ${openTotal} jogo(s) abertos · ${doneOpen} completaram · ${notStarted} não começaram`)
+      : "nenhum jogo aberto para aposta agora";
 
     container.innerHTML = users.map(u => {
       const escName = (u.name||"").replace(/'/g,"\\'");
-      const ql = qualiTally[u.id] || 0, sc = scoreTally[u.id] || 0;
-      const qPct = qualiTotal ? Math.round(ql / qualiTotal * 100) : 0;
+      const sc = scoreTally[u.id] || 0, op = openTally[u.id] || 0;
+      const oPct = openTotal ? Math.round(op / openTotal * 100) : 0;
       const sPct = koTotal ? Math.round(sc / koTotal * 100) : 0;
       return `
       <div class="user-row" data-role="${u.role||'user'}">
@@ -4571,8 +4584,8 @@ async function loadUsers() {
         ${u.role === "admin"
           ? `<div class="comp-cell admin-cell">🛠 Admin — gerencia o bolão</div>`
           : `<div class="comp-cell">
-          ${qualiTotal ? `<div class="comp-row"><span class="comp-ph p2" title="Classificados (pré-mata)">🎯</span><div class="comp-bar"><i style="width:${qPct}%"></i></div><span class="comp-num">${ql}/${qualiTotal}<small>${qPct}%</small></span></div>` : ""}
-          <div class="comp-row"><span class="comp-ph p2" title="Placares do mata-mata">⚽</span><div class="comp-bar"><i style="width:${sPct}%"></i></div><span class="comp-num">${sc}/${koTotal}<small>${sPct}%</small></span></div>
+          <div class="comp-row"><span class="comp-ph p2" title="Jogos abertos para aposta agora">🟢</span><div class="comp-bar"><i style="width:${oPct}%"></i></div><span class="comp-num">${op}/${openTotal}<small>${oPct}%</small></span></div>
+          <div class="comp-row"><span class="comp-ph p2" title="Total de jogos do mata-mata (32)">⚽</span><div class="comp-bar"><i style="width:${sPct}%"></i></div><span class="comp-num">${sc}/${koTotal}<small>${sPct}%</small></span></div>
         </div>`}
         <div class="user-actions">
           <span class="role-badge ${u.role==="admin"?"role-admin":"role-user"}">${u.role||"user"}</span>
@@ -4752,7 +4765,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v4.3";
+  var APP_VERSION = "v4.5";
   var APP_BUILD = "Jun 27, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
