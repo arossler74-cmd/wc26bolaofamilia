@@ -961,10 +961,10 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     <!-- 2. AS APOSTAS ABREM POR RODADA -->
     <div class="howto-card">
       <div class="howto-h"><span class="howto-num">2</span> Quando apostar</div>
-      <p class="howto-p">Vá na aba <strong>🎯 Apostas</strong>. Os campos de placar de cada jogo <strong>abrem assim que os dois times do confronto se definem</strong> e <strong>fecham 24 horas antes do apito inicial</strong>.</p>
+      <p class="howto-p">Vá na aba <strong>🎯 Apostas</strong>. Os campos de placar de cada jogo <strong>abrem assim que os dois times do confronto se definem</strong> e <strong>fecham algumas horas antes do apito inicial</strong> (cada card mostra o prazo exato).</p>
       <div class="step"><div class="step-ico">❔</div><div><strong>Ainda indefinido</strong> — o jogo aparece como “A definir” e fica bloqueado até saírem os dois times.</div></div>
       <div class="step"><div class="step-ico">✍️</div><div><strong>Aberto</strong> — digite seu placar nas duas caixas e clique em <strong>💾 Salvar palpites</strong>. Dá para mudar o palpite quantas vezes quiser até o prazo.</div></div>
-      <div class="step"><div class="step-ico">🔒</div><div><strong>Fecha 24h antes do jogo</strong> — depois disso o palpite trava e não dá mais para alterar. Cada card mostra até quando você pode apostar.</div></div>
+      <div class="step"><div class="step-ico">🔒</div><div><strong>Fecha pouco antes do jogo</strong> — depois do prazo o palpite trava e não dá mais para alterar. Cada card mostra até quando você pode apostar.</div></div>
       <p class="howto-note">Volte à aba sempre que novos jogos forem definidos para palpitar antes do prazo de cada um.</p>
     </div>
 
@@ -1194,7 +1194,14 @@ select.input-select:focus { outline: none; border-color: var(--gold); }
     <!-- ── TRAVA AUTOMÁTICA DE APOSTAS ── -->
     <div class="card" style="margin-bottom:20px">
       <div class="card-header"><strong>🔒 Apostas — trava automática</strong></div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.6">As apostas de cada jogo <b>abrem assim que os dois times se definem</b> (via ESPN) e <b>fecham automaticamente 24h antes do apito inicial</b> — igual para todos os jogadores, sem precisar abrir/fechar nada manualmente. Os vencedores avançam sozinhos conforme os resultados oficiais chegam.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6">As apostas de cada jogo <b>abrem assim que os dois times se definem</b> (via ESPN) e <b>fecham automaticamente algumas horas antes do apito inicial</b> — igual para todos os jogadores. Os vencedores avançam sozinhos conforme os resultados oficiais chegam.</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap">
+        <span style="font-size:13px;font-weight:700">Fechar apostas</span>
+        <input class="result-input" type="number" min="0" max="168" step="1" id="betLockHours" value="3" style="width:80px;text-align:center" />
+        <span style="font-size:13px;font-weight:700">horas antes do jogo</span>
+        <button class="btn btn-gold" style="padding:8px 16px;font-size:12px" onclick="saveBetLockHours()">💾 Salvar</button>
+        <span id="betLockHint" style="font-size:11px;color:var(--muted)"></span>
+      </div>
     </div>
 
     <div class="group-tabs" id="resultGroupTabs"></div>
@@ -1797,7 +1804,8 @@ function _lockKeyForRound(round){
   return null;
 }
 // ── TRAVA AUTOMÁTICA: apostas fecham X horas antes do kickoff (UTC, igual p/ todos) ──
-const BET_LOCK_HOURS = 24;
+// Valor definido pelo admin (k_config/main.betLockHours). Default = 3h.
+let BET_LOCK_HOURS = 3;
 // instante (ms) em que as apostas daquele jogo fecham; null se sem kickoff definido
 function _betDeadline(m){
   if(!m || !m.kickoff) return null;
@@ -2011,6 +2019,8 @@ async function loadConfig() {
       const data = cfg.data();
       pointsConfig = Object.assign({ perfect:15, winnerOne:7, winnerOnly:4, oneScore:3, diffBonus:2, qualifPts:5, roundMult:{ R32:1.0, R16:1.2, QF:1.4, SF:1.6, FINAL:2.0 } }, data.points || {});
       if(!pointsConfig.roundMult) pointsConfig.roundMult = { R32:1.0, R16:1.2, QF:1.4, SF:1.6, FINAL:2.0 };
+      // janela de trava (horas antes do kickoff) — definida pelo admin, default 3h
+      if(typeof data.betLockHours === "number" && data.betLockHours >= 0) BET_LOCK_HOURS = data.betLockHours;
       activePhase = data.activePhase || "groups";
       // Back-compat with old single `bettingOpen`
       if(data.bettingOpenP1 !== undefined) bettingOpenP1 = data.bettingOpenP1 !== false;
@@ -2562,7 +2572,7 @@ function _brNode(m){
     if(!resolved){
       meta += `<span class="br-lockbadge" title="Aguardando os times se definirem">⏳ a definir</span>`;
     } else if(!betWindowOpen){
-      meta += `<span class="br-lockbadge" title="Apostas encerradas — fecha 24h antes do jogo">🔒 apostas encerradas</span>`;
+      meta += `<span class="br-lockbadge" title="Apostas encerradas — fecham ${BET_LOCK_HOURS}h antes do jogo">🔒 apostas encerradas</span>`;
     } else {
       const isOv = _betOverrides && _betOverrides[m.id]===true;
       const autoOpen = _matchBetOpenAuto(m);
@@ -2570,7 +2580,7 @@ function _brNode(m){
         meta += `<span class="br-openbadge" title="O admin reabriu as apostas deste jogo">🔓 reaberto pelo admin</span>`;
       } else {
         const dl=_betDeadline(m);
-        if(dl) meta += `<span class="br-openbadge" title="Aposte até 24h antes do jogo">🔓 aposte até ${fmtDateShort(new Date(dl).toISOString())} · ${fmtKick(new Date(dl).toISOString())}</span>`;
+        if(dl) meta += `<span class="br-openbadge" title="Aposte até o prazo de cada jogo">🔓 aposte até ${fmtDateShort(new Date(dl).toISOString())} · ${fmtKick(new Date(dl).toISOString())}</span>`;
       }
     }
   }
@@ -2605,7 +2615,7 @@ function _brNode(m){
     // campo de placar: input editável quando aberto; cadeado quando travado; valor fixo quando há resultado
     let scoreCell;
     if(!_brRO && !has && !live && !scoreLockOpen){
-      const why = resolved ? "Apostas encerradas (fecha 24h antes do jogo)" : "Aguardando os times se definirem";
+      const why = resolved ? ("Apostas encerradas (fecham "+BET_LOCK_HOURS+"h antes do jogo)") : "Aguardando os times se definirem";
       scoreCell = `<span class="br-in br-in-lock" title="${why}">🔒</span>`;
     } else {
       scoreCell = `<input class="br-in" id="${inputId}" type="number" min="0" max="20" inputmode="numeric" value="${val}" ${dis}>`;
@@ -2808,9 +2818,9 @@ function _brRenderTree(){
     }
     if(abertos>0){
       const quando = proxFecha ? ` · próximo a fechar: ${fmtDateShort(new Date(proxFecha).toISOString())} ${fmtKick(new Date(proxFecha).toISOString())}` : "";
-      statusBanner = `<div class="br-hint" style="margin-top:10px">🔓 <b>${abertos} jogo(s) aberto(s)</b> para aposta. Cada jogo fecha <b>24h antes</b> do apito inicial${quando}.</div>`;
+      statusBanner = `<div class="br-hint" style="margin-top:10px">🔓 <b>${abertos} jogo(s) aberto(s)</b> para aposta. Cada jogo fecha <b>${BET_LOCK_HOURS}h antes</b> do apito inicial${quando}.</div>`;
     } else {
-      statusBanner = '<div class="br-hint" style="margin-top:10px">⏳ Nenhum jogo aberto agora. As apostas abrem assim que os times forem definidos e fecham 24h antes de cada jogo.</div>';
+      statusBanner = '<div class="br-hint" style="margin-top:10px">⏳ Nenhum jogo aberto agora. As apostas abrem assim que os times forem definidos e fecham algumas horas antes de cada jogo.</div>';
     }
   }
   wrap.innerHTML = _brMeCard + `<div class="br-wrap">${tree}</div>` + statusBanner +
@@ -4116,6 +4126,23 @@ function buildResultGroupTabs() {
   });
 }
 
+// admin define quantas horas antes do kickoff as apostas travam (default 3h)
+async function saveBetLockHours(){
+  if(!isAdmin) return;
+  const el = document.getElementById("betLockHours");
+  let h = parseFloat(el ? el.value : "");
+  if(isNaN(h) || h < 0){ showToast("Informe um número de horas válido (0 ou mais).","error"); return; }
+  if(h > 168) h = 168; // teto de 1 semana
+  try{
+    await col("config").doc("main").set({ betLockHours: h }, { merge: true });
+    BET_LOCK_HOURS = h;
+    const hint = document.getElementById("betLockHint");
+    if(hint) hint.textContent = `✅ salvo — apostas fecham ${h}h antes de cada jogo`;
+    showToast(`✅ Trava ajustada para ${h}h antes do jogo.`);
+    loadAdminResults();
+  }catch(e){ showToast("Erro: "+e.message, "error"); }
+}
+
 // Publica o horário oficial de cada jogo (epoch ms) em k_config/schedule.
 // É a fonte de verdade usada pelas REGRAS do Firestore para travar apostas
 // 24h antes do kickoff (server-side, à prova de relógio adulterado).
@@ -4157,6 +4184,9 @@ async function loadAdminResults() {
     const ov = await col("config").doc("overrides").get();
     _betOverrides = (ov.exists) ? (ov.data()||{}) : {};
   } catch(e) { _betOverrides = {}; }
+
+  // popula o campo de horas da trava (lê o valor atual da config)
+  { const el=document.getElementById("betLockHours"); if(el) el.value = BET_LOCK_HOURS; }
 
   let matches = KNOCKOUT_MATCHES.filter(m => m.round === currentResultGroup);
 
@@ -4722,7 +4752,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v4.2";
+  var APP_VERSION = "v4.3";
   var APP_BUILD = "Jun 27, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
