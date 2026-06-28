@@ -2367,17 +2367,28 @@ function _brEsc(s){ return String(s==null?"":s).replace(/[&<>]/g, c => ({'&':'&a
 // são resolvidos automaticamente pelos resultados oficiais (ESPN) quando saírem.
 // Atualize aqui conforme os grupos forem encerrando. (Atualizado 27/Jun/2026)
 const SLOT_TEAMS = {
-  "1A":"Mexico",   "2A":"South Africa",
-  "1B":"Switzerland", "2B":"Canada",   "3B":"Bosnia",
-  "1C":"Brazil",   "2C":"Morocco",
-  "1D":"United States", "2D":"Australia",
-  "1E":"Germany",  "2E":"Ivory Coast", "3E":"Ecuador",
-  "1F":"Netherlands", "2F":"Japan",    "3F":"Sweden",
-  "1G":"Belgium",  "2G":"Egypt",
-  "1H":"Spain",    "2H":"Cape Verde",
-  "1I":"France",   "2I":"Norway",
-  "1J":"Argentina"
-  // 2J, grupos K/L e melhores 3ºs ainda em aberto → resolvidos ao vivo pelo ESPN
+  // Group winners (1X) and runners-up (2X) — all 12 groups confirmed
+  "1A":"Mexico",      "2A":"South Africa",
+  "1B":"Switzerland", "2B":"Canada",
+  "1C":"Brazil",      "2C":"Morocco",
+  "1D":"United States","2D":"Australia",
+  "1E":"Germany",     "2E":"Ivory Coast",
+  "1F":"Netherlands", "2F":"Japan",
+  "1G":"Belgium",     "2G":"Egypt",
+  "1H":"Spain",       "2H":"Cape Verde",
+  "1I":"France",      "2I":"Norway",
+  "1J":"Argentina",   "2J":"Austria",
+  "1K":"Colombia",    "2K":"Portugal",
+  "1L":"England",     "2L":"Croatia",
+  // Best third-placed teams, mapped to their exact R32 slot codes
+  "3:A/B/C/D/F":"Paraguay",   // Germany's opponent (3rd of Group D)
+  "3:C/D/F/G/H":"Sweden",     // France's opponent (3rd of Group F)
+  "3:C/E/F/H/I":"Ecuador",    // Mexico's opponent (3rd of Group E)
+  "3:E/H/I/J/K":"DR Congo",   // England's opponent
+  "3:B/E/F/I/J":"Bosnia",     // USA's opponent
+  "3:A/E/H/I/J":"Senegal",    // Belgium's opponent
+  "3:E/F/G/I/J":"Algeria",    // Switzerland's opponent
+  "3:D/E/I/J/L":"Ghana"       // Colombia's opponent
 };
 
 // Real group standings from results (only when the whole group has finished).
@@ -4228,8 +4239,8 @@ async function loadAdminResults() {
       const statusTxt = overridden
         ? `<span style="color:var(--green)">🔓 Reaberto manualmente — todos podem apostar</span>`
         : (autoOpen
-            ? `<span style="color:var(--muted)">🔓 Aberto automaticamente (faltam +24h)</span>`
-            : `<span style="color:#FFC773">🔒 Fechado pela trava de 24h</span>`);
+            ? `<span style="color:var(--muted)">🔓 Aberto automaticamente (fecha ${BET_LOCK_HOURS}h antes)</span>`
+            : `<span style="color:#FFC773">🔒 Fechado pela trava de ${BET_LOCK_HOURS}h</span>`);
       ovRow = `<div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;border-top:1px dashed var(--border,#2A3470);padding-top:10px">
           <span style="font-size:12px">${statusTxt}</span>
           <button class="btn ${overridden?"btn-danger":"btn-ghost"}" style="padding:6px 12px;font-size:11px;margin-left:auto"
@@ -4765,7 +4776,7 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v4.5";
+  var APP_VERSION = "v4.6";
   var APP_BUILD = "Jun 27, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
