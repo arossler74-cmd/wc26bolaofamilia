@@ -3481,7 +3481,8 @@ function openUserBreakdown(uid){
   const name = _sbNames[uid] || "Player";
   const bets = _sbBetsByUser[uid] || {};
   const results = _sbResults || {};
-  const order = ((typeof ALL_MATCHES !== "undefined" && ALL_MATCHES && ALL_MATCHES.length) ? ALL_MATCHES : GROUP_MATCHES)
+  // Bolão da família é somente mata-mata: nunca mostrar jogos da fase de grupos aqui.
+  const order = KNOCKOUT_MATCHES
     .slice().sort((a,b) => {
       const ka = a.kickoff ? new Date(a.kickoff).getTime() : 8e15;
       const kb = b.kickoff ? new Date(b.kickoff).getTime() : 8e15;
@@ -3494,6 +3495,9 @@ function openUserBreakdown(uid){
     const bet = bets[m.id];
     if(!has && !bet) return "";   // show finished games and any game they predicted
     shown++;
+    // nomes reais dos times (via ESPN/resultados), com fallback pro rótulo do slot (ex.: "1º Grupo E")
+    const homeName = _koResolve(m.homeSlot, results) || m.homeTeam;
+    const awayName = _koResolve(m.awaySlot, results) || m.awayTeam;
     const gnum = m.matchNum ? ("#"+m.matchNum) : "";
     const gdate = m.kickoff ? new Date(m.kickoff).toLocaleDateString([], {month:"short", day:"numeric"}) : (m.date || "");
     const meta = [gnum, gdate].filter(Boolean).join(" \u00b7 ");
@@ -3516,7 +3520,7 @@ function openUserBreakdown(uid){
     return `<tr style="border-top:1px solid var(--border,#2A3470)">
       <td style="padding:9px 12px;font-size:13px">
         <div style="color:var(--muted);font-size:10.5px;font-weight:700;letter-spacing:.03em;margin-bottom:3px">${meta}</div>
-        ${flagImg(m.homeTeam)} ${m.homeTeam} <span style="color:var(--muted)">\u00d7</span> ${m.awayTeam} ${flagImg(m.awayTeam)}
+        ${flagImg(homeName)} ${homeName} <span style="color:var(--muted)">\u00d7</span> ${awayName} ${flagImg(awayName)}
       </td>
       <td style="padding:9px 12px;text-align:center;font-size:13px">${pickCell}</td>
       <td style="padding:9px 12px;text-align:center;font-weight:800">${resultCell}</td>
@@ -3791,18 +3795,31 @@ async function _buildRaceData(useCache){
 
   // (sem AI prediction na fase eliminatória)
 
+  // "Recente" = o jogo em si aconteceu na janela (ontem→agora) ou está ao vivo agora —
+  // NUNCA baseado em quando o Firestore foi escrito (a sincronização com o ESPN
+  // reescreve TODOS os resultados a cada poucos minutos, o que faria jogos antigos
+  // da fase de grupos parecerem "recentes" pra sempre).
+  const kickoffById = {};
+  (typeof KNOCKOUT_MATCHES !== "undefined" ? KNOCKOUT_MATCHES : []).forEach(m => { kickoffById[m.id] = m.kickoff ? new Date(m.kickoff).getTime() : null; });
+  const isRecentMatch = id => {
+    const r = results[id];
+    if(r && r.live) return true;
+    const ko = kickoffById[id];
+    return ko != null && ko >= windowStart;
+  };
+
   let hist = [];
   try {
     const hs = await col("results_history").where("ts", ">=", firebase.firestore.Timestamp.fromMillis(windowStart)).orderBy("ts").get();
-    hs.forEach(d => { const e=d.data(); if(e && e.matchId && e.homeGoals!==undefined && e.ts && e.ts.toMillis) hist.push(e); });
+    hs.forEach(d => { const e=d.data(); if(e && e.matchId && e.homeGoals!==undefined && e.ts && e.ts.toMillis && isRecentMatch(e.matchId)) hist.push(e); });
   } catch(e){ /* history optional */ }
 
   const baseScores = {};
-  Object.keys(results).forEach(id => { if(updAt[id] < windowStart) baseScores[id] = { homeGoals:results[id].homeGoals, awayGoals:results[id].awayGoals }; });
+  Object.keys(results).forEach(id => { if(!isRecentMatch(id)) baseScores[id] = { homeGoals:results[id].homeGoals, awayGoals:results[id].awayGoals }; });
 
   const points = [], histMatch = {};
   hist.forEach(e => { points.push({ ts:e.ts.toMillis(), matchId:e.matchId, hg:e.homeGoals, ag:e.awayGoals, hp:e.homeTeam, ap:e.awayTeam, live:!!e.live }); histMatch[e.matchId]=1; });
-  Object.keys(results).forEach(id => { if(updAt[id] >= windowStart && !histMatch[id]){ const r=results[id]; points.push({ ts:updAt[id], matchId:id, hg:r.homeGoals, ag:r.awayGoals, hp:r.homeTeam, ap:r.awayTeam, live:!!r.live }); } });
+  Object.keys(results).forEach(id => { if(isRecentMatch(id) && !histMatch[id]){ const r=results[id]; points.push({ ts:(updAt[id]||Date.now()), matchId:id, hg:r.homeGoals, ag:r.awayGoals, hp:r.homeTeam, ap:r.awayTeam, live:!!r.live }); } });
   points.sort((a,b) => a.ts - b.ts);
 
   const frames = [];
@@ -4776,8 +4793,8 @@ initFirebase();
 </script>
 <script>
   /* ── App version (single source of truth — bump these two when you ship) ── */
-  var APP_VERSION = "v4.6";
-  var APP_BUILD = "Jun 27, 2026";
+  var APP_VERSION = "v4.8";
+  var APP_BUILD = "Jul 1, 2026";
   (function(){ var el = document.getElementById("appVersion"); if(el) el.textContent = APP_VERSION + " \u00b7 " + APP_BUILD; })();
 </script>
 </body>
